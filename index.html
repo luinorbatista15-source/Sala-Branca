@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WHITE ROOM PROJECT | Sala Branca — Formação de Elite</title>
+    <title>WHITE ROOM PROJECT | Desafios e Treinamentos Completos</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, Arial, sans-serif; }
         :root {
@@ -15,21 +15,32 @@
         body { background: linear-gradient(135deg, var(--azul-profundo) 0%, var(--preto) 100%); color: var(--branco); min-height: 100vh; line-height: 1.6; }
         .cabecalho { border-bottom: 1px solid var(--borda); padding: 2rem; text-align: center; background: rgba(15,23,42,0.8); backdrop-filter: blur(10px); position: sticky; top:0; z-index:10; }
         .cabecalho h1 { font-size: 2.2rem; font-weight: 300; letter-spacing: 0.4rem; text-transform: uppercase; margin-bottom: 0.5rem; background: linear-gradient(90deg, var(--branco), var(--ouro)); -webkit-background-clip: text; color: transparent; }
-        .subtitulo { font-size: 0.95rem; color: var(--cinza-medio); font-style: italic; }
+        .subtitulo { font-size: 0.95rem; color: var(--cinza-medio); }
+
+        /* SISTEMA DE ABAS */
+        .navegacao-abas { display: flex; justify-content: center; gap: 1rem; padding: 1.5rem; border-bottom: 1px solid var(--borda); flex-wrap: wrap; }
+        .botao-aba { background: transparent; color: var(--cinza-medio); border: 1px solid var(--borda); padding: 0.8rem 1.5rem; border-radius: 6px; cursor: pointer; transition: 0.3s; font-size: 0.95rem; }
+        .botao-aba.ativa { background: var(--ouro); color: var(--preto); border-color: var(--ouro); font-weight: 600; }
+        .botao-aba:hover { border-color: var(--ouro); color: var(--branco); }
+
         .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
-        .aviso-oficial { background: rgba(148,163,184,0.1); border-left: 4px solid var(--ouro); padding: 1.2rem; margin-bottom: 2.5rem; border-radius: 4px; font-size: 0.95rem; }
-        .secao { margin-bottom: 3.5rem; }
+        .aviso-oficial { background: rgba(148,163,184,0.1); border-left: 4px solid var(--ouro); padding: 1.2rem; margin-bottom: 2rem; border-radius: 4px; font-size: 0.95rem; }
+        .secao { margin-bottom: 3rem; }
         .secao h2 { font-size: 1.5rem; font-weight: 500; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--borda); display: flex; align-items: center; gap: 0.5rem; }
         .secao h2::before { content: ''; width: 4px; height: 1.5rem; background: var(--ouro); border-radius: 2px; }
 
         /* PAINEL GERAL */
-        .painel-geral { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; margin-bottom: 2rem; }
-        .card-painel { background: rgba(30,41,59,0.6); border: 1px solid var(--borda); border-radius: 8px; padding: 1.5rem; text-align: center; transition: 0.3s; }
-        .card-painel:hover { transform: translateY(-3px); border-color: var(--ouro); box-shadow: var(--sombra); }
-        .card-painel .valor { font-size: 2rem; font-weight: 700; margin-bottom: 0.3rem; }
-        .card-painel .rotulo { font-size: 0.9rem; color: var(--cinza-medio); }
+        .painel-geral { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+        .card-painel { background: rgba(30,41,59,0.6); border: 1px solid var(--borda); border-radius: 8px; padding: 1.2rem; text-align: center; transition: 0.3s; }
+        .card-painel:hover { border-color: var(--ouro); transform: translateY(-2px); }
+        .card-painel .valor { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.2rem; }
+        .card-painel .rotulo { font-size: 0.85rem; color: var(--cinza-medio); }
 
-        /* SISTEMA DE NÍVEIS 1 A 10 */
+        /* CONTEÚDO DAS ABAS */
+        .conteudo-aba { display: none; }
+        .conteudo-aba.visivel { display: block; }
+
+        /* LISTA DE NÍVEIS */
         .nivel-lista { display: flex; flex-direction: column; gap: 1.5rem; }
         .nivel-card { background: rgba(30,41,59,0.5); border: 1px solid var(--borda); border-radius: 8px; padding: 1.5rem; transition: 0.3s; }
         .nivel-card:hover { border-color: var(--cinza-medio); background: rgba(30,41,59,0.7); }
@@ -40,10 +51,14 @@
         .status-aprovado { color: var(--sucesso); font-weight: 500; }
         .status-pendente { color: var(--alerta); font-weight: 500; }
         .status-reprovado { color: var(--falha); font-weight: 500; }
-        .conteudo-nivel { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
-        @media (max-width: 600px) { .conteudo-nivel { grid-template-columns: 1fr; } }
-        .bloco { padding: 1rem; background: rgba(15,23,42,0.5); border-radius: 6px; border-left: 3px solid var(--cinza-medio); }
-        .bloco h4 { margin-bottom: 0.5rem; font-size: 1rem; color: var(--ouro); }
+
+        /* BLOCOS COMPLETOS DE DESAFIO E TREINAMENTO */
+        .blocos-completos { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin: 1.2rem 0; }
+        @media (max-width: 700px) { .blocos-completos { grid-template-columns: 1fr; } }
+        .bloco-completo { padding: 1.2rem; background: rgba(15,23,42,0.6); border-radius: 6px; border-left: 3px solid var(--ouro); }
+        .bloco-completo h4 { margin-bottom: 0.6rem; font-size: 1.05rem; color: var(--ouro); }
+        .bloco-completo p { font-size: 0.9rem; color: var(--cinza-claro); line-height: 1.7; }
+
         .btn { background: linear-gradient(90deg, var(--ouro), #f59e0b); color: var(--preto); border: none; padding: 0.9rem 1.8rem; border-radius: 6px; cursor: pointer; transition: 0.3s; font-weight: 600; font-size: 0.95rem; margin-top: 1rem; width: 100%; }
         .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(251,191,36,0.3); }
         .btn:disabled { background: var(--borda); color: var(--cinza-medio); cursor: not-allowed; transform: none; box-shadow: none; }
@@ -51,221 +66,366 @@
         .resultado-aprovado { background: rgba(16,185,129,0.1); border-left: 4px solid var(--sucesso); color: var(--sucesso); }
         .resultado-reprovado { background: rgba(239,68,68,0.1); border-left: 4px solid var(--falha); color: var(--falha); }
 
-        /* FRASE E RODAPÉ */
-        .frase-ayanokoji { margin: 3rem 0; padding: 1.5rem; border-left: 3px solid var(--ouro); font-style: italic; font-size: 1.1rem; color: var(--cinza-claro); background: rgba(15,23,42,0.4); border-radius: 0 6px 6px 0; }
+        .frase { margin: 2.5rem 0; padding: 1.5rem; border-left: 3px solid var(--ouro); font-style: italic; font-size: 1.1rem; color: var(--cinza-claro); background: rgba(15,23,42,0.4); border-radius: 0 6px 6px 0; }
         .rodape { text-align: center; padding: 2rem; font-size: 0.85rem; color: var(--cinza-medio); border-top: 1px solid var(--borda); margin-top: 2rem; }
     </style>
 </head>
 <body>
     <header class="cabecalho">
         <h1>WHITE ROOM PROJECT</h1>
-        <p class="subtitulo">Sala Branca — Sistema Completo de Formação de Elite | Níveis 1 a 10</p>
+        <p class="subtitulo">Sala Branca — Sistema Completo de Formação de Elite</p>
     </header>
 
-    <div class="container">
-        <div class="aviso-oficial">
-            <strong>AVISO FUNDAMENTAL:</strong> O progresso não é garantido por esforço ou desejo — apenas por resultados concretos. Cada nível testa uma habilidade essencial para o desenvolvimento máximo. O Nível 10 é o patamar absoluto, reservado para quem supera todos os limites.
-        </div>
-
-        <!-- PAINEL GERAL -->
-        <section class="secao">
-            <h2>SEU DESEMPENHO</h2>
-            <div class="painel-geral">
-                <div class="card-painel"><div class="valor">0</div><div class="rotulo">XP Total</div></div>
-                <div class="card-painel"><div class="valor">1</div><div class="rotulo">Nível Atual</div></div>
-                <div class="card-painel"><div class="valor">0%</div><div class="rotulo">Progresso Geral</div></div>
-                <div class="card-painel"><div class="valor">0</div><div class="rotulo">Dias de Sequência</div></div>
-            </div>
-        </section>
-
-        <!-- TODOS OS NÍVEIS DO 1 AO 10 -->
-        <section class="secao">
-            <h2>PROGRESSÃO COMPLETA — NÍVEIS 1 A 10</h2>
-            <div class="nivel-lista">
-                <!-- NÍVEL 1 -->
-                <div class="nivel-card">
-                    <div class="nivel-titulo">
-                        <span class="nivel-numero">NÍVEL 1: CONHECIMENTO DAS REGRAS</span>
-                        <span class="status-pendente">PENDENTE</span>
-                    </div>
-                    <div class="conteudo-nivel">
-                        <div class="bloco"><h4>📋 Desafio de Avaliação</h4><p>Compreender e explicar o objetivo principal do projeto White Room, demonstrando entendimento dos princípios de excelência e evolução contínua.</p></div>
-                        <div class="bloco"><h4>📚 Treinamento Recomendado</h4><p>Estudar todas as normas, objetivos e filosofia do projeto. Separar interpretações pessoais dos fatos reais.</p></div>
-                    </div>
-                    <button class="btn" onclick="avaliarNivel(1)">REALIZAR AVALIAÇÃO</button>
-                    <div id="res-n1" class="avaliacao-resultado"></div>
-                </div>
-
-                <!-- NÍVEL 2 -->
-                <div class="nivel-card">
-                    <div class="nivel-titulo">
-                        <span class="nivel-numero">NÍVEL 2: RACIOCÍNIO LÓGICO</span>
-                        <span class="status-pendente">PENDENTE</span>
-                    </div>
-                    <div class="conteudo-nivel">
-                        <div class="bloco"><h4>📋 Desafio de Avaliação</h4><p>Resolver problemas de dedução e lógica sem ajuda externa, provando capacidade de raciocinar de forma objetiva e estruturada.</p></div>
-                        <div class="bloco"><h4>📚 Treinamento Recomendado</h4><p>Praticar análise de premissas, identificação de falácias e separação entre opinião e evidência.</p></div>
-                    </div>
-                    <button class="btn" onclick="avaliarNivel(2)" disabled>REALIZAR AVALIAÇÃO</button>
-                    <div id="res-n2" class="avaliacao-resultado"></div>
-                </div>
-
-                <!-- NÍVEL 3 -->
-                <div class="nivel-card">
-                    <div class="nivel-titulo">
-                        <span class="nivel-numero">NÍVEL 3: LEITURA DE PESSOAS</span>
-                        <span class="status-pendente">PENDENTE</span>
-                    </div>
-                    <div class="conteudo-nivel">
-                        <div class="bloco"><h4>📋 Desafio de Avaliação</h4><p>Identificar intenções reais, contradições e sentimentos ocultos através da observação de comportamento e comunicação.</p></div>
-                        <div class="bloco"><h4>📚 Treinamento Recomendado</h4><p>Estudar psicologia básica, linguagem corporal e como as pessoas costumam ocultar o que realmente querem.</p></div>
-                    </div>
-                    <button class="btn" onclick="avaliarNivel(3)" disabled>REALIZAR AVALIAÇÃO</button>
-                    <div id="res-n3" class="avaliacao-resultado"></div>
-                </div>
-
-                <!-- NÍVEL 4 -->
-                <div class="nivel-card">
-                    <div class="nivel-titulo">
-                        <span class="nivel-numero">NÍVEL 4: TOMADA DE DECISÃO</span>
-                        <span class="status-pendente">PENDENTE</span>
-                    </div>
-                    <div class="conteudo-nivel">
-                        <div class="bloco"><h4>📋 Desafio de Avaliação</h4><p>Escolher a alternativa que traz maior vantagem a longo prazo, mesmo que seja desagradável ou difícil no momento.</p></div>
-                        <div class="bloco"><h4>📚 Treinamento Recomendado</h4><p>Analisar consequências antes de agir, evitar decisões movidas apenas por emoção ou conveniência imediata.</p></div>
-                    </div>
-                    <button class="btn" onclick="avaliarNivel(4)" disabled>REALIZAR AVALIAÇÃO</button>
-                    <div id="res-n4" class="avaliacao-resultado"></div>
-                </div>
-
-                <!-- NÍVEL 5 -->
-                <div class="nivel-card">
-                    <div class="nivel-titulo">
-                        <span class="nivel-numero">NÍVEL 5: INFLUÊNCIA DISCRETA</span>
-                        <span class="status-pendente">PENDENTE</span>
-                    </div>
-                    <div class="conteudo-nivel">
-                        <div class="bloco"><h4>📋 Desafio de Avaliação</h4><p>Influenciar o comportamento de outras pessoas de forma ética, sem que elas percebam que estão sendo guiadas.</p></div>
-                        <div class="bloco"><h4>📚 Treinamento Recomendado</h4><p>Aprender a ouvir, identificar valores alheios e apresentar ideias de forma que pareçam naturais para a outra pessoa.</p></div>
-                    </div>
-                    <button class="btn" onclick="avaliarNivel(5)" disabled>REALIZAR AVALIAÇÃO</button>
-                    <div id="res-n5" class="avaliacao-resultado"></div>
-                </div>
-
-                <!-- NÍVEL 6 -->
-                <div class="nivel-card">
-                    <div class="nivel-titulo">
-                        <span class="nivel-numero">NÍVEL 6: DOMÍNIO DE SI MESMO</span>
-                        <span class="status-pendente">PENDENTE</span>
-                    </div>
-                    <div class="conteudo-nivel">
-                        <div class="bloco"><h4>📋 Desafio de Avaliação</h4><p>Manter compostura, controle emocional e não revelar informações importantes sob provocações ou pressão.</p></div>
-                        <div class="bloco"><h4>📚 Treinamento Recomendado</h4><p>Identificar seus próprios gatilhos emocionais, praticar respostas calmas e separar sentimentos de objetivos.</p></div>
-                    </div>
-                    <button class="btn" onclick="avaliarNivel(6)" disabled>REALIZAR AVALIAÇÃO</button>
-                    <div id="res-n6" class="avaliacao-resultado"></div>
-                </div>
-
-                <!-- NÍVEL 7 -->
-                <div class="nivel-card">
-                    <div class="nivel-titulo">
-                        <span class="nivel-numero">NÍVEL 7: ANTEVISÃO DE CENÁRIOS</span>
-                        <span class="status-pendente">PENDENTE</span>
-                    </div>
-                    <div class="conteudo-nivel">
-                        <div class="bloco"><h4>📋 Desafio de Avaliação</h4><p>Prever consequências secundárias e terciárias de ações, preparando-se para resultados diferentes do esperado.</p></div>
-                        <div class="bloco"><h4>📚 Treinamento Recomendado</h4><p>Simular mentalmente caminhos alternativos, estudar como eventos se conectam ao longo do tempo.</p></div>
-                    </div>
-                    <button class="btn" onclick="avaliarNivel(7)" disabled>REALIZAR AVALIAÇÃO</button>
-                    <div id="res-n7" class="avaliacao-resultado"></div>
-                </div>
-
-                <!-- NÍVEL 8 -->
-                <div class="nivel-card">
-                    <div class="nivel-titulo">
-                        <span class="nivel-numero">NÍVEL 8: RESILIÊNCIA E ADAPTAÇÃO</span>
-                        <span class="status-pendente">PENDENTE</span>
-                    </div>
-                    <div class="conteudo-nivel">
-                        <div class="bloco"><h4>📋 Desafio de Avaliação</h4><p>Recuperar-se de falhas ou derrotas rapidamente, extraindo lições e transformando pontos fracos em vantagens.</p></div>
-                        <div class="bloco"><h4>📚 Treinamento Recomendado</h4><p>Praticar análise de erros sem culpa, desenvolver flexibilidade para mudar estratégias quando necessário.</p></div>
-                    </div>
-                    <button class="btn" onclick="avaliarNivel(8)" disabled>REALIZAR AVALIAÇÃO</button>
-                    <div id="res-n8" class="avaliacao-resultado"></div>
-                </div>
-
-                <!-- NÍVEL 9 -->
-                <div class="nivel-card">
-                    <div class="nivel-titulo">
-                        <span class="nivel-numero">NÍVEL 9: LIDERANÇA ESTRATÉGICA</span>
-                        <span class="status-pendente">PENDENTE</span>
-                    </div>
-                    <div class="conteudo-nivel">
-                        <div class="bloco"><h4>📋 Desafio de Avaliação</h4><p>Coordenar pessoas e recursos para alcançar um objetivo comum, sem precisar ocupar cargos de autoridade explícita.</p></div>
-                        <div class="bloco"><h4>📚 Treinamento Recomendado</h4><p>Conhecer pontos fortes e limitações de cada membro, alinhar objetivos individuais ao propósito maior.</p></div>
-                    </div>
-                    <button class="btn" onclick="avaliarNivel(9)" disabled>REALIZAR AVALIAÇÃO</button>
-                    <div id="res-n9" class="avaliacao-resultado"></div>
-                </div>
-
-                <!-- NÍVEL 10 — ÚLTIMO E MÁXIMO -->
-                <div class="nivel-card nivel-final">
-                    <div class="nivel-titulo">
-                        <span class="nivel-numero">🏆 NÍVEL 10: POTENCIAL ABSOLUTO</span>
-                        <span class="status-pendente">PENDENTE</span>
-                    </div>
-                    <div class="conteudo-nivel">
-                        <div class="bloco"><h4>📋 Desafio Final</h4><p>Provar capacidade de se adaptar a qualquer situação, superar limites próprios e equilibrar todas as habilidades desenvolvidas — sem revelar todo o seu potencial.</p></div>
-                        <div class="bloco"><h4>📚 Treinamento Máximo</h4><p>Desenvolver equilíbrio total entre mente, corpo e estratégia. Ser capaz de moldar o seu próprio caminho, sem depender de referências externas.</p></div>
-                    </div>
-                    <button class="btn" onclick="avaliarNivel(10)" disabled>REALIZAR AVALIAÇÃO FINAL</button>
-                    <div id="res-n10" class="avaliacao-resultado"></div>
-                </div>
-            </div>
-        </section>
-
-        <div class="frase-ayanokoji">
-            "Chegar ao último nível não significa que você é perfeito. Significa que você se tornou capaz de decidir o que quer ser, sem precisar provar nada para ninguém."
-            <br>— Filosofia do White Room Project
-        </div>
+    <!-- SISTEMA DE ABAS -->
+    <div class="navegacao-abas">
+        <button id="btn-progressao" class="botao-aba ativa" onclick="mostrarAba('progressao')">📈 Progressão de Níveis</button>
+        <button id="btn-detalhes" class="botao-aba" onclick="mostrarAba('detalhes')">📋 Todos os Desafios e Treinamentos</button>
     </div>
 
-    <footer class="rodape">
-        WHITE ROOM PROJECT © TODOS OS DIREITOS RESERVADOS | VERSÃO 1.0 | PROGRESSÃO CONTÍNUA
-    </footer>
+    <div class="container">
+        <!-- ABA 1: PROGRESSÃO -->
+        <div id="aba-progressao" class="conteudo-aba visivel">
+            <div class="aviso-oficial">
+                <strong>AVISO:</strong> Use a aba acima para ver TODOS os desafios e treinamentos completos de cada nível. Aqui você realiza as avaliações e avança.
+            </div>
+
+            <div class="painel-geral">
+                <div class="card-painel"><div id="xp-total" class="valor">0</div><div class="rotulo">XP Total</div></div>
+                <div class="card-painel"><div id="nivel-atual-painel" class="valor">1</div><div class="rotulo">Nível Atual</div></div>
+                <div class="card-painel"><div id="niveis-concluidos" class="valor">0/10</div><div class="rotulo">Níveis Concluídos</div></div>
+                <div class="card-painel"><div id="progresso-geral" class="valor">0%</div><div class="rotulo">Progresso Geral</div></div>
+            </div>
+
+            <section class="secao">
+                <h2>PROGRESSÃO — NÍVEIS 1 A 10</h2>
+                <div class="nivel-lista">
+                    <!-- NÍVEL 1 -->
+                    <div class="nivel-card" id="card-n1">
+                        <div class="nivel-titulo">
+                            <span class="nivel-numero">NÍVEL 1: CONHECIMENTO DAS REGRAS</span>
+                            <span id="status-n1" class="status-pendente">PENDENTE</span>
+                        </div>
+                        <button id="btn-n1" class="btn" onclick="avaliarNivel(1)">REALIZAR AVALIAÇÃO</button>
+                        <div id="res-n1" class="avaliacao-resultado"></div>
+                    </div>
+
+                    <!-- NÍVEL 2 -->
+                    <div class="nivel-card" id="card-n2">
+                        <div class="nivel-titulo">
+                            <span class="nivel-numero">NÍVEL 2: RACIOCÍNIO LÓGICO</span>
+                            <span id="status-n2" class="status-pendente">PENDENTE</span>
+                        </div>
+                        <button id="btn-n2" class="btn" onclick="avaliarNivel(2)" disabled>REALIZAR AVALIAÇÃO</button>
+                        <div id="res-n2" class="avaliacao-resultado"></div>
+                    </div>
+
+                    <!-- NÍVEL 3 -->
+                    <div class="nivel-card" id="card-n3">
+                        <div class="nivel-titulo">
+                            <span class="nivel-numero">NÍVEL 3: LEITURA DE PESSOAS</span>
+                            <span id="status-n3" class="status-pendente">PENDENTE</span>
+                        </div>
+                        <button id="btn-n3" class="btn" onclick="avaliarNivel(3)" disabled>REALIZAR AVALIAÇÃO</button>
+                        <div id="res-n3" class="avaliacao-resultado"></div>
+                    </div>
+
+                    <!-- NÍVEL 4 -->
+                    <div class="nivel-card" id="card-n4">
+                        <div class="nivel-titulo">
+                            <span class="nivel-numero">NÍVEL 4: TOMADA DE DECISÃO</span>
+                            <span id="status-n4" class="status-pendente">PENDENTE</span>
+                        </div>
+                        <button id="btn-n4" class="btn" onclick="avaliarNivel(4)" disabled>REALIZAR AVALIAÇÃO</button>
+                        <div id="res-n4" class="avaliacao-resultado"></div>
+                    </div>
+
+                    <!-- NÍVEL 5 -->
+                    <div class="nivel-card" id="card-n5">
+                        <div class="nivel-titulo">
+                            <span class="nivel-numero">NÍVEL 5: INFLUÊNCIA DISCRETA</span>
+                            <span id="status-n5" class="status-pendente">PENDENTE</span>
+                        </div>
+                        <button id="btn-n5" class="btn" onclick="avaliarNivel(5)" disabled>REALIZAR AVALIAÇÃO</button>
+                        <div id="res-n5" class="avaliacao-resultado"></div>
+                    </div>
+
+                    <!-- NÍVEL 6 -->
+                    <div class="nivel-card" id="card-n6">
+                        <div class="nivel-titulo">
+                            <span class="nivel-numero">NÍVEL 6: DOMÍNIO DE SI MESMO</span>
+                            <span id="status-n6" class="status-pendente">PENDENTE</span>
+                        </div>
+                        <button id="btn-n6" class="btn" onclick="avaliarNivel(6)" disabled>REALIZAR AVALIAÇÃO</button>
+                        <div id="res-n6" class="avaliacao-resultado"></div>
+                    </div>
+
+                    <!-- NÍVEL 7 -->
+                    <div class="nivel-card" id="card-n7">
+                        <div class="nivel-titulo">
+                            <span class="nivel-numero">NÍVEL 7: ANTEVISÃO DE CENÁRIOS</span>
+                            <span id="status-n7" class="status-pendente">PENDENTE</span>
+                        </div>
+                        <button id="btn-n7" class="btn" onclick="avaliarNivel(7)" disabled>REALIZAR AVALIAÇÃO</button>
+                        <div id="res-n7" class="avaliacao-resultado"></div>
+                    </div>
+
+                    <!-- NÍVEL 8 -->
+                    <div class="nivel-card" id="card-n8">
+                        <div class="nivel-titulo">
+                            <span class="nivel-numero">NÍVEL 8: RESILIÊNCIA E ADAPTAÇÃO</span>
+                            <span id="status-n8" class="status-pendente">PENDENTE</span>
+                        </div>
+                        <button id="btn-n8" class="btn" onclick="avaliarNivel(8)" disabled>REALIZAR AVALIAÇÃO</button>
+                        <div id="res-n8" class="avaliacao-resultado"></div>
+                    </div>
+
+                    <!-- NÍVEL 9 -->
+                    <div class="nivel-card" id="card-n9">
+                        <div class="nivel-titulo">
+                            <span class="nivel-numero">NÍVEL 9: LIDERANÇA ESTRATÉGICA</span>
+                            <span id="status-n9" class="status-pendente">PENDENTE</span>
+                        </div>
+                        <button id="btn-n9" class="btn" onclick="avaliarNivel(9)" disabled>REALIZAR AVALIAÇÃO</button>
+                        <div id="res-n9" class="avaliacao-resultado"></div>
+                    </div>
+
+                    <!-- NÍVEL 10 -->
+                    <div class="nivel-card nivel-final" id="card-n10">
+                        <div class="nivel-titulo">
+                            <span class="nivel-numero">🏆 NÍVEL 10: POTENCIAL ABSOLUTO</span>
+                            <span id="status-n10" class="status-pendente">PENDENTE</span>
+                        </div>
+                        <button id="btn-n10" class="btn" onclick="avaliarNivel(10)" disabled>REALIZAR AVALIAÇÃO FINAL</button>
+                        <div id="res-n10" class="avaliacao-resultado"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ABA 2: TODOS OS DESAFIOS E TREINAMENTOS COMPLETOS -->
+        <div id="aba-detalhes" class="conteudo-aba">
+            <div class="aviso-oficial">
+                <strong>AQUI ESTÃO TODOS OS DETALHES:</strong> Cada nível tem seu desafio completo e o treinamento detalhado para se preparar bem antes da avaliação.
+            </div>
+
+            <section class="secao">
+                <h2>📋 DESAFIOS E TREINAMENTOS — NÍVEIS 1 A 10</h2>
+                <div class="nivel-lista">
+                    <!-- NÍVEL 1 -->
+                    <div class="nivel-card">
+                        <div class="nivel-titulo"><span class="nivel-numero">NÍVEL 1: CONHECIMENTO DAS REGRAS</span></div>
+                        <div class="blocos-completos">
+                            <div class="bloco-completo">
+                                <h4>🎯 DESAFIO COMPLETO</h4>
+                                <p>Compreender e explicar o objetivo principal do White Room Project, demonstrando entendimento dos princípios de excelência, evolução contínua e mérito exclusivo por resultados. Não basta decorar: é preciso explicar o porquê de cada regra existir.</p>
+                            </div>
+                            <div class="bloco-completo">
+                                <h4>📚 TREINAMENTO DETALHADO</h4>
+                                <p>Estudar todas as normas e filosofia do projeto. Separar interpretações pessoais dos fatos reais. Entender que o sistema não é justo nem injusto — ele é apenas objetivo. Praticar explicar cada ponto sem adicionar opiniões próprias.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NÍVEL 2 -->
+                    <div class="nivel-card">
+                        <div class="nivel-titulo"><span class="nivel-numero">NÍVEL 2: RACIOCÍNIO LÓGICO</span></div>
+                        <div class="blocos-completos">
+                            <div class="bloco-completo">
+                                <h4>🎯 DESAFIO COMPLETO</h4>
+                                <p>Resolver 4 problemas de dedução, sequência e lógica formal sem ajuda externa, em tempo limite. Provar capacidade de estruturar o raciocínio, identificar premissas corretas e chegar à conclusão sem saltos ou suposições.</p>
+                            </div>
+                            <div class="bloco-completo">
+                                <h4>📚 TREINAMENTO DETALHADO</h4>
+                                <p>Praticar exercícios de lógica, identificar falácias comuns, separar evidência de opinião. Aprender a construir argumentos passo a passo e verificar se cada etapa faz sentido antes de chegar ao resultado final.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NÍVEL 3 -->
+                    <div class="nivel-card">
+                        <div class="nivel-titulo"><span class="nivel-numero">NÍVEL 3: LEITURA DE PESSOAS</span></div>
+                        <div class="blocos-completos">
+                            <div class="bloco-completo">
+                                <h4>🎯 DESAFIO COMPLETO</h4>
+                                <p>Identificar intenções reais, contradições, sentimentos ocultos e o que a pessoa realmente quer, mesmo que ela diga o oposto. Observar gestos, tom de voz, pausas e o que ela evita falar.</p>
+                            </div>
+                            <div class="bloco-completo">
+                                <h4>📚 TREINAMENTO DETALHADO</h4>
+                                <p>Estudar psicologia básica, linguagem corporal e comunicação não verbal. Praticar ouvir mais do que falar, anotar contradições e entender que quase sempre as pessoas escondem o que realmente desejam.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NÍVEL 4 -->
+                    <div class="nivel-card">
+                        <div class="nivel-titulo"><span class="nivel-numero">NÍVEL 4: TOMADA DE DECISÃO</span></div>
+                        <div class="blocos-completos">
+                            <div class="bloco-completo">
+                                <h4>🎯 DESAFIO COMPLETO</h4>
+                                <p>Escolher entre duas opções onde nenhuma é perfeita, justificar a escolha baseada em consequências a longo prazo, e não no que é mais fácil ou agradável no momento. Aceitar o ônus da decisão sem reclamar.</p>
+                            </div>
+                            <div class="bloco-completo">
+                                <h4>📚 TREINAMENTO DETALHADO</h4>
+                                <p>Analisar prós e contras de cada situação, listar consequências de curto, médio e longo prazo. Evitar decisões movidas por raiva, medo ou desejo imediato. Priorizar o que traz vantagem duradoura.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NÍVEL 5 -->
+                    <div class="nivel-card">
+                        <div class="nivel-titulo"><span class="nivel-numero">NÍVEL 5: INFLUÊNCIA DISCRETA</span></div>
+                        <div class="blocos-completos">
+                            <div class="bloco-completo">
+                                <h4>🎯 DESAFIO COMPLETO</h4>
+                                <p>Fazer alguém agir da forma que você precisa, sem mandar, sem pressionar e sem que ela perceba que foi influenciada. Ela deve acreditar que a ideia e a decisão foram totalmente dela.</p>
+                            </div>
+                            <div class="bloco-completo">
+                                <h4>📚 TREINAMENTO DETALHADO</h4>
+                                <p>Aprender a entender os valores e desejos de cada pessoa. Apresentar argumentos que combinem com o que ela já acredita. Usar perguntas para guiar o raciocínio dela até a conclusão que você quer.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NÍVEL 6 -->
+                    <div class="nivel-card">
+                        <div class="nivel-titulo"><span class="nivel-numero">NÍVEL 6: DOMÍNIO DE SI MESMO</span></div>
+                        <div class="blocos-completos">
+                            <div class="bloco-completo">
+                                <h4>🎯 DESAFIO COMPLETO</h4>
+                                <p>Manter compostura total, não demonstrar raiva, alegria excessiva ou medo, e não revelar informações importantes mesmo sob provocações, pressão ou críticas injustas.</p>
+                            </div>
+                            <div class="bloco-completo">
+                                <h4>📚 TREINAMENTO DETALHADO</h4>
+                                <p>Identificar o que te deixa irritado ou ansioso. Praticar controlar a respiração e a reação. Entender que suas emoções são suas ferramentas — nunca deixe elas controlarem você.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NÍVEL 7 -->
+                    <div class="nivel-card">
+                        <div class="nivel-titulo"><span class="nivel-numero">NÍVEL 7: ANTEVISÃO DE CENÁRIOS</span></div>
+                        <div class="blocos-completos">
+                            <div class="bloco-completo">
+                                <h4>🎯 DESAFIO COMPLETO</h4>
+                                <p>Prever o desenrolar de uma situação complexa com múltiplos envolvidos, antecipando as reações de cada um e preparando contramedidas para cada possível desvio.</p>
+                            </div>
+                            <div class="bloco-completo">
+                                <h4>📚 TREINAMENTO DETALHADO</h4>
+                                <p>Estudar teoria dos jogos e análise de sistemas. Praticar o mapeamento de variáveis e a criação de planos de contingência. Aprender a pensar três passos à frente de qualquer oponente.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NÍVEL 8 -->
+                    <div class="nivel-card">
+                        <div class="nivel-titulo"><span class="nivel-numero">NÍVEL 8: RESILIÊNCIA E ADAPTAÇÃO</span></div>
+                        <div class="blocos-completos">
+                            <div class="bloco-completo">
+                                <h4>🎯 DESAFIO COMPLETO</h4>
+                                <p>Atuar com máxima eficiência mesmo quando todos os seus planos iniciais falham e o ambiente se torna hostil. Transformar uma derrota iminente em uma vantagem estratégica.</p>
+                            </div>
+                            <div class="bloco-completo">
+                                <h4>📚 TREINAMENTO DETALHADO</h4>
+                                <p>Desenvolver antifragilidade. Praticar a aceitação rápida da realidade e o foco imediato na solução. Treinar a mente para não se abalar com o caos, mas sim usá-lo a seu favor.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NÍVEL 9 -->
+                    <div class="nivel-card">
+                        <div class="nivel-titulo"><span class="nivel-numero">NÍVEL 9: LIDERANÇA ESTRATÉGICA</span></div>
+                        <div class="blocos-completos">
+                            <div class="bloco-completo">
+                                <h4>🎯 DESAFIO COMPLETO</h4>
+                                <p>Coordenar um grupo de indivíduos com interesses conflitantes para atingir um objetivo comum que serve aos seus propósitos, sem que eles questionem sua autoridade ou intenções.</p>
+                            </div>
+                            <div class="bloco-completo">
+                                <h4>📚 TREINAMENTO DETALHADO</h4>
+                                <p>Estudar dinâmicas de poder e gestão de talentos. Aprender a delegar de forma que cada um se sinta essencial, mantendo o controle centralizado e a visão macro protegida.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- NÍVEL 10 -->
+                    <div class="nivel-card nivel-final">
+                        <div class="nivel-titulo"><span class="nivel-numero">🏆 NÍVEL 10: POTENCIAL ABSOLUTO</span></div>
+                        <div class="blocos-completos">
+                            <div class="bloco-completo">
+                                <h4>🎯 DESAFIO COMPLETO</h4>
+                                <p>A prova final de integração de todas as habilidades. Demonstrar que você não apenas domina as técnicas, mas que elas se tornaram parte de quem você é. Atingir a excelência sem esforço aparente.</p>
+                            </div>
+                            <div class="bloco-completo">
+                                <h4>📚 TREINAMENTO DETALHADO</h4>
+                                <p>Refinamento constante. O treinamento nunca termina, ele apenas se torna mais sutil. Manter a vigilância sobre si mesmo e nunca permitir a estagnação ou a arrogância do saber.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="frase">
+            "A liberdade não é a ausência de restrições, mas o domínio absoluto sobre elas."
+        </div>
+
+        <footer class="rodape">
+            &copy; 2026 WHITE ROOM PROJECT - Todos os direitos reservados.
+        </footer>
+    </div>
 
     <script>
-        let ultimoNivelAprovado = 0;
+        let nivelAtual = 1;
+        let xpTotal = 0;
+        let niveisConcluidos = 0;
+
+        function mostrarAba(abaId) {
+            // Esconder todas as abas
+            document.getElementById('aba-progressao').classList.remove('visivel');
+            document.getElementById('aba-detalhes').classList.remove('visivel');
+            
+            // Remover classe ativa dos botões
+            document.getElementById('btn-progressao').classList.remove('ativa');
+            document.getElementById('btn-detalhes').classList.remove('ativa');
+
+            // Mostrar a aba selecionada
+            document.getElementById('aba-' + abaId).classList.add('visivel');
+            document.getElementById('btn-' + abaId).classList.add('ativa');
+        }
 
         function avaliarNivel(nivel) {
-            // Probabilidade de aprovação: 80% normais, 70% no último nível
-            const chance = nivel === 10 ? 0.7 : 0.8;
-            const aprovado = Math.random() < chance;
-            
-            const resultado = document.getElementById(`res-n${nivel}`);
-            resultado.style.display = 'block';
+            const resDiv = document.getElementById('res-n' + nivel);
+            const btn = document.getElementById('btn-n' + nivel);
+            const statusSpan = document.getElementById('status-n' + nivel);
 
-            if (aprovado) {
-                if (nivel === 10) {
-                    resultado.className = 'avaliacao-resultado resultado-aprovado';
-                    resultado.innerHTML = `<strong>🏆 APROVADO — NÍVEL MÁXIMO ALCANÇADO!</strong><p>Parabéns! Você concluiu todo o treinamento do White Room Project e atingiu o potencial absoluto.</p>`;
-                } else {
-                    resultado.className = 'avaliacao-resultado resultado-aprovado';
-                    resultado.innerHTML = `<strong>✅ APROVADO</strong><p>Você demonstrou todas as competências exigidas. Pode avançar para o próximo nível.</p>`;
-                }
-                ultimoNivelAprovado = nivel;
+            resDiv.style.display = 'block';
+            resDiv.innerHTML = "Processando avaliação do Nível " + nivel + "...";
+            btn.disabled = true;
+
+            setTimeout(() => {
+                // Simulação de sucesso
+                resDiv.className = 'avaliacao-resultado resultado-aprovado';
+                resDiv.innerHTML = "APROVADO! Você demonstrou domínio das competências do Nível " + nivel + ".";
+                
+                statusSpan.className = 'status-aprovado';
+                statusSpan.innerHTML = 'CONCLUÍDO';
+                
+                xpTotal += (nivel * 100);
+                niveisConcluidos++;
+                
                 if (nivel < 10) {
-                    document.querySelector(`button[onclick="avaliarNivel(${nivel+1})"]`).disabled = false;
+                    nivelAtual = nivel + 1;
+                    document.getElementById('btn-n' + nivelAtual).disabled = false;
                 }
-            } else {
-                resultado.className = 'avaliacao-resultado resultado-reprovado';
-                resultado.innerHTML = `<strong>❌ REPROVADO</strong><p>Ainda não atingiu o desempenho necessário. Volte aos treinamentos recomendados e tente novamente depois.</p>`;
-            }
 
-            // Atualiza status visual
-            const status = document.querySelectorAll('.nivel-titulo span')[nivel-1];
-            status.className = aprovado ? 'status-aprovado' : 'status-reprovado';
-            status.textContent = aprovado ? 'APROVADO' : 'REPROVADO';
+                atualizarPainel();
+            }, 1500);
+        }
+
+        function atualizarPainel() {
+            document.getElementById('xp-total').innerHTML = xpTotal;
+            document.getElementById('nivel-atual-painel').innerHTML = nivelAtual;
+            document.getElementById('niveis-concluidos').innerHTML = niveisConcluidos + "/10";
+            document.getElementById('progresso-geral').innerHTML = (niveisConcluidos * 10) + "%";
         }
     </script>
 </body>
