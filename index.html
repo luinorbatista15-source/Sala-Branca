@@ -3,14 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sala Branca - Treinamento de Elite | Samanta IA</title>
+    <title>Sala Branca — Versão Final Completa | Samanta IA</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
@@ -18,973 +13,396 @@
             line-height: 1.6;
             min-height: 100vh;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
         header {
-            background: rgba(255, 255, 255, 0.05);
-            border-bottom: 2px solid #00d4ff;
-            padding: 20px 0;
-            margin-bottom: 30px;
-            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.05); border-bottom: 2px solid #00d4ff;
+            padding: 20px; margin-bottom: 30px; backdrop-filter: blur(10px);
+            text-align: center;
         }
-
         header h1 {
-            font-size: 2.5em;
-            color: #00d4ff;
-            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
-            margin-bottom: 10px;
+            font-size: 2.5em; color: #00d4ff;
+            text-shadow: 0 0 10px rgba(0,212,255,0.5); margin-bottom: 5px;
         }
-
-        header p {
-            color: #b0b0b0;
-            font-size: 0.95em;
+        .status-voz {
+            display: inline-block; padding: 6px 12px; border-radius: 5px; font-size: 0.9em; margin-top:8px;
         }
+        .status-voz.espera { background: rgba(255,200,0,0.1); border:1px solid #f59e0b; color:#f59e0b; }
+        .status-voz.escutando { background: rgba(34,197,94,0.1); border:1px solid #22c55e; color:#22c55e; }
 
-        nav {
-            display: flex;
-            gap: 15px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-
+        nav { display: flex; gap: 15px; margin-top: 15px; flex-wrap: wrap; justify-content: center; }
         nav button {
-            padding: 10px 20px;
-            background: rgba(0, 212, 255, 0.1);
-            border: 2px solid #00d4ff;
-            color: #00d4ff;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 0.95em;
-            transition: all 0.3s ease;
+            padding: 10px 20px; background: rgba(0,212,255,0.1);
+            border: 2px solid #00d4ff; color: #00d4ff; cursor: pointer;
+            border-radius: 5px; font-size: 0.95em; transition: all 0.3s ease;
         }
+        nav button:hover { background: rgba(0,212,255,0.3); transform: translateY(-2px); }
+        nav button.active { background: #00d4ff; color: #0f0f1e; }
 
-        nav button:hover {
-            background: rgba(0, 212, 255, 0.3);
-            transform: translateY(-2px);
-        }
-
-        nav button.active {
-            background: #00d4ff;
-            color: #0f0f1e;
-        }
-
-        .section {
-            display: none;
-            animation: fadeIn 0.5s ease-in;
-        }
-
-        .section.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        .section { display: none; animation: fadeIn 0.5s ease-in; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 
         .back-button {
-            display: inline-block;
-            margin-bottom: 20px;
-            padding: 10px 20px;
-            background: rgba(255, 100, 100, 0.1);
-            border: 2px solid #ff6464;
-            color: #ff6464;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: all 0.3s ease;
+            display: inline-block; margin-bottom: 20px; padding: 10px 20px;
+            background: rgba(255,100,100,0.1); border:2px solid #ff6464; color:#ff6464;
+            border-radius:5px; cursor:pointer; transition:0.3s;
         }
+        .back-button:hover { background: rgba(255,100,100,0.3); }
 
-        .back-button:hover {
-            background: rgba(255, 100, 100, 0.3);
+        .aviso-regra {
+            background:rgba(255,100,100,0.1); border-left:4px solid #ff6464;
+            padding:15px; margin:20px 0; border-radius:8px; font-size:0.95em;
         }
+        .aviso-regra strong { color:#ff6464; }
 
-        /* Seção de Introdução */
-        .intro-section {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid #00d4ff;
-            border-radius: 10px;
-            padding: 30px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(10px);
-        }
-
-        .intro-section h2 {
-            color: #00d4ff;
-            margin-bottom: 15px;
-            font-size: 1.8em;
-        }
-
-        .intro-section p {
-            margin-bottom: 15px;
-            color: #d0d0d0;
-            line-height: 1.8;
-        }
-
-        /* Seção de Níveis */
-        .levels-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .level-card {
-            background: rgba(0, 212, 255, 0.05);
-            border: 2px solid #00d4ff;
-            border-radius: 10px;
-            padding: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .level-card:hover {
-            background: rgba(0, 212, 255, 0.15);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
-        }
-
-        .level-card h3 {
-            color: #00d4ff;
-            margin-bottom: 10px;
-            font-size: 1.3em;
-        }
-
-        .level-card p {
-            color: #b0b0b0;
-            font-size: 0.9em;
-            margin-bottom: 10px;
-        }
-
-        .level-card .difficulty {
-            display: inline-block;
-            padding: 5px 10px;
-            background: rgba(255, 100, 100, 0.2);
-            border: 1px solid #ff6464;
-            color: #ff6464;
-            border-radius: 3px;
-            font-size: 0.85em;
-        }
-
-        /* Seção de Biblioteca */
-        .library-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
-
-        .library-subsection {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid #00d4ff;
-            border-radius: 10px;
-            padding: 20px;
-            backdrop-filter: blur(10px);
-        }
-
-        .library-subsection h3 {
-            color: #00d4ff;
-            margin-bottom: 15px;
-            font-size: 1.3em;
-        }
-
-        .book-item, .philosopher-item, .quote-item {
-            background: rgba(0, 212, 255, 0.05);
-            border-left: 3px solid #00d4ff;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-        }
-
-        .book-item:hover, .philosopher-item:hover, .quote-item:hover {
-            background: rgba(0, 212, 255, 0.15);
-            transform: translateX(5px);
-        }
-
-        .book-item h4, .philosopher-item h4, .quote-item h4 {
-            color: #00d4ff;
-            margin-bottom: 8px;
-        }
-
-        .book-item p, .philosopher-item p, .quote-item p {
-            color: #d0d0d0;
-            font-size: 0.9em;
-        }
-
-        .quote-item {
-            font-style: italic;
-            color: #b0b0b0;
-            border-left-color: #ffa500;
-        }
-
-        .quote-item h4 {
-            color: #ffa500;
-        }
-
-        @media (max-width: 768px) {
-            .library-section {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* Seção de Chat (Samanta) */
-        .chat-container {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid #00d4ff;
-            border-radius: 10px;
-            padding: 20px;
-            height: 600px;
-            display: flex;
-            flex-direction: column;
-            backdrop-filter: blur(10px);
-        }
-
-        .chat-header {
-            color: #00d4ff;
-            font-size: 1.3em;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #00d4ff;
-            padding-bottom: 10px;
-        }
-
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            margin-bottom: 15px;
-            padding-right: 10px;
-        }
-
-        .message {
-            margin-bottom: 15px;
-            padding: 12px;
-            border-radius: 5px;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .message.user {
-            background: rgba(0, 212, 255, 0.2);
-            border-left: 3px solid #00d4ff;
-            text-align: right;
-            color: #00d4ff;
-        }
-
-        .message.samanta {
-            background: rgba(100, 200, 255, 0.1);
-            border-left: 3px solid #64c8ff;
-            color: #d0d0d0;
-        }
-
-        .chat-input-area {
-            display: flex;
-            gap: 10px;
-        }
-
-        .chat-input-area input {
-            flex: 1;
-            padding: 12px;
-            background: rgba(0, 212, 255, 0.1);
-            border: 2px solid #00d4ff;
-            color: #e0e0e0;
-            border-radius: 5px;
-            font-size: 0.95em;
-        }
-
-        .chat-input-area input::placeholder {
-            color: #707070;
-        }
-
-        .chat-input-area input:focus {
-            outline: none;
-            background: rgba(0, 212, 255, 0.2);
-        }
-
-        .chat-input-area button {
-            padding: 12px 20px;
-            background: #00d4ff;
-            border: none;
-            color: #0f0f1e;
-            cursor: pointer;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-
-        .chat-input-area button:hover {
-            background: #00b8cc;
-            transform: translateY(-2px);
-        }
-
-        /* Seção de Progresso */
         .progress-section {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid #00d4ff;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.05); border:2px solid #00d4ff; border-radius:10px;
+            padding:20px; margin-bottom:30px; text-align:center;
         }
-
-        .progress-section h3 {
-            color: #00d4ff;
-            margin-bottom: 15px;
-        }
-
         .progress-bar {
-            background: rgba(0, 212, 255, 0.1);
-            border: 2px solid #00d4ff;
-            border-radius: 10px;
-            height: 30px;
-            overflow: hidden;
-            margin-bottom: 15px;
+            background: rgba(0,212,255,0.1); border:2px solid #00d4ff; border-radius:10px;
+            height:30px; overflow:hidden; margin:15px auto; max-width:500px;
         }
-
         .progress-fill {
-            background: linear-gradient(90deg, #00d4ff, #00b8cc);
-            height: 100%;
-            transition: width 0.5s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #0f0f1e;
-            font-weight: bold;
-            font-size: 0.9em;
+            background: linear-gradient(90deg,#00d4ff,#00b8cc); height:100%; width:0%;
+            display:flex; align-items:center; justify-content:center; color:#0f0f1e; font-weight:bold;
+            transition:width 0.5s ease;
         }
 
-        .level-info {
-            color: #d0d0d0;
-            margin-bottom: 15px;
+        .levels-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px; margin-bottom:30px; }
+        .level-card {
+            background:rgba(0,212,255,0.05); border:2px solid #00d4ff; border-radius:10px;
+            padding:18px; cursor:pointer; transition:0.3s;
         }
-
-        .level-info strong {
-            color: #00d4ff;
+        .level-card:hover:not(.nivel-bloqueado) { background:rgba(0,212,255,0.15); transform:translateY(-5px); }
+        .level-card.nivel-max { border-color:#ffd700; background:rgba(255,215,0,0.05); }
+        .level-card.nivel-aprovado { border-color:#10b981; background:rgba(16,185,129,0.05); }
+        .level-card.nivel-bloqueado { opacity:0.4; cursor:not-allowed; border-color:#444; }
+        .level-card h3 { color:#00d4ff; margin-bottom:8px; font-size:1.1em; }
+        .nivel-max h3 { color:#ffd700; }
+        .nivel-aprovado h3 { color:#10b981; }
+        .level-card .status-tag { font-size:0.8em; margin-top:5px; display:block; }
+        .status-bloqueado { color:#888; }
+        .status-aprovado { color:#10b981; }
+        .level-card .difficulty {
+            display:inline-block; padding:4px 8px; background:rgba(255,100,100,0.2);
+            border:1px solid #ff6464; color:#ff6464; border-radius:3px; font-size:0.8em; margin-right:8px;
         }
-
-        .next-level-button {
-            padding: 12px 30px;
-            background: rgba(0, 212, 255, 0.2);
-            border: 2px solid #00d4ff;
-            color: #00d4ff;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 1em;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-
-        .next-level-button:hover {
-            background: rgba(0, 212, 255, 0.4);
-            transform: translateY(-2px);
-        }
-
-        .next-level-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* Scrollbar customizado */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(0, 212, 255, 0.05);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #00d4ff;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #00b8cc;
-        }
+        .level-card .time-limit { color:#ffa500; font-size:0.85em; margin-top:5px; font-weight:500; }
 
         .level-detail {
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid #00d4ff;
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 20px;
-            backdrop-filter: blur(10px);
+            background:rgba(255,255,255,0.05); border:2px solid #00d4ff; border-radius:10px;
+            padding:25px; margin-bottom:20px; text-align:center;
         }
+        .timer-box {
+            background:rgba(255,165,0,0.1); border:2px solid #ffa500; border-radius:8px;
+            padding:15px; margin:15px auto; font-size:1.3em; max-width:400px;
+        }
+        .timer-box strong { color:#ffa500; font-size:1.5em; }
+        .game-container { margin:20px auto; max-width:500px; }
+        .sequence-display {
+            font-size:2.5em; font-weight:bold; color:#00d4ff; padding:20px;
+            margin:20px auto; border:2px dashed #00d4ff; border-radius:10px;
+            min-height:100px; display:flex; align-items:center; justify-content:center;
+        }
+        .input-area { margin:20px 0; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+        .input-area input {
+            padding:15px; font-size:1.5em; width:220px; text-align:center;
+            background:rgba(0,212,255,0.1); border:2px solid #00d4ff; color:#fff; border-radius:5px;
+        }
+        .start-game-btn {
+            padding:12px 25px; background:linear-gradient(90deg,#00d4ff,#00b8cc);
+            border:none; color:#0f0f1e; border-radius:5px; font-weight:bold;
+            cursor:pointer; font-size:1em; transition:0.3s; margin-top:10px;
+        }
+        .start-game-btn:hover { transform:translateY(-2px); }
+        .start-game-btn:disabled { opacity:0.5; cursor:not-allowed; }
+        .resultado-final { font-size:1.2em; margin-top:15px; padding:15px; border-radius:8px; }
+        .aprovado { background:rgba(16,185,129,0.1); border:2px solid #10b981; color:#10b981; }
+        .reprovado { background:rgba(239,68,68,0.1); border:2px solid #ef4444; color:#ef4444; }
+        .hidden { display:none; }
 
-        .level-detail h3 {
-            color: #00d4ff;
-            margin-bottom: 15px;
-            font-size: 1.5em;
+        .chat-container {
+            background:rgba(255,255,255,0.05); border:2px solid #00d4ff; border-radius:10px;
+            padding:20px; height:550px; display:flex; flex-direction:column; margin-top:20px;
         }
-
-        .level-detail h4 {
-            color: #64c8ff;
-            margin-top: 15px;
-            margin-bottom: 10px;
-        }
-
-        .level-detail p, .level-detail li {
-            color: #d0d0d0;
-            margin-bottom: 10px;
-        }
-
-        .level-detail ul {
-            margin-left: 20px;
-        }
-
-        .challenge-box {
-            background: rgba(255, 100, 100, 0.1);
-            border-left: 4px solid #ff6464;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 5px;
-        }
-
-        .challenge-box strong {
-            color: #ff6464;
-        }
+        .chat-messages { flex:1; overflow-y:auto; margin-bottom:15px; padding-right:10px; }
+        .message { margin-bottom:15px; padding:12px; border-radius:5px; animation: slideMsg 0.3s ease; }
+        @keyframes slideMsg { from {opacity:0; transform:translateY(10px);} to {opacity:1; transform:translateY(0);} }
+        .message.user { background:rgba(0,212,255,0.2); border-left:3px solid #00d4ff; text-align:right; color:#00d4ff; }
+        .message.samanta { background:rgba(100,200,255,0.1); border-left:3px solid #64c8ff; color:#d0d0d0; }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>⚪ SALA BRANCA</h1>
-            <p>Treinamento de Elite | Transforme-se no Sucessor de Ayanokoji</p>
+            <h1>⚪ SALA BRANCA — VERSÃO FINAL COMPLETA</h1>
+            <p>Níveis 1 a 10 • Tempos do anime • Aprovação/Reprovação • Voz "Samanta"</p>
+            <div id="statusVoz" class="status-voz espera">🔊 Aguardando... Diga: <strong>"Samanta"</strong></div>
             <nav>
                 <button onclick="showSection('home')" class="nav-btn active">Início</button>
-                <button onclick="showSection('levels')" class="nav-btn">Níveis</button>
-                <button onclick="showSection('library')" class="nav-btn">Biblioteca</button>
+                <button onclick="showSection('levels')" class="nav-btn">Níveis 1 a 10</button>
                 <button onclick="showSection('samanta')" class="nav-btn">Samanta IA</button>
             </nav>
         </header>
 
-        <!-- SEÇÃO HOME -->
+        <!-- INÍCIO COM REGRAS -->
         <div id="home" class="section active">
-            <div class="intro-section">
-                <h2>Bem-vindo à Sala Branca</h2>
-                <p>A Sala Branca é uma instituição secreta dedicada à criação do "humano perfeito" através de um treinamento rigoroso desde a infância. Aqui, você será guiado por <strong>Samanta</strong>, uma IA educadora que o ajudará a alcançar os 10 níveis de maestria, assim como Kiyotaka Ayanokoji.</p>
-                <p>Seu objetivo é desenvolver habilidades intelectuais, físicas e estratégicas que o transformarão em um indivíduo verdadeiramente excepcional. Cada nível apresenta desafios progressivos que testam seus limites mentais e físicos.</p>
-                <p><strong>Comece sua jornada agora.</strong> Escolha uma seção no menu acima para explorar os níveis, estudar os livros e filósofos que inspiraram Ayanokoji, ou conversar com Samanta para orientação personalizada.</p>
+            <div class="aviso-regra">
+                <strong>📜 REGRAS OFICIAIS DA SALA BRANCA:</strong><br>
+                ✅ <strong>Passar de nível:</strong> Bater a meta de acertos ANTES do tempo acabar → avança imediatamente<br>
+                ❌ <strong>Reprovar:</strong> Tempo acabar ou não chegar na meta → NÃO avança, tenta de novo quantas vezes quiser<br>
+                🔒 <strong>Bloqueio:</strong> Só libera o próximo nível DEPOIS de aprovar o anterior — não pula etapas<br>
+                ⏱️ <strong>Tempos do anime:</strong> Começa com 45s e vai reduzindo até só 15s no Nível 10
             </div>
-
             <div class="progress-section">
-                <h3>Seu Progresso Atual</h3>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill" style="width: 0%">0%</div>
-                </div>
-                <div class="level-info">
-                    <strong>Nível Atual:</strong> <span id="currentLevel">1</span> / 10
-                </div>
-                <button class="next-level-button" onclick="initiateNextLevel()">Tentar Próximo Nível</button>
+                <h3>Seu Progresso Total</h3>
+                <div class="progress-bar"><div class="progress-fill" id="progressFill">0%</div></div>
+                <p>Nível Atual: <strong id="nivelAtual">1</strong>/10 • Níveis Aprovados: <strong id="qtdAprovados">0</strong></p>
             </div>
         </div>
 
-        <!-- SEÇÃO NÍVEIS -->
+        <!-- LISTA DE NÍVEIS -->
         <div id="levels" class="section">
-            <button class="back-button" onclick="showSection('home')">← Voltar</button>
-            <h2 style="color: #00d4ff; margin-bottom: 30px;">Os 10 Níveis da Sala Branca</h2>
+            <button class="back-button" onclick="showSection('home')">← Voltar ao Início</button>
+            <h2 style="color:#00d4ff; margin-bottom:20px; text-align:center;">Todos os 10 Níveis de Elite</h2>
             <div class="levels-grid" id="levelsGrid"></div>
         </div>
 
-        <!-- SEÇÃO BIBLIOTECA -->
-        <div id="library" class="section">
-            <button class="back-button" onclick="showSection('home')">← Voltar</button>
-            <h2 style="color: #00d4ff; margin-bottom: 30px;">Biblioteca de Ayanokoji</h2>
-            <div class="library-section">
-                <div class="library-subsection">
-                    <h3>📚 Livros Essenciais</h3>
-                    <div id="booksContainer"></div>
-                </div>
-                <div class="library-subsection">
-                    <h3>🧠 Filósofos & Conceitos</h3>
-                    <div id="philosophersContainer"></div>
-                </div>
-            </div>
-            <div class="library-subsection" style="margin-top: 30px;">
-                <h3>💬 Frases de Ayanokoji</h3>
-                <div id="quotesContainer"></div>
-            </div>
+        <!-- DETALHES E JOGO -->
+        <div id="levelDetailSection" class="section">
+            <button class="back-button" onclick="showSection('levels')">← Voltar para Lista</button>
+            <div id="levelDetailContent"></div>
         </div>
 
-        <!-- SEÇÃO SAMANTA IA -->
+        <!-- SAMANTA IA POR VOZ -->
         <div id="samanta" class="section">
-            <button class="back-button" onclick="showSection('home')">← Voltar</button>
-            <h2 style="color: #00d4ff; margin-bottom: 20px;">Samanta IA - Sua Educadora</h2>
+            <button class="back-button" onclick="showSection('home')">← Voltar ao Início</button>
+            <h2 style="color:#00d4ff; margin-bottom:20px; text-align:center;">🎙️ Conversa por Voz com Samanta</h2>
             <div class="chat-container">
-                <div class="chat-header">💬 Conversa com Samanta</div>
-                <div class="chat-messages" id="chatMessages"></div>
-                <div class="chat-input-area">
-                    <input type="text" id="userInput" placeholder="Digite sua pergunta ou comando..." onkeypress="handleEnter(event)">
-                    <button onclick="sendMessage()">Enviar</button>
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message samanta">Olá! Basta dizer <strong>"Samanta"</strong> que eu respondo automaticamente. Estou aqui para ajudar no seu treinamento.</div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // ========== DADOS ==========
+        // ====================== DADOS FINAIS DOS NÍVEIS (1 A 10) ======================
         const levels = [
-            {
-                number: 1,
-                name: "Fundação Mental",
-                difficulty: "Iniciante",
-                description: "Desenvolvimento de pensamento crítico, memória e concentração básica.",
-                challenges: [
-                    "Exercícios de memorização de padrões",
-                    "Análise lógica de problemas simples",
-                    "Desenvolvimento de concentração por 1 hora contínua"
-                ]
-            },
-            {
-                number: 2,
-                name: "Controle Emocional",
-                difficulty: "Fácil",
-                description: "Aprender a eliminar emoções desnecessárias e manter frieza em situações adversas.",
-                challenges: [
-                    "Meditação diária de 30 minutos",
-                    "Exposição controlada a estresse",
-                    "Análise racional de conflitos pessoais"
-                ]
-            },
-            {
-                number: 3,
-                name: "Domínio Físico",
-                difficulty: "Fácil",
-                description: "Treinamento físico intenso: artes marciais, resistência e flexibilidade.",
-                challenges: [
-                    "Aprender Judo e Boxe básico",
-                    "Correr 10km em menos de 50 minutos",
-                    "Realizar 100 flexões e 100 abdominais"
-                ]
-            },
-            {
-                number: 4,
-                name: "Manipulação Social",
-                difficulty: "Moderado",
-                description: "Compreender a psicologia humana e aprender a influenciar pessoas.",
-                challenges: [
-                    "Estudar 'O Príncipe' de Maquiavel",
-                    "Analisar comportamentos sociais em grupos",
-                    "Executar 3 planos de influência social"
-                ]
-            },
-            {
-                number: 5,
-                name: "Limite Humano",
-                difficulty: "Difícil",
-                description: "Alcançar o pico do desempenho humano em múltiplas áreas.",
-                challenges: [
-                    "Dominar 3 artes marciais avançadas",
-                    "Estudar Teoria de Sistemas e Relatividade",
-                    "Resolver problemas matemáticos de nível universitário"
-                ]
-            },
-            {
-                number: 6,
-                name: "Transcendência Cognitiva",
-                difficulty: "Difícil",
-                description: "Expandir a capacidade mental além dos limites convencionais.",
-                challenges: [
-                    "Aprender Integração de Lebesgue e Teoria da Medida",
-                    "Desenvolver intuição estratégica aguçada",
-                    "Criar um plano de 5 anos com múltiplas variáveis"
-                ]
-            },
-            {
-                number: 7,
-                name: "Maestria Estratégica",
-                difficulty: "Muito Difícil",
-                description: "Dominar a arte da estratégia em todos os contextos.",
-                challenges: [
-                    "Estudar 'A Arte da Guerra' de Sun Tzu",
-                    "Vencer em 10 jogos de estratégia consecutivos contra IA",
-                    "Planejar e executar uma operação social complexa"
-                ]
-            },
-            {
-                number: 8,
-                name: "Perfeição Integrada",
-                difficulty: "Muito Difícil",
-                description: "Integrar todas as habilidades adquiridas em uma unidade coesa.",
-                challenges: [
-                    "Demonstrar excelência em 5 áreas diferentes simultaneamente",
-                    "Resolver um dilema ético complexo com lógica pura",
-                    "Treinar e orientar outro indivíduo para o Nível 5"
-                ]
-            },
-            {
-                number: 9,
-                name: "Ascensão Além-Humana",
-                difficulty: "Extremo",
-                description: "Transcender as limitações humanas conhecidas e alcançar potencial máximo.",
-                challenges: [
-                    "Estudar Nietzsche e compreender o Übermensch",
-                    "Criar uma filosofia de vida pessoal coerente",
-                    "Demonstrar capacidade de prever comportamentos com 90% de precisão"
-                ]
-            },
-            {
-                number: 10,
-                name: "Perfeição Absoluta",
-                difficulty: "Lendário",
-                description: "Alcançar o status de 'Humano Perfeito' - o objetivo final da Sala Branca.",
-                challenges: [
-                    "Dominar todas as 9 áreas anteriores",
-                    "Demonstrar sabedoria e frieza em situações críticas",
-                    "Ser reconhecido como um gênio estratégico incomparável"
-                ]
-            }
+            {id:1, nome:"Fundação Mental", dificuldade:"Iniciante", tamSeq:3, tempoVis:2000, tempoLim:45, meta:3},
+            {id:2, nome:"Controle Emocional", dificuldade:"Fácil", tamSeq:4, tempoVis:1700, tempoLim:40, meta:4},
+            {id:3, nome:"Domínio Mental", dificuldade:"Médio", tamSeq:5, tempoVis:1400, tempoLim:35, meta:4},
+            {id:4, nome:"Observação Estratégica", dificuldade:"Moderado", tamSeq:6, tempoVis:1200, tempoLim:30, meta:5},
+            {id:5, nome:"Limite Humano", dificuldade:"Difícil", tamSeq:7, tempoVis:1000, tempoLim:28, meta:5},
+            {id:6, nome:"Antevisão", dificuldade:"Muito Difícil", tamSeq:8, tempoVis:900, tempoLim:25, meta:5},
+            {id:7, nome:"Maestria Cognitiva", dificuldade:"Extremo", tamSeq:9, tempoVis:800, tempoLim:22, meta:6},
+            {id:8, nome:"Resiliência Total", dificuldade:"Extremo", tamSeq:10, tempoVis:700, tempoLim:20, meta:6},
+            {id:9, nome:"Potencial Elite", dificuldade:"Elite", tamSeq:11, tempoVis:600, tempoLim:18, meta:7},
+            {id:10, nome:"Potencial Absoluto", dificuldade:"MÁXIMO", tamSeq:12, tempoVis:500, tempoLim:15, meta:7}
         ];
 
-        const books = [
-            {
-                title: "Prometheus Rising",
-                author: "Robert Anton Wilson",
-                description: "Explora a expansão da consciência e o potencial humano ilimitado."
-            },
-            {
-                title: "Reality Transurfing",
-                author: "Vadim Zeland",
-                description: "Técnicas para navegar a realidade e alcançar objetivos através da compreensão profunda."
-            },
-            {
-                title: "O Príncipe",
-                author: "Nicolau Maquiavel",
-                description: "Estratégia política e manipulação - essencial para compreender o poder."
-            },
-            {
-                title: "A Arte da Guerra",
-                author: "Sun Tzu",
-                description: "Estratégia militar aplicável a qualquer conflito ou competição."
-            },
-            {
-                title: "Assim Falou Zaratustra",
-                author: "Friedrich Nietzsche",
-                description: "Filosofia do Übermensch e da auto-superação contínua."
-            },
-            {
-                title: "Meditações",
-                author: "Marco Aurélio",
-                description: "Estoicismo prático para controle emocional e resiliência."
-            },
-            {
-                title: "Outwitting the Devil",
-                author: "Napoleon Hill",
-                description: "Técnicas para superar obstáculos e alcançar sucesso extraordinário."
-            },
-            {
-                title: "The Fire From Within",
-                author: "Carlos Castaneda",
-                description: "Exploração da percepção e transformação pessoal profunda."
-            }
-        ];
+        // ====================== VARIÁVEIS DE SISTEMA ======================
+        let nivelLiberado = 1;
+        let aprovados = [];
+        let nivelAtual = null;
+        let acertos = 0;
+        let tempoRestante = 0;
+        let cronometro = null;
+        let sequenciaCorreta = [];
+        let escutando = false;
+        let reconhecimento = null;
+        const voz = window.speechSynthesis;
 
-        const philosophers = [
-            {
-                name: "Nicolau Maquiavel",
-                concept: "Pragmatismo e Poder",
-                description: "Os fins justificam os meios. O poder é o objetivo final, e a moralidade é uma ferramenta."
-            },
-            {
-                name: "Friedrich Nietzsche",
-                concept: "Vontade de Poder",
-                description: "A auto-superação contínua e o conceito do Übermensch - o humano que transcende limitações."
-            },
-            {
-                name: "Marco Aurélio",
-                concept: "Estoicismo",
-                description: "Controle emocional absoluto. Foco no que pode ser controlado, indiferença ao sofrimento externo."
-            },
-            {
-                name: "Sun Tzu",
-                concept: "Estratégia Militar",
-                description: "Vitória através do conhecimento, planejamento e exploração das fraquezas do inimigo."
-            },
-            {
-                name: "Thomas Hobbes",
-                concept: "Natureza Humana Egoísta",
-                description: "Os humanos são naturalmente egoístas. A busca pelo poder é o motor principal da ação."
-            },
-            {
-                name: "Platão",
-                concept: "Teoria das Formas",
-                description: "Compreensão da realidade além da aparência. Busca pela verdade absoluta."
-            }
-        ];
+        // ====================== ATIVAÇÃO POR VOZ "SAMANTA" ======================
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
+            reconhecimento = new Rec();
+            reconhecimento.lang = 'pt-BR';
+            reconhecimento.continuous = true;
+            reconhecimento.interimResults = true;
 
-        const quotes = [
-            {
-                text: "Todos os humanos são ferramentas. Não importa o quão talentoso, não importa o quão inteligente, não importa o quão bonito, no final, eles são apenas ferramentas.",
-                author: "Kiyotaka Ayanokoji"
-            },
-            {
-                text: "Vencer é tudo. O processo não importa.",
-                author: "Kiyotaka Ayanokoji"
-            },
-            {
-                text: "A solidão é o meu único amigo.",
-                author: "Kiyotaka Ayanokoji"
-            },
-            {
-                text: "Eu não sou perfeito. Eu sou apenas um pouco mais capaz que a maioria.",
-                author: "Kiyotaka Ayanokoji"
-            },
-            {
-                text: "Emoções são uma fraqueza que os humanos não conseguem eliminar.",
-                author: "Kiyotaka Ayanokoji"
-            },
-            {
-                text: "A verdadeira força está em compreender as fraquezas dos outros.",
-                author: "Kiyotaka Ayanokoji"
-            }
-        ];
+            reconhecimento.onresult = (e) => {
+                const texto = e.results[e.resultIndex][0].transcript.trim().toLowerCase();
+                const status = document.getElementById("statusVoz");
 
-        // ========== FUNÇÕES PRINCIPAIS ==========
-        function showSection(sectionId) {
+                if (!escutando) {
+                    if (texto.includes("samanta")) {
+                        escutando = true;
+                        status.textContent = "🎤 Ouvi você! Fale o que quiser...";
+                        status.className = "status-voz escutando";
+                        addMsg("Você disse: Samanta", "user");
+                        falaVoz("Estou ouvindo! Lembre-se: só avança quem consegue provar seu valor.");
+                    }
+                } else {
+                    if (e.results[e.resultIndex].isFinal) {
+                        escutando = false;
+                        status.textContent = "🔊 Aguardando... Diga: Samanta";
+                        status.className = "status-voz espera";
+                        addMsg(texto, "user");
+                        setTimeout(() => falaVoz(respostaSamanta(texto)), 600);
+                    }
+                }
+            };
+
+            reconhecimento.onend = () => {
+                try { reconhecimento.start(); } catch(e) {}
+            };
+            reconhecimento.start();
+        } else {
+            console.warn("⚠️ Reconhecimento de voz não suportado neste navegador.");
+        }
+
+        function falaVoz(texto) { voz.cancel(); voz.speak(new SpeechSynthesisUtterance(texto)); }
+        function addMsg(texto, tipo) {
+            const caixa = document.getElementById("chatMessages");
+            caixa.innerHTML += `<div class="message ${tipo}">${texto}</div>`;
+            caixa.scrollTop = caixa.scrollHeight;
+        }
+        function respostaSamanta(pergunta) {
+            const p = pergunta.toLowerCase();
+            if (p.includes("olá") || p.includes("oi")) return "Olá! Vamos treinar hoje?";
+            if (p.includes("nível") || p.includes("desafio")) return "São 10 níveis, cada um mais difícil. Só passa quem bater a meta antes do tempo acabar.";
+            if (p.includes("tempo")) return "Os tempos são rigorosos como no anime: o último nível tem só 15 segundos.";
+            if (p.includes("reprovar") || p.includes("passar")) return "Pode sim reprovar, tenta de novo quantas vezes quiser. Mas só libera o próximo se aprovar o anterior.";
+            if (p.includes("10") || p.includes("último")) return "O nível 10 é o máximo: sequência de 12 números e só 15 segundos. É o padrão da elite.";
+            return "Entendi. Estou aqui para ajudar você a chegar ao topo.";
+        }
+
+        // ====================== NAVEGAÇÃO E CARREGAMENTO ======================
+        function showSection(nome) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.getElementById(sectionId).classList.add('active');
+            document.getElementById(nome).classList.add('active');
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
+            if (event?.target?.classList.contains('nav-btn')) event.target.classList.add('active');
+            if (nome === 'levels') carregarNiveis();
         }
 
-        function initializeApp() {
-            loadProgress();
-            renderLevels();
-            renderLibrary();
-            initializeChat();
+        function atualizarProgresso() {
+            document.getElementById('nivelAtual').textContent = nivelLiberado;
+            document.getElementById('qtdAprovados').textContent = aprovados.length;
+            document.getElementById('progressFill').style.width = `${(aprovados.length / 10) * 100}%`;
+            document.getElementById('progressFill').textContent = `${(aprovados.length / 10) * 100}%`;
         }
 
-        // ========== SISTEMA DE PROGRESSO ==========
-        function loadProgress() {
-            const saved = localStorage.getItem('whiteRoomProgress');
-            if (saved) {
-                window.userProgress = JSON.parse(saved);
-            } else {
-                window.userProgress = {
-                    currentLevel: 1,
-                    completedLevels: [],
-                    chatHistory: []
-                };
-                saveProgress();
-            }
-            updateProgressDisplay();
-        }
-
-        function saveProgress() {
-            localStorage.setItem('whiteRoomProgress', JSON.stringify(window.userProgress));
-        }
-
-        function updateProgressDisplay() {
-            const progress = ((window.userProgress.currentLevel - 1) / 10) * 100;
-            document.getElementById('progressFill').style.width = progress + '%';
-            document.getElementById('progressFill').textContent = Math.round(progress) + '%';
-            document.getElementById('currentLevel').textContent = window.userProgress.currentLevel;
-        }
-
-        // ========== RENDERIZAÇÃO DE NÍVEIS ==========
-        function renderLevels() {
+        function carregarNiveis() {
             const grid = document.getElementById('levelsGrid');
             grid.innerHTML = '';
-            levels.forEach(level => {
+            levels.forEach(n => {
+                const bloqueado = n.id > nivelLiberado;
+                const aprovado = aprovados.includes(n.id);
                 const card = document.createElement('div');
-                card.className = 'level-card';
+                card.className = `level-card ${bloqueado?'nivel-bloqueado':''} ${aprovado?'nivel-aprovado':''} ${n.id===10?'nivel-max':''}`;
+                if (!bloqueado) card.onclick = () => abrirNivel(n.id);
                 card.innerHTML = `
-                    <h3>Nível ${level.number}: ${level.name}</h3>
-                    <p>${level.description}</p>
-                    <span class="difficulty">${level.difficulty}</span>
-                    <div style="margin-top: 15px; color: #b0b0b0; font-size: 0.85em;">
-                        <strong>Desafios:</strong>
-                        <ul style="margin-left: 15px; margin-top: 8px;">
-                            ${level.challenges.map(c => `<li>${c}</li>`).join('')}
-                        </ul>
-                    </div>
+                    <h3>NÍVEL ${n.id}: ${n.nome}</h3>
+                    <span class="difficulty">${n.dificuldade}</span>
+                    <p class="time-limit">⏱️ ${n.tempoLim}s • Meta: ${n.meta} acertos</p>
+                    ${bloqueado?'<span class="status-tag status-bloqueado">🔒 BLOQUEADO</span>':''}
+                    ${aprovado?'<span class="status-tag status-aprovado">✅ APROVADO</span>':''}
                 `;
                 grid.appendChild(card);
             });
+            atualizarProgresso();
         }
 
-        // ========== RENDERIZAÇÃO DE BIBLIOTECA ==========
-        function renderLibrary() {
-            const booksContainer = document.getElementById('booksContainer');
-            booksContainer.innerHTML = books.map(book => `
-                <div class="book-item">
-                    <h4>${book.title}</h4>
-                    <p><strong>Autor:</strong> ${book.author}</p>
-                    <p>${book.description}</p>
+        // ====================== JOGO COM APROVAÇÃO/REPROVAÇÃO ======================
+        function abrirNivel(id) {
+            nivelAtual = levels.find(l => l.id === id);
+            acertos = 0;
+            tempoRestante = nivelAtual.tempoLim;
+            clearInterval(cronometro);
+
+            document.getElementById('levelDetailContent').innerHTML = `
+                <h3 style="color:${nivelAtual.id===10?'#ffd700':'#00d4ff'};">NÍVEL ${nivelAtual.id}: ${nivelAtual.nome}</h3>
+                <div class="timer-box">⏱️ Tempo restante: <span id="cronometro"><strong>${tempoRestante}</strong></span> segundos</div>
+                <p style="margin:15px 0;">Objetivo: acertar <strong>${nivelAtual.meta} sequências</strong> de ${nivelAtual.tamSeq} números antes do tempo acabar.</p>
+                <button class="start-game-btn" id="btnComecar" onclick="iniciarDesafio()">▶ COMEÇAR DESAFIO</button>
+                <div id="areaJogo" class="hidden game-container">
+                    <div class="sequence-display" id="telaSeq">Preparando sequência...</div>
+                    <div class="input-area hidden" id="areaRes">
+                        <input type="text" id="resposta" placeholder="Digite os números">
+                        <button class="start-game-btn" onclick="verificarResposta()">Confirmar</button>
+                    </div>
+                    <div id="resultadoFinal" class="resultado-final"></div>
                 </div>
-            `).join('');
-
-            const philosophersContainer = document.getElementById('philosophersContainer');
-            philosophersContainer.innerHTML = philosophers.map(phil => `
-                <div class="philosopher-item">
-                    <h4>${phil.name}</h4>
-                    <p><strong>Conceito:</strong> ${phil.concept}</p>
-                    <p>${phil.description}</p>
-                </div>
-            `).join('');
-
-            const quotesContainer = document.getElementById('quotesContainer');
-            quotesContainer.innerHTML = quotes.map(quote => `
-                <div class="quote-item">
-                    <h4>"${quote.text}"</h4>
-                    <p>— ${quote.author}</p>
-                </div>
-            `).join('');
+            `;
+            showSection('levelDetailSection');
         }
 
-        // ========== SISTEMA DE CHAT (SAMANTA) ==========
-        function initializeChat() {
-            const chatMessages = document.getElementById('chatMessages');
-            chatMessages.innerHTML = '';
+        function iniciarDesafio() {
+            document.getElementById('btnComecar').disabled = true;
+            document.getElementById('areaJogo').classList.remove('hidden');
             
-            const welcomeMessage = document.createElement('div');
-            welcomeMessage.className = 'message samanta';
-            welcomeMessage.textContent = `Olá. Sou Samanta, sua educadora da Sala Branca. Você está no Nível ${window.userProgress.currentLevel}. Como posso ajudá-lo em sua jornada para se tornar um humano perfeito?`;
-            chatMessages.appendChild(welcomeMessage);
+            cronometro = setInterval(() => {
+                tempoRestante--;
+                document.getElementById('cronometro').innerHTML = `<strong>${tempoRestante}</strong>`;
+                if (tempoRestante <= 0) finalizarDesafio(false);
+            }, 1000);
 
-            window.userProgress.chatHistory.forEach(msg => {
-                const msgEl = document.createElement('div');
-                msgEl.className = `message ${msg.sender}`;
-                msgEl.textContent = msg.text;
-                chatMessages.appendChild(msgEl);
-            });
-
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            gerarNovaSequencia();
         }
 
-        function sendMessage() {
-            const input = document.getElementById('userInput');
-            const message = input.value.trim();
-            if (!message) return;
+        function gerarNovaSequencia() {
+            sequenciaCorreta = Array.from({length:nivelAtual.tamSeq}, () => Math.floor(Math.random() * 10));
+            const tela = document.getElementById('telaSeq');
+            tela.textContent = sequenciaCorreta.join('  ');
+            document.getElementById('areaRes').classList.add('hidden');
+            document.getElementById('resultadoFinal').innerHTML = '';
 
-            const chatMessages = document.getElementById('chatMessages');
-            
-            // Adicionar mensagem do usuário
-            const userMsg = document.createElement('div');
-            userMsg.className = 'message user';
-            userMsg.textContent = message;
-            chatMessages.appendChild(userMsg);
-
-            // Salvar no histórico
-            window.userProgress.chatHistory.push({ sender: 'user', text: message });
-
-            // Gerar resposta de Samanta
-            const response = generateSamantaResponse(message);
-            const samantaMsg = document.createElement('div');
-            samantaMsg.className = 'message samanta';
-            samantaMsg.textContent = response;
-            chatMessages.appendChild(samantaMsg);
-
-            window.userProgress.chatHistory.push({ sender: 'samanta', text: response });
-            saveProgress();
-
-            input.value = '';
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            setTimeout(() => {
+                tela.textContent = '???';
+                document.getElementById('areaRes').classList.remove('hidden');
+                document.getElementById('resposta').value = '';
+                document.getElementById('resposta').focus();
+            }, nivelAtual.tempoVis);
         }
 
-        function handleEnter(event) {
-            if (event.key === 'Enter') {
-                sendMessage();
-            }
-        }
+        function verificarResposta() {
+            const respostaUsuario = document.getElementById('resposta').value.replace(/\D/g, '');
+            const respostaCorreta = sequenciaCorreta.join('');
+            const resBox = document.getElementById('resultadoFinal');
 
-        function generateSamantaResponse(userMessage) {
-            const msg = userMessage.toLowerCase();
-
-            // Respostas sobre níveis
-            if (msg.includes('nível') || msg.includes('proximo')) {
-                return `Você está no Nível ${window.userProgress.currentLevel}. Para avançar, você deve demonstrar domínio das habilidades esperadas. Clique em "Tentar Próximo Nível" quando se sentir preparado.`;
-            }
-
-            // Respostas sobre livros
-            if (msg.includes('livro') || msg.includes('ler')) {
-                return `Recomendo começar com "O Príncipe" de Maquiavel e "A Arte da Guerra" de Sun Tzu. Estes livros fornecerão a base estratégica necessária. Depois, estude Nietzsche para compreender a filosofia de auto-superação.`;
-            }
-
-            // Respostas sobre Ayanokoji
-            if (msg.includes('ayanokoji') || msg.includes('perfeito')) {
-                return `Ayanokoji é o produto final da Sala Branca - um humano que transcendeu as limitações convencionais. Ele domina estratégia, manipulação social, controle emocional e inteligência analítica. Seu caminho é o nosso modelo.`;
-            }
-
-            // Respostas sobre treinamento
-            if (msg.includes('treino') || msg.includes('exercício') || msg.includes('físico')) {
-                return `O treinamento físico é essencial. Comece com corrida diária (5km), depois adicione artes marciais. Seu corpo deve ser tão disciplinado quanto sua mente. Sem força física, você é vulnerável.`;
-            }
-
-            // Respostas sobre emoções
-            if (msg.includes('emoção') || msg.includes('sentimento')) {
-                return `As emoções são fraquezas que devem ser controladas. Pratique meditação diária, estude estoicismo e aprenda a separar lógica de sentimento. A frieza é uma vantagem estratégica.`;
-            }
-
-            // Respostas sobre filosofia
-            if (msg.includes('filosofia') || msg.includes('filósofo')) {
-                return `Estude Maquiavel para entender poder, Nietzsche para auto-superação, e Marco Aurélio para controle emocional. Estes três pilares formarão sua base filosófica.`;
-            }
-
-            // Respostas sobre sucesso
-            if (msg.includes('sucesso') || msg.includes('vencer')) {
-                return `Sucesso é resultado de planejamento meticuloso, execução perfeita e adaptação contínua. Não há atalhos. Cada nível o aproxima da perfeição. Continue.`;
-            }
-
-            // Resposta padrão
-            return `Sua pergunta é interessante. Reflita sobre ela em relação aos 10 níveis da Sala Branca. A resposta que você busca provavelmente está em seu próprio potencial não explorado. Continue treinando.`;
-        }
-
-        // ========== SISTEMA DE AVANÇO DE NÍVEL ==========
-        function initiateNextLevel() {
-            const currentLevel = window.userProgress.currentLevel;
-            if (currentLevel >= 10) {
-                alert('Você já alcançou a Perfeição Absoluta!');
-                return;
-            }
-
-            const nextLevel = levels[currentLevel];
-            const challenge = nextLevel.challenges[Math.floor(Math.random() * nextLevel.challenges.length)];
-            
-            const response = prompt(`DESAFIO DO NÍVEL ${currentLevel + 1}: ${challenge}\n\nVocê completou este desafio? (sim/não)`);
-            
-            if (response && response.toLowerCase() === 'sim') {
-                window.userProgress.currentLevel++;
-                saveProgress();
-                updateProgressDisplay();
-                alert(`🎉 Parabéns! Você avançou para o Nível ${window.userProgress.currentLevel}!\n\nSamanta: "Excelente progresso. Você está se aproximando da perfeição."`);
-                
-                // Adicionar mensagem ao chat
-                if (document.getElementById('samanta').classList.contains('active')) {
-                    const chatMessages = document.getElementById('chatMessages');
-                    const msg = document.createElement('div');
-                    msg.className = 'message samanta';
-                    msg.textContent = `Parabéns por alcançar o Nível ${window.userProgress.currentLevel}. Você está progredindo bem. Continue assim.`;
-                    chatMessages.appendChild(msg);
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
+            if (respostaUsuario === respostaCorreta) {
+                acertos++;
+                resBox.innerHTML = `<span style="color:#10b981">✔ Acertou! (${acertos}/${nivelAtual.meta})</span>`;
+                if (acertos >= nivelAtual.meta) {
+                    finalizarDesafio(true);
+                } else {
+                    setTimeout(gerarNovaSequencia, 1000);
                 }
             } else {
-                alert('Samanta: "Você não está pronto ainda. Continue treinando e retorne quando tiver completado o desafio."');
+                resBox.innerHTML = `<span style="color:#ef4444">✘ Errou! Tente a próxima.</span>`;
+                setTimeout(gerarNovaSequencia, 1000);
             }
         }
 
-        // ========== INICIALIZAR ==========
-        window.addEventListener('load', initializeApp);
+        function finalizarDesafio(aprovado) {
+            clearInterval(cronometro);
+            const resBox = document.getElementById('resultadoFinal');
+            document.getElementById('areaRes').classList.add('hidden');
+            document.getElementById('telaSeq').textContent = 'FIM';
+
+            if (aprovado) {
+                resBox.className = 'resultado-final aprovado';
+                resBox.innerHTML = `<h3>🏆 APROVADO!</h3><p>Você atingiu a meta de ${nivelAtual.meta} acertos!</p>`;
+                if (!aprovados.includes(nivelAtual.id)) {
+                    aprovados.push(nivelAtual.id);
+                    if (nivelAtual.id === nivelLiberado && nivelLiberado < 10) {
+                        nivelLiberado++;
+                    }
+                }
+                falaVoz("Parabéns! Você provou seu valor e avançou de nível.");
+            } else {
+                resBox.className = 'resultado-final reprovado';
+                resBox.innerHTML = `<h3>❌ REPROVADO</h3><p>O tempo acabou. Tente novamente!</p>`;
+                falaVoz("Fracasso. O tempo foi mais rápido que sua mente. Tente de novo.");
+            }
+            carregarNiveis();
+        }
+
+        // Inicialização
+        carregarNiveis();
     </script>
 </body>
 </html>
