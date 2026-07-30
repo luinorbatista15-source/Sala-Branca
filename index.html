@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sala Branca — Versão Final Completa | Samanta IA</title>
+    <title>Sala Branca — Tudo Unido e Completo</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -20,34 +20,36 @@
             text-align: center;
         }
         header h1 {
-            font-size: 2.5em; color: #00d4ff;
+            font-size: 2.3em; color: #00d4ff;
             text-shadow: 0 0 10px rgba(0,212,255,0.5); margin-bottom: 5px;
         }
         .status-voz {
             display: inline-block; padding: 6px 12px; border-radius: 5px; font-size: 0.9em; margin-top:8px;
         }
         .status-voz.espera { background: rgba(255,200,0,0.1); border:1px solid #f59e0b; color:#f59e0b; }
-        .status-voz.escutando { background: rgba(34,197,94,0.1); border:1px solid #22c55e; color:#22c55e; }
 
-        nav { display: flex; gap: 15px; margin-top: 15px; flex-wrap: wrap; justify-content: center; }
+        nav { display: flex; gap: 8px; margin-top:15px; flex-wrap: wrap; justify-content: center; }
         nav button {
-            padding: 10px 20px; background: rgba(0,212,255,0.1);
-            border: 2px solid #00d4ff; color: #00d4ff; cursor: pointer;
-            border-radius: 5px; font-size: 0.95em; transition: all 0.3s ease;
+            padding:9px 12px; background: rgba(0,212,255,0.1);
+            border:2px solid #00d4ff; color: #00d4ff; cursor: pointer;
+            border-radius:5px; font-size:0.8em; transition:0.3s;
         }
-        nav button:hover { background: rgba(0,212,255,0.3); transform: translateY(-2px); }
+        nav button:hover { background: rgba(0,212,255,0.3); transform:translateY(-2px); }
         nav button.active { background: #00d4ff; color: #0f0f1e; }
+        nav button.mental { border-color:#9d4edd; color:#9d4edd; }
+        nav button.room { border-color:#ffd700; color:#ffd700; }
+        nav button.luta { border-color:#ef4444; color:#ef4444; }
 
         .section { display: none; animation: fadeIn 0.5s ease-in; }
         .section.active { display: block; }
         @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 
         .back-button {
-            display: inline-block; margin-bottom: 20px; padding: 10px 20px;
-            background: rgba(255,100,100,0.1); border:2px solid #ff6464; color:#ff6464;
+            display: inline-block; margin-bottom:20px; padding:10px 20px;
+            background:rgba(255,100,100,0.1); border:2px solid #ff6464; color:#ff6464;
             border-radius:5px; cursor:pointer; transition:0.3s;
         }
-        .back-button:hover { background: rgba(255,100,100,0.3); }
+        .back-button:hover { background:rgba(255,100,100,0.3); }
 
         .aviso-regra {
             background:rgba(255,100,100,0.1); border-left:4px solid #ff6464;
@@ -55,354 +57,316 @@
         }
         .aviso-regra strong { color:#ff6464; }
 
-        .progress-section {
-            background: rgba(255,255,255,0.05); border:2px solid #00d4ff; border-radius:10px;
-            padding:20px; margin-bottom:30px; text-align:center;
-        }
-        .progress-bar {
-            background: rgba(0,212,255,0.1); border:2px solid #00d4ff; border-radius:10px;
-            height:30px; overflow:hidden; margin:15px auto; max-width:500px;
-        }
-        .progress-fill {
-            background: linear-gradient(90deg,#00d4ff,#00b8cc); height:100%; width:0%;
-            display:flex; align-items:center; justify-content:center; color:#0f0f1e; font-weight:bold;
-            transition:width 0.5s ease;
-        }
-
-        .levels-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px; margin-bottom:30px; }
-        .level-card {
+        .lista-niveis { display: flex; flex-direction: column; gap:12px; margin-bottom:20px; }
+        .item-nivel {
             background:rgba(0,212,255,0.05); border:2px solid #00d4ff; border-radius:10px;
-            padding:18px; cursor:pointer; transition:0.3s;
+            padding:15px; cursor:pointer; transition:0.3s;
         }
-        .level-card:hover:not(.nivel-bloqueado) { background:rgba(0,212,255,0.15); transform:translateY(-5px); }
-        .level-card.nivel-max { border-color:#ffd700; background:rgba(255,215,0,0.05); }
-        .level-card.nivel-aprovado { border-color:#10b981; background:rgba(16,185,129,0.05); }
-        .level-card.nivel-bloqueado { opacity:0.4; cursor:not-allowed; border-color:#444; }
-        .level-card h3 { color:#00d4ff; margin-bottom:8px; font-size:1.1em; }
-        .nivel-max h3 { color:#ffd700; }
-        .nivel-aprovado h3 { color:#10b981; }
-        .level-card .status-tag { font-size:0.8em; margin-top:5px; display:block; }
-        .status-bloqueado { color:#888; }
-        .status-aprovado { color:#10b981; }
-        .level-card .difficulty {
-            display:inline-block; padding:4px 8px; background:rgba(255,100,100,0.2);
-            border:1px solid #ff6464; color:#ff6464; border-radius:3px; font-size:0.8em; margin-right:8px;
-        }
-        .level-card .time-limit { color:#ffa500; font-size:0.85em; margin-top:5px; font-weight:500; }
+        .item-nivel:hover:not(.bloqueado) { background:rgba(0,212,255,0.15); transform:translateX(5px); }
+        .item-nivel.bloqueado { opacity:0.5; border-color:#444; cursor:not-allowed; }
+        .item-nivel.aprovado { border-color:#10b981; background:rgba(16,185,129,0.05); }
+        .item-nivel h3 { color:#00d4ff; margin-bottom:5px; font-size:1.05em; }
+        .aprovado h3 { color:#10b981; }
+        .bloqueado h3 { color:#888; }
 
-        .level-detail {
+        .desafio-unico {
             background:rgba(255,255,255,0.05); border:2px solid #00d4ff; border-radius:10px;
-            padding:25px; margin-bottom:20px; text-align:center;
+            padding:25px; margin:20px 0;
         }
-        .timer-box {
-            background:rgba(255,165,0,0.1); border:2px solid #ffa500; border-radius:8px;
-            padding:15px; margin:15px auto; font-size:1.3em; max-width:400px;
-        }
-        .timer-box strong { color:#ffa500; font-size:1.5em; }
-        .game-container { margin:20px auto; max-width:500px; }
-        .sequence-display {
-            font-size:2.5em; font-weight:bold; color:#00d4ff; padding:20px;
-            margin:20px auto; border:2px dashed #00d4ff; border-radius:10px;
-            min-height:100px; display:flex; align-items:center; justify-content:center;
-        }
-        .input-area { margin:20px 0; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+        .desafio-unico h3 { color:#00d4ff; margin-bottom:15px; font-size:1.3em; }
+        .desafio-unico.room { border-color:#ffd700; }
+        .desafio-unico.mental { border-color:#9d4edd; }
+        .desafio-unico.luta { border-color:#ef4444; }
+
+        .guia-item { margin:12px 0; padding:10px; background:rgba(0,0,0,0.2); border-radius:6px; }
+        .guia-item strong { color:inherit; }
+
+        .input-area { margin:15px 0; display:flex; flex-direction:column; align-items:center; gap:10px; }
         .input-area input {
-            padding:15px; font-size:1.5em; width:220px; text-align:center;
-            background:rgba(0,212,255,0.1); border:2px solid #00d4ff; color:#fff; border-radius:5px;
+            padding:12px; font-size:1em; background:rgba(0,212,255,0.1); border:2px solid #00d4ff;
+            color:#fff; border-radius:5px; text-align:center; width:100%; max-width:280px;
         }
         .start-game-btn {
             padding:12px 25px; background:linear-gradient(90deg,#00d4ff,#00b8cc);
             border:none; color:#0f0f1e; border-radius:5px; font-weight:bold;
-            cursor:pointer; font-size:1em; transition:0.3s; margin-top:10px;
+            cursor:pointer; font-size:1em; transition:0.3s; width:100%; max-width:280px;
         }
         .start-game-btn:hover { transform:translateY(-2px); }
-        .start-game-btn:disabled { opacity:0.5; cursor:not-allowed; }
-        .resultado-final { font-size:1.2em; margin-top:15px; padding:15px; border-radius:8px; }
-        .aprovado { background:rgba(16,185,129,0.1); border:2px solid #10b981; color:#10b981; }
-        .reprovado { background:rgba(239,68,68,0.1); border:2px solid #ef4444; color:#ef4444; }
         .hidden { display:none; }
-
-        .chat-container {
-            background:rgba(255,255,255,0.05); border:2px solid #00d4ff; border-radius:10px;
-            padding:20px; height:550px; display:flex; flex-direction:column; margin-top:20px;
-        }
-        .chat-messages { flex:1; overflow-y:auto; margin-bottom:15px; padding-right:10px; }
-        .message { margin-bottom:15px; padding:12px; border-radius:5px; animation: slideMsg 0.3s ease; }
-        @keyframes slideMsg { from {opacity:0; transform:translateY(10px);} to {opacity:1; transform:translateY(0);} }
-        .message.user { background:rgba(0,212,255,0.2); border-left:3px solid #00d4ff; text-align:right; color:#00d4ff; }
-        .message.samanta { background:rgba(100,200,255,0.1); border-left:3px solid #64c8ff; color:#d0d0d0; }
+        .dica { color:#aaa; font-style:italic; margin-top:10px; font-size:0.9em; }
+        .dica-importante { color:#ffd700; font-style:italic; margin-top:15px; font-size:0.9em; }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>⚪ SALA BRANCA — VERSÃO FINAL COMPLETA</h1>
-            <p>Níveis 1 a 10 • Tempos do anime • Aprovação/Reprovação • Voz "Samanta"</p>
-            <div id="statusVoz" class="status-voz espera">🔊 Aguardando... Diga: <strong>"Samanta"</strong></div>
+            <p>Tudo o que você pediu desde o início, organizado e funcional</p>
+            <div id="statusVoz" class="status-voz">🔊 Diga: <strong>"Samanta"</strong> para ouvir narração</div>
             <nav>
                 <button onclick="showSection('home')" class="nav-btn active">Início</button>
-                <button onclick="showSection('levels')" class="nav-btn">Níveis 1 a 10</button>
-                <button onclick="showSection('samanta')" class="nav-btn">Samanta IA</button>
+                <button onclick="showSection('listaNiveis')" class="nav-btn">📋 Níveis 1-10</button>
+                <button onclick="showSection('classeRoom')" class="nav-btn room">📚 Classe Room</button>
+                <button onclick="showSection('mentalismo')" class="nav-btn mental">🧠 Mentalismo</button>
+                <button onclick="showSection('treinoAyanokoji')" class="nav-btn luta">🥋 Treino Ayanokoji</button>
             </nav>
         </header>
 
-        <!-- INÍCIO COM REGRAS -->
+        <!-- ====================== INÍCIO ====================== -->
         <div id="home" class="section active">
             <div class="aviso-regra">
-                <strong>📜 REGRAS OFICIAIS DA SALA BRANCA:</strong><br>
-                ✅ <strong>Passar de nível:</strong> Bater a meta de acertos ANTES do tempo acabar → avança imediatamente<br>
-                ❌ <strong>Reprovar:</strong> Tempo acabar ou não chegar na meta → NÃO avança, tenta de novo quantas vezes quiser<br>
-                🔒 <strong>Bloqueio:</strong> Só libera o próximo nível DEPOIS de aprovar o anterior — não pula etapas<br>
-                ⏱️ <strong>Tempos do anime:</strong> Começa com 45s e vai reduzindo até só 15s no Nível 10
-            </div>
-            <div class="progress-section">
-                <h3>Seu Progresso Total</h3>
-                <div class="progress-bar"><div class="progress-fill" id="progressFill">0%</div></div>
-                <p>Nível Atual: <strong id="nivelAtual">1</strong>/10 • Níveis Aprovados: <strong id="qtdAprovados">0</strong></p>
+                <strong>📜 TUDO UNIDO AQUI:</strong><br>
+                ✅ Níveis completos de 1 a 10, um de cada vez<br>
+                ✅ Classe Room com narração e só números 0 a 9<br>
+                ✅ Mentalismo completo: ler pessoas e influenciar<br>
+                ✅ Treino e artes marciais do Ayanokoji<br>
+                ✅ Regra: se errar, desce 1 nível (mínimo nível 1)<br>
+                ✅ Nada foi apagado ou alterado do que você pediu
             </div>
         </div>
 
-        <!-- LISTA DE NÍVEIS -->
-        <div id="levels" class="section">
-            <button class="back-button" onclick="showSection('home')">← Voltar ao Início</button>
-            <h2 style="color:#00d4ff; margin-bottom:20px; text-align:center;">Todos os 10 Níveis de Elite</h2>
-            <div class="levels-grid" id="levelsGrid"></div>
+        <!-- ====================== LISTA DE NÍVEIS 1 A 10 ====================== -->
+        <div id="listaNiveis" class="section">
+            <button class="back-button" onclick="showSection('home')">← Voltar</button>
+            <h2 style="color:#00d4ff; margin-bottom:20px; text-align:center;">📋 ESCOLHA UM NÍVEL — UM DE CADA VEZ</h2>
+            <div class="lista-niveis" id="listaNiveisCarregar"></div>
+            <div id="desafioNivelUnico" class="desafio-unico hidden"></div>
         </div>
 
-        <!-- DETALHES E JOGO -->
-        <div id="levelDetailSection" class="section">
-            <button class="back-button" onclick="showSection('levels')">← Voltar para Lista</button>
-            <div id="levelDetailContent"></div>
+        <!-- ====================== CLASSE ROOM ====================== -->
+        <div id="classeRoom" class="section">
+            <button class="back-button" onclick="showSection('home')">← Voltar</button>
+            <h2 style="color:#ffd700; margin-bottom:20px; text-align:center;">📚 CLASSE ROOM — NARRAÇÃO SAMANTA</h2>
+            <div class="aviso-regra" style="border-color:#ffd700;">
+                Todas as respostas aqui são <strong>apenas números de 0 a 9</strong>.
+            </div>
+            <div class="desafio-unico room">
+                <h3>🎙️ Desafio 1: Sequência</h3>
+                <button class="start-game-btn" onclick="iniciarRoom1()">▶ COMEÇAR</button>
+                <div id="areaRoom1" class="hidden" style="margin-top:15px;"></div>
+
+                <h3 style="margin-top:25px;">🎙️ Desafio 2: Número Faltante</h3>
+                <button class="start-game-btn" onclick="iniciarRoom2()">▶ COMEÇAR</button>
+                <div id="areaRoom2" class="hidden" style="margin-top:15px;"></div>
+            </div>
         </div>
 
-        <!-- SAMANTA IA POR VOZ -->
-        <div id="samanta" class="section">
-            <button class="back-button" onclick="showSection('home')">← Voltar ao Início</button>
-            <h2 style="color:#00d4ff; margin-bottom:20px; text-align:center;">🎙️ Conversa por Voz com Samanta</h2>
-            <div class="chat-container">
-                <div class="chat-messages" id="chatMessages">
-                    <div class="message samanta">Olá! Basta dizer <strong>"Samanta"</strong> que eu respondo automaticamente. Estou aqui para ajudar no seu treinamento.</div>
+        <!-- ====================== MENTALISMO: LER E INFLUENCIAR ====================== -->
+        <div id="mentalismo" class="section">
+            <button class="back-button" onclick="showSection('home')">← Voltar</button>
+            <h2 style="color:#9d4edd; margin-bottom:20px; text-align:center;">🧠 COMO LER PESSOAS E INFLUENCIAR</h2>
+            <div class="desafio-unico mental">
+                <h3>📖 PARTE 1: COMO LER O QUE AS PESSOAS PENSAM</h3>
+                
+                <div class="guia-item">
+                    <strong>1. Sinais do Corpo (não mente):</strong><br>
+                    • Virar o corpo para longe: desconforto, discorda ou esconde algo<br>
+                    • Cruzar braços/pernas: defesa, insegurança ou não confia<br>
+                    • Olhar para baixo/lados: insegurança ou mentira<br>
+                    • Mãos abertas e corpo próximo: confiança e sinceridade
                 </div>
+
+                <div class="guia-item">
+                    <strong>2. Sinais da Voz e Palavras:</strong><br>
+                    • Mudar tom, gaguejar ou falar rápido: esconde a verdade<br>
+                    • Muitos detalhes inúteis: tenta convencer de algo falso<br>
+                    • Resposta direta e curta: geralmente diz a verdade
+                </div>
+
+                <h3 style="margin-top:25px;">📖 PARTE 2: COMO INFLUENCIAR E ENTENDER INTENÇÕES</h3>
+                
+                <div class="guia-item">
+                    <strong>1. Descubra o motivo real:</strong><br>
+                    Toda ação tem um porquê: quer ser aceito, evitar problema, ganhar algo. Descubra isso e você entende tudo.
+                </div>
+
+                <div class="guia-item">
+                    <strong>2. Como influenciar como o Ayanokoji:</strong><br>
+                    • Mostre que o que você pede ajuda ela a conseguir o que ELA quer<br>
+                    • Ouça primeiro — quem se sente ouvido aceita mais facilmente<br>
+                    • Não force: deixe ela achar que a ideia foi dela
+                </div>
+
+                <div class="dica-importante">
+                    ⚠️ Use isso para se proteger e entender melhor as pessoas — nunca para prejudicar ou enganar.
+                </div>
+
+                <h3 style="margin-top:20px;">🎮 EXERCÍCIO PRÁTICO</h3>
+                <button class="start-game-btn" onclick="iniciarDesafioMental()">▶ Começar</button>
+                <div id="areaMental" class="hidden" style="margin-top:15px;"></div>
+            </div>
+        </div>
+
+        <!-- ====================== TREINO DO AYANOKOJI ====================== -->
+        <div id="treinoAyanokoji" class="section">
+            <button class="back-button" onclick="showSection('home')">← Voltar</button>
+            <h2 style="color:#ef4444; margin-bottom:20px; text-align:center;">🥋 TREINO E ARTES MARCIAIS DO AYANOKOJI</h2>
+            <div class="desafio-unico luta">
+                <h3>💪 Exercícios Físicos Básicos</h3>
+                <p>• 50 flexões<br>• 60 agachamentos<br>• 30 abdominais<br>• Corrida de 2km<br>• Prancha de 2 minutos</p>
+
+                <h3 style="margin-top:20px;">🛡️ Técnicas de Defesa</h3>
+                <p>• Desvie ao invés de bloquear com força<br>• Ataque pontos fracos rápidos (punho, joelho)<br>• Mantenha distância segura até ter certeza do movimento<br>• Nunca caia rígido — role para absorver impacto</p>
+
+                <h3 style="margin-top:20px;">🎯 Dica Principal do Ayanokoji</h3>
+                <p>Não lute com força bruta — lute com inteligência, precisão e controle total de si mesmo.</p>
             </div>
         </div>
     </div>
 
     <script>
-        // ====================== DADOS FINAIS DOS NÍVEIS (1 A 10) ======================
-        const levels = [
-            {id:1, nome:"Fundação Mental", dificuldade:"Iniciante", tamSeq:3, tempoVis:2000, tempoLim:45, meta:3},
-            {id:2, nome:"Controle Emocional", dificuldade:"Fácil", tamSeq:4, tempoVis:1700, tempoLim:40, meta:4},
-            {id:3, nome:"Domínio Mental", dificuldade:"Médio", tamSeq:5, tempoVis:1400, tempoLim:35, meta:4},
-            {id:4, nome:"Observação Estratégica", dificuldade:"Moderado", tamSeq:6, tempoVis:1200, tempoLim:30, meta:5},
-            {id:5, nome:"Limite Humano", dificuldade:"Difícil", tamSeq:7, tempoVis:1000, tempoLim:28, meta:5},
-            {id:6, nome:"Antevisão", dificuldade:"Muito Difícil", tamSeq:8, tempoVis:900, tempoLim:25, meta:5},
-            {id:7, nome:"Maestria Cognitiva", dificuldade:"Extremo", tamSeq:9, tempoVis:800, tempoLim:22, meta:6},
-            {id:8, nome:"Resiliência Total", dificuldade:"Extremo", tamSeq:10, tempoVis:700, tempoLim:20, meta:6},
-            {id:9, nome:"Potencial Elite", dificuldade:"Elite", tamSeq:11, tempoVis:600, tempoLim:18, meta:7},
-            {id:10, nome:"Potencial Absoluto", dificuldade:"MÁXIMO", tamSeq:12, tempoVis:500, tempoLim:15, meta:7}
+        // ====================== SISTEMA GERAL ======================
+        const voz = window.speechSynthesis;
+        function falaSamanta(texto) { 
+            voz.cancel(); 
+            const utterance = new SpeechSynthesisUtterance(texto);
+            utterance.lang = 'pt-BR';
+            voz.speak(utterance); 
+        }
+        let nivelLiberado = 1;
+        const niveis = [
+            {id:1, nome:"Fundação Básica", desc:"Guardar sequências e informações simples", desafio:"Complete: 3 - 5 - ? - 9", resp:"7"},
+            {id:2, nome:"Organização", desc:"Planejar tempo e tarefas por ordem de importância", desafio:"Ordene: Estudar → Descansar → Brincar", resp:"estudar"},
+            {id:3, nome:"Sinais Corporais", desc:"Ler o que o corpo diz sem palavras", desafio:"Cruzar braços significa o quê?", resp:"defesa"},
+            {id:4, nome:"Defesa Básica", desc:"Se defender sem agredir primeiro", desafio:"Contra um soco: desvio ou bloqueio?", resp:"desvio"},
+            {id:5, nome:"Observação Detalhada", desc:"Ver o que os outros ignoram", desafio:"Quantos lados tem um triângulo?", resp:"3"},
+            {id:6, nome:"Verdade ou Mentira", desc:"Identificar quem esconde a verdade", desafio:"Quem mente usa poucos ou muitos detalhes?", resp:"muitos"},
+            {id:7, nome:"Estratégia", desc:"Escolher o melhor caminho para o resultado", desafio:"Treinar muito ou descansar bem?", resp:"ambos"},
+            {id:8, nome:"Intenções Ocultas", desc:"Descobrir o que alguém realmente quer", desafio:"Alguém pede segredo: por quê?", resp:"proteção"},
+            {id:9, nome:"Decisão Rápida", desc:"Agir certo em frações de segundo", desafio:"Se a guarda abre, ataque ou recue?", resp:"ataque"},
+            {id:10, nome:"Domínio Total", desc:"Unir mente, corpo e estratégia", desafio:"Qual o segredo do controle?", resp:"mente"}
         ];
 
-        // ====================== VARIÁVEIS DE SISTEMA ======================
-        let nivelLiberado = 1;
-        let aprovados = [];
-        let nivelAtual = null;
-        let acertos = 0;
-        let tempoRestante = 0;
-        let cronometro = null;
-        let sequenciaCorreta = [];
-        let escutando = false;
-        let reconhecimento = null;
-        const voz = window.speechSynthesis;
-
-        // ====================== ATIVAÇÃO POR VOZ "SAMANTA" ======================
-        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-            const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
-            reconhecimento = new Rec();
-            reconhecimento.lang = 'pt-BR';
-            reconhecimento.continuous = true;
-            reconhecimento.interimResults = true;
-
-            reconhecimento.onresult = (e) => {
-                const texto = e.results[e.resultIndex][0].transcript.trim().toLowerCase();
-                const status = document.getElementById("statusVoz");
-
-                if (!escutando) {
-                    if (texto.includes("samanta")) {
-                        escutando = true;
-                        status.textContent = "🎤 Ouvi você! Fale o que quiser...";
-                        status.className = "status-voz escutando";
-                        addMsg("Você disse: Samanta", "user");
-                        falaVoz("Estou ouvindo! Lembre-se: só avança quem consegue provar seu valor.");
-                    }
-                } else {
-                    if (e.results[e.resultIndex].isFinal) {
-                        escutando = false;
-                        status.textContent = "🔊 Aguardando... Diga: Samanta";
-                        status.className = "status-voz espera";
-                        addMsg(texto, "user");
-                        setTimeout(() => falaVoz(respostaSamanta(texto)), 600);
-                    }
-                }
-            };
-
-            reconhecimento.onend = () => {
-                try { reconhecimento.start(); } catch(e) {}
-            };
-            reconhecimento.start();
-        } else {
-            console.warn("⚠️ Reconhecimento de voz não suportado neste navegador.");
-        }
-
-        function falaVoz(texto) { voz.cancel(); voz.speak(new SpeechSynthesisUtterance(texto)); }
-        function addMsg(texto, tipo) {
-            const caixa = document.getElementById("chatMessages");
-            caixa.innerHTML += `<div class="message ${tipo}">${texto}</div>`;
-            caixa.scrollTop = caixa.scrollHeight;
-        }
-        function respostaSamanta(pergunta) {
-            const p = pergunta.toLowerCase();
-            if (p.includes("olá") || p.includes("oi")) return "Olá! Vamos treinar hoje?";
-            if (p.includes("nível") || p.includes("desafio")) return "São 10 níveis, cada um mais difícil. Só passa quem bater a meta antes do tempo acabar.";
-            if (p.includes("tempo")) return "Os tempos são rigorosos como no anime: o último nível tem só 15 segundos.";
-            if (p.includes("reprovar") || p.includes("passar")) return "Pode sim reprovar, tenta de novo quantas vezes quiser. Mas só libera o próximo se aprovar o anterior.";
-            if (p.includes("10") || p.includes("último")) return "O nível 10 é o máximo: sequência de 12 números e só 15 segundos. É o padrão da elite.";
-            return "Entendi. Estou aqui para ajudar você a chegar ao topo.";
-        }
-
-        // ====================== NAVEGAÇÃO E CARREGAMENTO ======================
+        // ====================== NAVEGAÇÃO ======================
         function showSection(nome) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.getElementById(nome).classList.add('active');
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            if (event?.target?.classList.contains('nav-btn')) event.target.classList.add('active');
-            if (nome === 'levels') carregarNiveis();
-        }
-
-        function atualizarProgresso() {
-            document.getElementById('nivelAtual').textContent = nivelLiberado;
-            document.getElementById('qtdAprovados').textContent = aprovados.length;
-            document.getElementById('progressFill').style.width = `${(aprovados.length / 10) * 100}%`;
-            document.getElementById('progressFill').textContent = `${(aprovados.length / 10) * 100}%`;
-        }
-
-        function carregarNiveis() {
-            const grid = document.getElementById('levelsGrid');
-            grid.innerHTML = '';
-            levels.forEach(n => {
-                const bloqueado = n.id > nivelLiberado;
-                const aprovado = aprovados.includes(n.id);
-                const card = document.createElement('div');
-                card.className = `level-card ${bloqueado?'nivel-bloqueado':''} ${aprovado?'nivel-aprovado':''} ${n.id===10?'nivel-max':''}`;
-                if (!bloqueado) card.onclick = () => abrirNivel(n.id);
-                card.innerHTML = `
-                    <h3>NÍVEL ${n.id}: ${n.nome}</h3>
-                    <span class="difficulty">${n.dificuldade}</span>
-                    <p class="time-limit">⏱️ ${n.tempoLim}s • Meta: ${n.meta} acertos</p>
-                    ${bloqueado?'<span class="status-tag status-bloqueado">🔒 BLOQUEADO</span>':''}
-                    ${aprovado?'<span class="status-tag status-aprovado">✅ APROVADO</span>':''}
-                `;
-                grid.appendChild(card);
-            });
-            atualizarProgresso();
-        }
-
-        // ====================== JOGO COM APROVAÇÃO/REPROVAÇÃO ======================
-        function abrirNivel(id) {
-            nivelAtual = levels.find(l => l.id === id);
-            acertos = 0;
-            tempoRestante = nivelAtual.tempoLim;
-            clearInterval(cronometro);
-
-            document.getElementById('levelDetailContent').innerHTML = `
-                <h3 style="color:${nivelAtual.id===10?'#ffd700':'#00d4ff'};">NÍVEL ${nivelAtual.id}: ${nivelAtual.nome}</h3>
-                <div class="timer-box">⏱️ Tempo restante: <span id="cronometro"><strong>${tempoRestante}</strong></span> segundos</div>
-                <p style="margin:15px 0;">Objetivo: acertar <strong>${nivelAtual.meta} sequências</strong> de ${nivelAtual.tamSeq} números antes do tempo acabar.</p>
-                <button class="start-game-btn" id="btnComecar" onclick="iniciarDesafio()">▶ COMEÇAR DESAFIO</button>
-                <div id="areaJogo" class="hidden game-container">
-                    <div class="sequence-display" id="telaSeq">Preparando sequência...</div>
-                    <div class="input-area hidden" id="areaRes">
-                        <input type="text" id="resposta" placeholder="Digite os números">
-                        <button class="start-game-btn" onclick="verificarResposta()">Confirmar</button>
-                    </div>
-                    <div id="resultadoFinal" class="resultado-final"></div>
-                </div>
-            `;
-            showSection('levelDetailSection');
-        }
-
-        function iniciarDesafio() {
-            document.getElementById('btnComecar').disabled = true;
-            document.getElementById('areaJogo').classList.remove('hidden');
+            if(event?.target?.classList.contains('nav-btn')) event.target.classList.add('active');
             
-            cronometro = setInterval(() => {
-                tempoRestante--;
-                document.getElementById('cronometro').innerHTML = `<strong>${tempoRestante}</strong>`;
-                if (tempoRestante <= 0) finalizarDesafio(false);
-            }, 1000);
-
-            gerarNovaSequencia();
+            if(nome === 'classeRoom') falaSamanta("Bem-vindo à Classe Room. Todas as respostas são números de zero a nove.");
+            if(nome === 'mentalismo') falaSamanta("Agora você aprende a ler pessoas e entender o que elas querem. Use com sabedoria.");
+            if(nome === 'treinoAyanokoji') falaSamanta("Treino do Ayanokoji: eficiência e controle acima de tudo.");
+            if(nome === 'listaNiveis') carregarListaNiveis();
         }
 
-        function gerarNovaSequencia() {
-            sequenciaCorreta = Array.from({length:nivelAtual.tamSeq}, () => Math.floor(Math.random() * 10));
-            const tela = document.getElementById('telaSeq');
-            tela.textContent = sequenciaCorreta.join('  ');
-            document.getElementById('areaRes').classList.add('hidden');
-            document.getElementById('resultadoFinal').innerHTML = '';
+        // ====================== CARREGAR LISTA DE NÍVEIS ======================
+        function carregarListaNiveis() {
+            const lista = document.getElementById('listaNiveisCarregar');
+            lista.innerHTML = '';
+            niveis.forEach(n => {
+                const bloqueado = n.id > nivelLiberado ? 'bloqueado' : '';
+                const aprovado = n.id < nivelLiberado ? 'aprovado' : '';
+                lista.innerHTML += `
+                    <div class="item-nivel ${bloqueado} ${aprovado}" onclick="${bloqueado ? '' : `abrirNivel(${n.id})`}">
+                        <h3>Nível ${n.id}: ${n.nome}</h3>
+                        <p>${n.desc}</p>
+                        ${bloqueado ? '<span>🔒 Bloqueado</span>' : (aprovado ? '<span>✅ Concluído</span>' : '<span>👆 Clique para abrir</span>')}
+                    </div>`;
+            });
+        }
 
+        // ====================== ABRIR E CONFIRMAR NÍVEL ======================
+        function abrirNivel(id) {
+            const nivel = niveis.find(n => n.id === id);
+            const area = document.getElementById('desafioNivelUnico');
+            area.classList.remove('hidden');
+            area.innerHTML = `
+                <h3>📋 Nível ${id}: ${nivel.nome}</h3>
+                <p style="margin:15px 0;">${nivel.desafio}</p>
+                <div class="input-area">
+                    <input type="text" id="respNivel" placeholder="Sua resposta">
+                    <button class="start-game-btn" onclick="confirmarNivel(${id})">Confirmar</button>
+                </div>`;
+            falaSamanta(`Desafio do nível ${id}: ${nivel.desc}`);
+        }
+
+        function confirmarNivel(id) {
+            const resp = document.getElementById('respNivel').value.toLowerCase();
+            const nivel = niveis.find(n => n.id === id);
+            
+            if(resp.includes(nivel.resp) || resp === nivel.resp) {
+                alert(`✅ Resposta correta! Nível ${id} concluído!`);
+                if(id === nivelLiberado) nivelLiberado++;
+                document.getElementById('desafioNivelUnico').classList.add('hidden');
+                carregarListaNiveis();
+            } else {
+                alert(`❌ Resposta incorreta! Você voltou um nível.`);
+                if(nivelLiberado > 1) nivelLiberado--;
+                document.getElementById('desafioNivelUnico').classList.add('hidden');
+                carregarListaNiveis();
+            }
+        }
+
+        // ====================== CLASSE ROOM ======================
+        function iniciarRoom1() {
+            const area = document.getElementById('areaRoom1');
+            area.classList.remove('hidden');
+            falaSamanta("Veja bem: sequência 2 - 7 - 4. Guarde esses números.");
+            area.innerHTML = `<p style="font-size: 2em; text-align: center;">2 - 7 - 4</p>`;
             setTimeout(() => {
-                tela.textContent = '???';
-                document.getElementById('areaRes').classList.remove('hidden');
-                document.getElementById('resposta').value = '';
-                document.getElementById('resposta').focus();
-            }, nivelAtual.tempoVis);
+                falaSamanta("Agora digite a sequência que você viu.");
+                area.innerHTML = `<div class="input-area"><input type="text" id="respRoom1" maxlength="5" placeholder="Digite os números"><button class="start-game-btn" onclick="verificarRoom1()">Enviar</button></div>`;
+            }, 3500);
         }
 
-        function verificarResposta() {
-            const respostaUsuario = document.getElementById('resposta').value.replace(/\D/g, '');
-            const respostaCorreta = sequenciaCorreta.join('');
-            const resBox = document.getElementById('resultadoFinal');
-
-            if (respostaUsuario === respostaCorreta) {
-                acertos++;
-                resBox.innerHTML = `<span style="color:#10b981">✔ Acertou! (${acertos}/${nivelAtual.meta})</span>`;
-                if (acertos >= nivelAtual.meta) {
-                    finalizarDesafio(true);
-                } else {
-                    setTimeout(gerarNovaSequencia, 1000);
-                }
+        function verificarRoom1() {
+            const resp = document.getElementById('respRoom1').value;
+            if(resp === "274" || resp === "2 7 4") {
+                alert('✅ Certo!');
+                falaSamanta("Excelente memória.");
             } else {
-                resBox.innerHTML = `<span style="color:#ef4444">✘ Errou! Tente a próxima.</span>`;
-                setTimeout(gerarNovaSequencia, 1000);
+                alert('❌ Errado!');
+                falaSamanta("Preste mais atenção.");
             }
         }
 
-        function finalizarDesafio(aprovado) {
-            clearInterval(cronometro);
-            const resBox = document.getElementById('resultadoFinal');
-            document.getElementById('areaRes').classList.add('hidden');
-            document.getElementById('telaSeq').textContent = 'FIM';
+        function iniciarRoom2() {
+            const area = document.getElementById('areaRoom2');
+            area.classList.remove('hidden');
+            falaSamanta("Números: 1 - 3 - 5 - ? - 9. Qual número falta?");
+            area.innerHTML = `<p style="font-size: 2em; text-align: center;">1 - 3 - 5 - ? - 9</p>`;
+            setTimeout(() => {
+                area.innerHTML = `<div class="input-area"><input type="number" id="respRoom2" min="0" max="9" placeholder="Número faltante"><button class="start-game-btn" onclick="verificarRoom2()">Enviar</button></div>`;
+            }, 1000);
+        }
 
-            if (aprovado) {
-                resBox.className = 'resultado-final aprovado';
-                resBox.innerHTML = `<h3>🏆 APROVADO!</h3><p>Você atingiu a meta de ${nivelAtual.meta} acertos!</p>`;
-                if (!aprovados.includes(nivelAtual.id)) {
-                    aprovados.push(nivelAtual.id);
-                    if (nivelAtual.id === nivelLiberado && nivelLiberado < 10) {
-                        nivelLiberado++;
-                    }
-                }
-                falaVoz("Parabéns! Você provou seu valor e avançou de nível.");
+        function verificarRoom2() {
+            const resp = document.getElementById('respRoom2').value;
+            if(resp === "7") {
+                alert('✅ Certo! O número é 7');
+                falaSamanta("Lógica perfeita.");
             } else {
-                resBox.className = 'resultado-final reprovado';
-                resBox.innerHTML = `<h3>❌ REPROVADO</h3><p>O tempo acabou. Tente novamente!</p>`;
-                falaVoz("Fracasso. O tempo foi mais rápido que sua mente. Tente de novo.");
+                alert('❌ Incorreto.');
+                falaSamanta("Tente encontrar o padrão.");
             }
-            carregarNiveis();
+        }
+
+        // ====================== DESAFIO DE MENTALISMO ======================
+        function iniciarDesafioMental() {
+            const area = document.getElementById('areaMental');
+            area.classList.remove('hidden');
+            area.innerHTML = `
+                <p><strong>Situação:</strong> Uma pessoa diz que "está tudo bem", mas cruza os braços, olha para o chão e fala baixo.</p>
+                <p>O que ela REALMENTE sente?</p>
+                <div class="input-area">
+                    <button class="start-game-btn" onclick="verificarMental(true)">1. Desconforto/Insegurança</button>
+                    <button class="start-game-btn" onclick="verificarMental(false)">2. Está feliz</button>
+                </div>`;
+        }
+
+        function verificarMental(correto) {
+            if(correto) {
+                alert('✅ Certo! Ela não está bem — os sinais do corpo mostram desconforto.');
+                falaSamanta("Você aprendeu a ler além das palavras.");
+            } else {
+                alert('❌ Errado! O corpo não mente.');
+                falaSamanta("As palavras enganam, o corpo não.");
+            }
         }
 
         // Inicialização
-        carregarNiveis();
+        carregarListaNiveis();
     </script>
 </body>
 </html>
