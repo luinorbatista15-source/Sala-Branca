@@ -3,154 +3,269 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SALA BRANCA | Projeto de Excelência</title>
+    <title>WHITE ROOM PROJECT | Sala Branca — Formação de Elite</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', 'Helvetica Neue', sans-serif; }
-        :root { --branco: #ffffff; --cinza-claro: #f1f3f5; --cinza-medio: #868e96; --cinza-escuro: #343a40; --preto: #000000; --vermelho-restrito: #dc3545; }
-        body { background: var(--branco); color: var(--cinza-escuro); min-height: 100vh; line-height: 1.5; }
-        .cabecalho { border-bottom: 1px solid var(--cinza-claro); padding: 2rem; text-align: center; }
-        .cabecalho h1 { font-size: 2.5rem; font-weight: 300; letter-spacing: 0.3rem; text-transform: uppercase; margin-bottom: 0.5rem; }
-        .cabecalho .subtitulo { font-size: 0.95rem; color: var(--cinza-medio); font-style: italic; }
-        .nivel-acesso { position: absolute; top: 1rem; right: 2rem; font-size: 0.85rem; color: var(--cinza-medio); }
-        .container { max-width: 1000px; margin: 0 auto; padding: 2rem; }
-        .aviso-oficial { background: var(--cinza-claro); border-left: 4px solid var(--cinza-escuro); padding: 1.2rem; margin-bottom: 2.5rem; font-size: 0.9rem; }
-        .secao { margin-bottom: 3rem; }
-        .secao h2 { font-size: 1.4rem; font-weight: 400; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--cinza-claro); }
-        /* Sistema de Pontos da Classe */
-        .painel-pontos { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
-        .classe { flex: 1; min-width: 180px; padding: 1.5rem; border: 1px solid var(--cinza-claro); border-radius: 4px; text-align: center; }
-        .classe h3 { font-size: 1.1rem; margin-bottom: 0.8rem; }
-        .pontos { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
-        .classe-a { color: #1971c2; } .classe-b { color: #2f9e44; } .classe-c { color: #e67700; } .classe-d { color: #c92a2a; }
-        /* Avaliação Individual */
-        .grade-habilidades { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1rem; }
-        .item-habilidade { padding: 1.2rem; border: 1px solid var(--cinza-claro); border-radius: 4px; }
-        .item-habilidade .nome { font-size: 0.9rem; color: var(--cinza-medio); margin-bottom: 0.5rem; }
-        .item-habilidade .nota { font-size: 1.8rem; font-weight: 700; }
-        .escala { font-size: 0.8rem; color: var(--cinza-medio); margin-top: 0.3rem; }
-        /* Regras Oficiais */
-        .lista-regras { list-style: none; padding-left: 0; }
-        .lista-regras li { padding: 0.8rem 0; border-bottom: 1px solid var(--cinza-claro); font-size: 0.95rem; }
-        .lista-regras li:last-child { border: none; }
-        /* Área Secreta */
-        .botao-restrito { background: var(--preto); color: var(--branco); border: none; padding: 0.9rem 1.8rem; font-size: 0.95rem; border-radius: 2px; cursor: pointer; transition: 0.2s; margin-top: 1rem; }
-        .botao-restrito:hover { background: var(--cinza-escuro); }
-        .area-restrita { display: none; margin-top: 1.5rem; padding: 1.5rem; border: 1px solid var(--vermelho-restrito); background: #fff5f5; border-radius: 4px; }
-        .area-restrita h3 { color: var(--vermelho-restrito); margin-bottom: 1rem; font-size: 1rem; }
-        .frase-ayanokoji { margin: 2.5rem 0; padding: 1.5rem; border-left: 3px solid var(--cinza-escuro); font-style: italic; font-size: 1.1rem; color: var(--cinza-escuro); }
-        .rodape { text-align: center; padding: 2rem; font-size: 0.8rem; color: var(--cinza-medio); border-top: 1px solid var(--cinza-claro); margin-top: 2rem; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, Arial, sans-serif; }
+        :root {
+            --branco: #ffffff; --cinza-claro: #f8fafc; --cinza-medio: #94a3b8;
+            --cinza-escuro: #1e293b; --preto: #0f172a; --azul-profundo: #020617;
+            --sucesso: #10b981; --falha: #ef4444; --alerta: #f59e0b; --ouro: #fbbf24;
+            --borda: #334155; --sombra: 0 8px 32px rgba(0,0,0,0.3);
+        }
+        body { background: linear-gradient(135deg, var(--azul-profundo) 0%, var(--preto) 100%); color: var(--branco); min-height: 100vh; line-height: 1.6; }
+        .cabecalho { border-bottom: 1px solid var(--borda); padding: 2rem; text-align: center; background: rgba(15,23,42,0.8); backdrop-filter: blur(10px); position: sticky; top:0; z-index:10; }
+        .cabecalho h1 { font-size: 2.2rem; font-weight: 300; letter-spacing: 0.4rem; text-transform: uppercase; margin-bottom: 0.5rem; background: linear-gradient(90deg, var(--branco), var(--ouro)); -webkit-background-clip: text; color: transparent; }
+        .subtitulo { font-size: 0.95rem; color: var(--cinza-medio); font-style: italic; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
+        .aviso-oficial { background: rgba(148,163,184,0.1); border-left: 4px solid var(--ouro); padding: 1.2rem; margin-bottom: 2.5rem; border-radius: 4px; font-size: 0.95rem; }
+        .secao { margin-bottom: 3.5rem; }
+        .secao h2 { font-size: 1.5rem; font-weight: 500; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--borda); display: flex; align-items: center; gap: 0.5rem; }
+        .secao h2::before { content: ''; width: 4px; height: 1.5rem; background: var(--ouro); border-radius: 2px; }
+
+        /* PAINEL GERAL */
+        .painel-geral { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; margin-bottom: 2rem; }
+        .card-painel { background: rgba(30,41,59,0.6); border: 1px solid var(--borda); border-radius: 8px; padding: 1.5rem; text-align: center; transition: 0.3s; }
+        .card-painel:hover { transform: translateY(-3px); border-color: var(--ouro); box-shadow: var(--sombra); }
+        .card-painel .valor { font-size: 2rem; font-weight: 700; margin-bottom: 0.3rem; }
+        .card-painel .rotulo { font-size: 0.9rem; color: var(--cinza-medio); }
+
+        /* SISTEMA DE NÍVEIS 1 A 10 */
+        .nivel-lista { display: flex; flex-direction: column; gap: 1.5rem; }
+        .nivel-card { background: rgba(30,41,59,0.5); border: 1px solid var(--borda); border-radius: 8px; padding: 1.5rem; transition: 0.3s; }
+        .nivel-card:hover { border-color: var(--cinza-medio); background: rgba(30,41,59,0.7); }
+        .nivel-card.nivel-final { border-color: var(--ouro); background: rgba(251,191,36,0.05); }
+        .nivel-titulo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; }
+        .nivel-numero { font-size: 1.25rem; font-weight: 600; }
+        .nivel-final .nivel-numero { color: var(--ouro); }
+        .status-aprovado { color: var(--sucesso); font-weight: 500; }
+        .status-pendente { color: var(--alerta); font-weight: 500; }
+        .status-reprovado { color: var(--falha); font-weight: 500; }
+        .conteudo-nivel { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+        @media (max-width: 600px) { .conteudo-nivel { grid-template-columns: 1fr; } }
+        .bloco { padding: 1rem; background: rgba(15,23,42,0.5); border-radius: 6px; border-left: 3px solid var(--cinza-medio); }
+        .bloco h4 { margin-bottom: 0.5rem; font-size: 1rem; color: var(--ouro); }
+        .btn { background: linear-gradient(90deg, var(--ouro), #f59e0b); color: var(--preto); border: none; padding: 0.9rem 1.8rem; border-radius: 6px; cursor: pointer; transition: 0.3s; font-weight: 600; font-size: 0.95rem; margin-top: 1rem; width: 100%; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(251,191,36,0.3); }
+        .btn:disabled { background: var(--borda); color: var(--cinza-medio); cursor: not-allowed; transform: none; box-shadow: none; }
+        .avaliacao-resultado { margin-top: 1.2rem; padding: 1.2rem; border-radius: 6px; display: none; font-weight: 500; }
+        .resultado-aprovado { background: rgba(16,185,129,0.1); border-left: 4px solid var(--sucesso); color: var(--sucesso); }
+        .resultado-reprovado { background: rgba(239,68,68,0.1); border-left: 4px solid var(--falha); color: var(--falha); }
+
+        /* FRASE E RODAPÉ */
+        .frase-ayanokoji { margin: 3rem 0; padding: 1.5rem; border-left: 3px solid var(--ouro); font-style: italic; font-size: 1.1rem; color: var(--cinza-claro); background: rgba(15,23,42,0.4); border-radius: 0 6px 6px 0; }
+        .rodape { text-align: center; padding: 2rem; font-size: 0.85rem; color: var(--cinza-medio); border-top: 1px solid var(--borda); margin-top: 2rem; }
     </style>
 </head>
 <body>
-    <div class="nivel-acesso">Nível de Acesso: ALUNO</div>
-
     <header class="cabecalho">
-        <h1>SALA BRANCA</h1>
-        <p class="subtitulo">Instituto Nacional de Excelência — Projeto de Formação de Habilidades Completas</p>
+        <h1>WHITE ROOM PROJECT</h1>
+        <p class="subtitulo">Sala Branca — Sistema Completo de Formação de Elite | Níveis 1 a 10</p>
     </header>
 
     <div class="container">
         <div class="aviso-oficial">
-            <strong>AVISO:</strong> Todas as avaliações, pontos e registros são confidenciais. Não existe "justiça" nem "bondade" como critério de aprovação — apenas resultados, capacidade de adaptação e valor estratégico.
+            <strong>AVISO FUNDAMENTAL:</strong> O progresso não é garantido por esforço ou desejo — apenas por resultados concretos. Cada nível testa uma habilidade essencial para o desenvolvimento máximo. O Nível 10 é o patamar absoluto, reservado para quem supera todos os limites.
         </div>
 
-        <!-- 1. SISTEMA DE PONTOS DAS CLASSES (EXATO DO ANIME) -->
+        <!-- PAINEL GERAL -->
         <section class="secao">
-            <h2>SISTEMA DE PONTOS — AVALIAÇÃO MENSAL</h2>
-            <p>Regra fundamental: Cada classe começa com 100.000 pontos mensais. Pontos são retirados por infrações, desempenho insuficiente ou falhas em provas especiais. A Classe D luta para subir, as outras para não descer.</p>
-            
-            <div class="painel-pontos">
-                <div class="classe classe-a">
-                    <h3>CLASSE A</h3>
-                    <p class="pontos">87.450</p>
-                    <p>Saldo atual</p>
-                </div>
-                <div class="classe classe-b">
-                    <h3>CLASSE B</h3>
-                    <p class="pontos">72.100</p>
-                    <p>Saldo atual</p>
-                </div>
-                <div class="classe classe-c">
-                    <h3>CLASSE C</h3>
-                    <p class="pontos">58.320</p>
-                    <p>Saldo atual</p>
-                </div>
-                <div class="classe classe-d">
-                    <h3>CLASSE D</h3>
-                    <p class="pontos">41.890</p>
-                    <p>Saldo atual</p>
-                </div>
+            <h2>SEU DESEMPENHO</h2>
+            <div class="painel-geral">
+                <div class="card-painel"><div class="valor">0</div><div class="rotulo">XP Total</div></div>
+                <div class="card-painel"><div class="valor">1</div><div class="rotulo">Nível Atual</div></div>
+                <div class="card-painel"><div class="valor">0%</div><div class="rotulo">Progresso Geral</div></div>
+                <div class="card-painel"><div class="valor">0</div><div class="rotulo">Dias de Sequência</div></div>
             </div>
         </section>
 
-        <!-- 2. AVALIAÇÃO INDIVIDUAL PADRONIZADA -->
+        <!-- TODOS OS NÍVEIS DO 1 AO 10 -->
         <section class="secao">
-            <h2>RELATÓRIO DE AVALIAÇÃO — PERFIL PADRÃO</h2>
-            <p>Escala de 0 a 10. A avaliação não reflete apenas o que você sabe fazer hoje, mas sim o potencial de desenvolvimento e uso estratégico.</p>
-            
-            <div class="grade-habilidades">
-                <div class="item-habilidade">
-                    <p class="nome">Intelecto</p>
-                    <p class="nota">6/10</p>
-                    <p class="escala">Conhecimento teórico e raciocínio lógico</p>
+            <h2>PROGRESSÃO COMPLETA — NÍVEIS 1 A 10</h2>
+            <div class="nivel-lista">
+                <!-- NÍVEL 1 -->
+                <div class="nivel-card">
+                    <div class="nivel-titulo">
+                        <span class="nivel-numero">NÍVEL 1: CONHECIMENTO DAS REGRAS</span>
+                        <span class="status-pendente">PENDENTE</span>
+                    </div>
+                    <div class="conteudo-nivel">
+                        <div class="bloco"><h4>📋 Desafio de Avaliação</h4><p>Compreender e explicar o objetivo principal do projeto White Room, demonstrando entendimento dos princípios de excelência e evolução contínua.</p></div>
+                        <div class="bloco"><h4>📚 Treinamento Recomendado</h4><p>Estudar todas as normas, objetivos e filosofia do projeto. Separar interpretações pessoais dos fatos reais.</p></div>
+                    </div>
+                    <button class="btn" onclick="avaliarNivel(1)">REALIZAR AVALIAÇÃO</button>
+                    <div id="res-n1" class="avaliacao-resultado"></div>
                 </div>
-                <div class="item-habilidade">
-                    <p class="nome">Capacidade Física</p>
-                    <p class="nota">5/10</p>
-                    <p class="escala">Resistência, força e agilidade</p>
-                </div>
-                <div class="item-habilidade">
-                    <p class="nome">Inteligência Social</p>
-                    <p class="nota">7/10</p>
-                    <p class="escala">Liderança, negociação e manipulação</p>
-                </div>
-                <div class="item-habilidade">
-                    <p class="nome">Controle Emocional</p>
-                    <p class="nota">?/10</p>
-                    <p class="escala">Capacidade de não expor intenções</p>
-                </div>
-            </div>
-        </section>
 
-        <!-- 3. REGRAS OFICIAIS EXATAS -->
-        <section class="secao">
-            <h2>REGRAS FUNDAMENTAIS DO PROJETO</h2>
-            <ul class="lista-regras">
-                <li>• Nenhum ponto é dado por mérito pessoal ou bondade.</li>
-                <li>• Pontos podem ser usados para comprar qualquer coisa, inclusive alterar regras ou punições.</li>
-                <li>• Não há auxílio externo: professores não intervêm em conflitos entre alunos.</li>
-                <li>• O objetivo final é formar alguém que possa liderar o país — quem não serve, é descartado.</li>
-                <li>• Nunca se deve revelar o máximo da sua capacidade antes do momento certo.</li>
-            </ul>
-        </section>
+                <!-- NÍVEL 2 -->
+                <div class="nivel-card">
+                    <div class="nivel-titulo">
+                        <span class="nivel-numero">NÍVEL 2: RACIOCÍNIO LÓGICO</span>
+                        <span class="status-pendente">PENDENTE</span>
+                    </div>
+                    <div class="conteudo-nivel">
+                        <div class="bloco"><h4>📋 Desafio de Avaliação</h4><p>Resolver problemas de dedução e lógica sem ajuda externa, provando capacidade de raciocinar de forma objetiva e estruturada.</p></div>
+                        <div class="bloco"><h4>📚 Treinamento Recomendado</h4><p>Praticar análise de premissas, identificação de falácias e separação entre opinião e evidência.</p></div>
+                    </div>
+                    <button class="btn" onclick="avaliarNivel(2)" disabled>REALIZAR AVALIAÇÃO</button>
+                    <div id="res-n2" class="avaliacao-resultado"></div>
+                </div>
 
-        <!-- 4. ÁREA RESTRITA IGUAL AO ANIME -->
-        <section class="secao">
-            <h2>REGISTROS CONFIDENCIAIS</h2>
-            <button class="botao-restrito" onclick="mostrarAreaRestrita()">VER DADOS OCULTOS</button>
-            
-            <div id="areaRestrita" class="area-restrita">
-                <h3>⚠️ DADOS RESTRITOS A AVALIADORES CHEFES</h3>
-                <p>O Projeto Sala Branca não existe para provar que pessoas são iguais. Ele existe para provar que talento não é algo que nasce com alguém — é construído, moldado e forçado até o limite absoluto.</p>
-                <br>
-                <p>O aluno Ayanokoji Kiyotaka é o único sujeito a completar o programa em todos os níveis. Seu perfil real não é registrado em nenhum documento acessível a alunos ou professores comuns.</p>
+                <!-- NÍVEL 3 -->
+                <div class="nivel-card">
+                    <div class="nivel-titulo">
+                        <span class="nivel-numero">NÍVEL 3: LEITURA DE PESSOAS</span>
+                        <span class="status-pendente">PENDENTE</span>
+                    </div>
+                    <div class="conteudo-nivel">
+                        <div class="bloco"><h4>📋 Desafio de Avaliação</h4><p>Identificar intenções reais, contradições e sentimentos ocultos através da observação de comportamento e comunicação.</p></div>
+                        <div class="bloco"><h4>📚 Treinamento Recomendado</h4><p>Estudar psicologia básica, linguagem corporal e como as pessoas costumam ocultar o que realmente querem.</p></div>
+                    </div>
+                    <button class="btn" onclick="avaliarNivel(3)" disabled>REALIZAR AVALIAÇÃO</button>
+                    <div id="res-n3" class="avaliacao-resultado"></div>
+                </div>
+
+                <!-- NÍVEL 4 -->
+                <div class="nivel-card">
+                    <div class="nivel-titulo">
+                        <span class="nivel-numero">NÍVEL 4: TOMADA DE DECISÃO</span>
+                        <span class="status-pendente">PENDENTE</span>
+                    </div>
+                    <div class="conteudo-nivel">
+                        <div class="bloco"><h4>📋 Desafio de Avaliação</h4><p>Escolher a alternativa que traz maior vantagem a longo prazo, mesmo que seja desagradável ou difícil no momento.</p></div>
+                        <div class="bloco"><h4>📚 Treinamento Recomendado</h4><p>Analisar consequências antes de agir, evitar decisões movidas apenas por emoção ou conveniência imediata.</p></div>
+                    </div>
+                    <button class="btn" onclick="avaliarNivel(4)" disabled>REALIZAR AVALIAÇÃO</button>
+                    <div id="res-n4" class="avaliacao-resultado"></div>
+                </div>
+
+                <!-- NÍVEL 5 -->
+                <div class="nivel-card">
+                    <div class="nivel-titulo">
+                        <span class="nivel-numero">NÍVEL 5: INFLUÊNCIA DISCRETA</span>
+                        <span class="status-pendente">PENDENTE</span>
+                    </div>
+                    <div class="conteudo-nivel">
+                        <div class="bloco"><h4>📋 Desafio de Avaliação</h4><p>Influenciar o comportamento de outras pessoas de forma ética, sem que elas percebam que estão sendo guiadas.</p></div>
+                        <div class="bloco"><h4>📚 Treinamento Recomendado</h4><p>Aprender a ouvir, identificar valores alheios e apresentar ideias de forma que pareçam naturais para a outra pessoa.</p></div>
+                    </div>
+                    <button class="btn" onclick="avaliarNivel(5)" disabled>REALIZAR AVALIAÇÃO</button>
+                    <div id="res-n5" class="avaliacao-resultado"></div>
+                </div>
+
+                <!-- NÍVEL 6 -->
+                <div class="nivel-card">
+                    <div class="nivel-titulo">
+                        <span class="nivel-numero">NÍVEL 6: DOMÍNIO DE SI MESMO</span>
+                        <span class="status-pendente">PENDENTE</span>
+                    </div>
+                    <div class="conteudo-nivel">
+                        <div class="bloco"><h4>📋 Desafio de Avaliação</h4><p>Manter compostura, controle emocional e não revelar informações importantes sob provocações ou pressão.</p></div>
+                        <div class="bloco"><h4>📚 Treinamento Recomendado</h4><p>Identificar seus próprios gatilhos emocionais, praticar respostas calmas e separar sentimentos de objetivos.</p></div>
+                    </div>
+                    <button class="btn" onclick="avaliarNivel(6)" disabled>REALIZAR AVALIAÇÃO</button>
+                    <div id="res-n6" class="avaliacao-resultado"></div>
+                </div>
+
+                <!-- NÍVEL 7 -->
+                <div class="nivel-card">
+                    <div class="nivel-titulo">
+                        <span class="nivel-numero">NÍVEL 7: ANTEVISÃO DE CENÁRIOS</span>
+                        <span class="status-pendente">PENDENTE</span>
+                    </div>
+                    <div class="conteudo-nivel">
+                        <div class="bloco"><h4>📋 Desafio de Avaliação</h4><p>Prever consequências secundárias e terciárias de ações, preparando-se para resultados diferentes do esperado.</p></div>
+                        <div class="bloco"><h4>📚 Treinamento Recomendado</h4><p>Simular mentalmente caminhos alternativos, estudar como eventos se conectam ao longo do tempo.</p></div>
+                    </div>
+                    <button class="btn" onclick="avaliarNivel(7)" disabled>REALIZAR AVALIAÇÃO</button>
+                    <div id="res-n7" class="avaliacao-resultado"></div>
+                </div>
+
+                <!-- NÍVEL 8 -->
+                <div class="nivel-card">
+                    <div class="nivel-titulo">
+                        <span class="nivel-numero">NÍVEL 8: RESILIÊNCIA E ADAPTAÇÃO</span>
+                        <span class="status-pendente">PENDENTE</span>
+                    </div>
+                    <div class="conteudo-nivel">
+                        <div class="bloco"><h4>📋 Desafio de Avaliação</h4><p>Recuperar-se de falhas ou derrotas rapidamente, extraindo lições e transformando pontos fracos em vantagens.</p></div>
+                        <div class="bloco"><h4>📚 Treinamento Recomendado</h4><p>Praticar análise de erros sem culpa, desenvolver flexibilidade para mudar estratégias quando necessário.</p></div>
+                    </div>
+                    <button class="btn" onclick="avaliarNivel(8)" disabled>REALIZAR AVALIAÇÃO</button>
+                    <div id="res-n8" class="avaliacao-resultado"></div>
+                </div>
+
+                <!-- NÍVEL 9 -->
+                <div class="nivel-card">
+                    <div class="nivel-titulo">
+                        <span class="nivel-numero">NÍVEL 9: LIDERANÇA ESTRATÉGICA</span>
+                        <span class="status-pendente">PENDENTE</span>
+                    </div>
+                    <div class="conteudo-nivel">
+                        <div class="bloco"><h4>📋 Desafio de Avaliação</h4><p>Coordenar pessoas e recursos para alcançar um objetivo comum, sem precisar ocupar cargos de autoridade explícita.</p></div>
+                        <div class="bloco"><h4>📚 Treinamento Recomendado</h4><p>Conhecer pontos fortes e limitações de cada membro, alinhar objetivos individuais ao propósito maior.</p></div>
+                    </div>
+                    <button class="btn" onclick="avaliarNivel(9)" disabled>REALIZAR AVALIAÇÃO</button>
+                    <div id="res-n9" class="avaliacao-resultado"></div>
+                </div>
+
+                <!-- NÍVEL 10 — ÚLTIMO E MÁXIMO -->
+                <div class="nivel-card nivel-final">
+                    <div class="nivel-titulo">
+                        <span class="nivel-numero">🏆 NÍVEL 10: POTENCIAL ABSOLUTO</span>
+                        <span class="status-pendente">PENDENTE</span>
+                    </div>
+                    <div class="conteudo-nivel">
+                        <div class="bloco"><h4>📋 Desafio Final</h4><p>Provar capacidade de se adaptar a qualquer situação, superar limites próprios e equilibrar todas as habilidades desenvolvidas — sem revelar todo o seu potencial.</p></div>
+                        <div class="bloco"><h4>📚 Treinamento Máximo</h4><p>Desenvolver equilíbrio total entre mente, corpo e estratégia. Ser capaz de moldar o seu próprio caminho, sem depender de referências externas.</p></div>
+                    </div>
+                    <button class="btn" onclick="avaliarNivel(10)" disabled>REALIZAR AVALIAÇÃO FINAL</button>
+                    <div id="res-n10" class="avaliacao-resultado"></div>
+                </div>
             </div>
         </section>
 
         <div class="frase-ayanokoji">
-            "Não sou contra ninguém, nem a favor de ninguém. Apenas estou aqui para ver o que acontece quando se leva a capacidade humana ao extremo."
-            <br>— Kiyotaka Ayanokoji
+            "Chegar ao último nível não significa que você é perfeito. Significa que você se tornou capaz de decidir o que quer ser, sem precisar provar nada para ninguém."
+            <br>— Filosofia do White Room Project
         </div>
     </div>
 
     <footer class="rodape">
-        PROJETO SALA BRANCA © TODOS OS DIREITOS RESERVADOS | NENHUMA INFORMAÇÃO PODE SER DIVULGADA SEM AUTORIZAÇÃO
+        WHITE ROOM PROJECT © TODOS OS DIREITOS RESERVADOS | VERSÃO 1.0 | PROGRESSÃO CONTÍNUA
     </footer>
 
     <script>
-        function mostrarAreaRestrita() {
-            const area = document.getElementById('areaRestrita');
-            area.style.display = area.style.display === 'block' ? 'none' : 'block';
+        let ultimoNivelAprovado = 0;
+
+        function avaliarNivel(nivel) {
+            // Probabilidade de aprovação: 80% normais, 70% no último nível
+            const chance = nivel === 10 ? 0.7 : 0.8;
+            const aprovado = Math.random() < chance;
+            
+            const resultado = document.getElementById(`res-n${nivel}`);
+            resultado.style.display = 'block';
+
+            if (aprovado) {
+                if (nivel === 10) {
+                    resultado.className = 'avaliacao-resultado resultado-aprovado';
+                    resultado.innerHTML = `<strong>🏆 APROVADO — NÍVEL MÁXIMO ALCANÇADO!</strong><p>Parabéns! Você concluiu todo o treinamento do White Room Project e atingiu o potencial absoluto.</p>`;
+                } else {
+                    resultado.className = 'avaliacao-resultado resultado-aprovado';
+                    resultado.innerHTML = `<strong>✅ APROVADO</strong><p>Você demonstrou todas as competências exigidas. Pode avançar para o próximo nível.</p>`;
+                }
+                ultimoNivelAprovado = nivel;
+                if (nivel < 10) {
+                    document.querySelector(`button[onclick="avaliarNivel(${nivel+1})"]`).disabled = false;
+                }
+            } else {
+                resultado.className = 'avaliacao-resultado resultado-reprovado';
+                resultado.innerHTML = `<strong>❌ REPROVADO</strong><p>Ainda não atingiu o desempenho necessário. Volte aos treinamentos recomendados e tente novamente depois.</p>`;
+            }
+
+            // Atualiza status visual
+            const status = document.querySelectorAll('.nivel-titulo span')[nivel-1];
+            status.className = aprovado ? 'status-aprovado' : 'status-reprovado';
+            status.textContent = aprovado ? 'APROVADO' : 'REPROVADO';
         }
     </script>
 </body>
