@@ -3,430 +3,988 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WHITE ROOM PROJECT | Desafios e Treinamentos Completos</title>
+    <title>Sala Branca - Treinamento de Elite | Samanta IA</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, Arial, sans-serif; }
-        :root {
-            --branco: #ffffff; --cinza-claro: #f8fafc; --cinza-medio: #94a3b8;
-            --cinza-escuro: #1e293b; --preto: #0f172a; --azul-profundo: #020617;
-            --sucesso: #10b981; --falha: #ef4444; --alerta: #f59e0b; --ouro: #fbbf24;
-            --borda: #334155; --sombra: 0 8px 32px rgba(0,0,0,0.3);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        body { background: linear-gradient(135deg, var(--azul-profundo) 0%, var(--preto) 100%); color: var(--branco); min-height: 100vh; line-height: 1.6; }
-        .cabecalho { border-bottom: 1px solid var(--borda); padding: 2rem; text-align: center; background: rgba(15,23,42,0.8); backdrop-filter: blur(10px); position: sticky; top:0; z-index:10; }
-        .cabecalho h1 { font-size: 2.2rem; font-weight: 300; letter-spacing: 0.4rem; text-transform: uppercase; margin-bottom: 0.5rem; background: linear-gradient(90deg, var(--branco), var(--ouro)); -webkit-background-clip: text; color: transparent; }
-        .subtitulo { font-size: 0.95rem; color: var(--cinza-medio); }
 
-        /* SISTEMA DE ABAS */
-        .navegacao-abas { display: flex; justify-content: center; gap: 1rem; padding: 1.5rem; border-bottom: 1px solid var(--borda); flex-wrap: wrap; }
-        .botao-aba { background: transparent; color: var(--cinza-medio); border: 1px solid var(--borda); padding: 0.8rem 1.5rem; border-radius: 6px; cursor: pointer; transition: 0.3s; font-size: 0.95rem; }
-        .botao-aba.ativa { background: var(--ouro); color: var(--preto); border-color: var(--ouro); font-weight: 600; }
-        .botao-aba:hover { border-color: var(--ouro); color: var(--branco); }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
 
-        .container { max-width: 1100px; margin: 0 auto; padding: 2rem; }
-        .aviso-oficial { background: rgba(148,163,184,0.1); border-left: 4px solid var(--ouro); padding: 1.2rem; margin-bottom: 2rem; border-radius: 4px; font-size: 0.95rem; }
-        .secao { margin-bottom: 3rem; }
-        .secao h2 { font-size: 1.5rem; font-weight: 500; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--borda); display: flex; align-items: center; gap: 0.5rem; }
-        .secao h2::before { content: ''; width: 4px; height: 1.5rem; background: var(--ouro); border-radius: 2px; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-        /* PAINEL GERAL */
-        .painel-geral { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
-        .card-painel { background: rgba(30,41,59,0.6); border: 1px solid var(--borda); border-radius: 8px; padding: 1.2rem; text-align: center; transition: 0.3s; }
-        .card-painel:hover { border-color: var(--ouro); transform: translateY(-2px); }
-        .card-painel .valor { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.2rem; }
-        .card-painel .rotulo { font-size: 0.85rem; color: var(--cinza-medio); }
+        header {
+            background: rgba(255, 255, 255, 0.05);
+            border-bottom: 2px solid #00d4ff;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
 
-        /* CONTEÚDO DAS ABAS */
-        .conteudo-aba { display: none; }
-        .conteudo-aba.visivel { display: block; }
+        header h1 {
+            font-size: 2.5em;
+            color: #00d4ff;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+            margin-bottom: 10px;
+        }
 
-        /* LISTA DE NÍVEIS */
-        .nivel-lista { display: flex; flex-direction: column; gap: 1.5rem; }
-        .nivel-card { background: rgba(30,41,59,0.5); border: 1px solid var(--borda); border-radius: 8px; padding: 1.5rem; transition: 0.3s; }
-        .nivel-card:hover { border-color: var(--cinza-medio); background: rgba(30,41,59,0.7); }
-        .nivel-card.nivel-final { border-color: var(--ouro); background: rgba(251,191,36,0.05); }
-        .nivel-titulo { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem; }
-        .nivel-numero { font-size: 1.25rem; font-weight: 600; }
-        .nivel-final .nivel-numero { color: var(--ouro); }
-        .status-aprovado { color: var(--sucesso); font-weight: 500; }
-        .status-pendente { color: var(--alerta); font-weight: 500; }
-        .status-reprovado { color: var(--falha); font-weight: 500; }
+        header p {
+            color: #b0b0b0;
+            font-size: 0.95em;
+        }
 
-        /* BLOCOS COMPLETOS DE DESAFIO E TREINAMENTO */
-        .blocos-completos { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin: 1.2rem 0; }
-        @media (max-width: 700px) { .blocos-completos { grid-template-columns: 1fr; } }
-        .bloco-completo { padding: 1.2rem; background: rgba(15,23,42,0.6); border-radius: 6px; border-left: 3px solid var(--ouro); }
-        .bloco-completo h4 { margin-bottom: 0.6rem; font-size: 1.05rem; color: var(--ouro); }
-        .bloco-completo p { font-size: 0.9rem; color: var(--cinza-claro); line-height: 1.7; }
+        nav {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
 
-        .btn { background: linear-gradient(90deg, var(--ouro), #f59e0b); color: var(--preto); border: none; padding: 0.9rem 1.8rem; border-radius: 6px; cursor: pointer; transition: 0.3s; font-weight: 600; font-size: 0.95rem; margin-top: 1rem; width: 100%; }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(251,191,36,0.3); }
-        .btn:disabled { background: var(--borda); color: var(--cinza-medio); cursor: not-allowed; transform: none; box-shadow: none; }
-        .avaliacao-resultado { margin-top: 1.2rem; padding: 1.2rem; border-radius: 6px; display: none; font-weight: 500; }
-        .resultado-aprovado { background: rgba(16,185,129,0.1); border-left: 4px solid var(--sucesso); color: var(--sucesso); }
-        .resultado-reprovado { background: rgba(239,68,68,0.1); border-left: 4px solid var(--falha); color: var(--falha); }
+        nav button {
+            padding: 10px 20px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 2px solid #00d4ff;
+            color: #00d4ff;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+        }
 
-        .frase { margin: 2.5rem 0; padding: 1.5rem; border-left: 3px solid var(--ouro); font-style: italic; font-size: 1.1rem; color: var(--cinza-claro); background: rgba(15,23,42,0.4); border-radius: 0 6px 6px 0; }
-        .rodape { text-align: center; padding: 2rem; font-size: 0.85rem; color: var(--cinza-medio); border-top: 1px solid var(--borda); margin-top: 2rem; }
+        nav button:hover {
+            background: rgba(0, 212, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        nav button.active {
+            background: #00d4ff;
+            color: #0f0f1e;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            background: rgba(255, 100, 100, 0.1);
+            border: 2px solid #ff6464;
+            color: #ff6464;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(255, 100, 100, 0.3);
+        }
+
+        /* Seção de Introdução */
+        .intro-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #00d4ff;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .intro-section h2 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        .intro-section p {
+            margin-bottom: 15px;
+            color: #d0d0d0;
+            line-height: 1.8;
+        }
+
+        /* Seção de Níveis */
+        .levels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .level-card {
+            background: rgba(0, 212, 255, 0.05);
+            border: 2px solid #00d4ff;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .level-card:hover {
+            background: rgba(0, 212, 255, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .level-card h3 {
+            color: #00d4ff;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .level-card p {
+            color: #b0b0b0;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .level-card .difficulty {
+            display: inline-block;
+            padding: 5px 10px;
+            background: rgba(255, 100, 100, 0.2);
+            border: 1px solid #ff6464;
+            color: #ff6464;
+            border-radius: 3px;
+            font-size: 0.85em;
+        }
+
+        /* Seção de Biblioteca */
+        .library-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .library-subsection {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #00d4ff;
+            border-radius: 10px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .library-subsection h3 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .book-item, .philosopher-item, .quote-item {
+            background: rgba(0, 212, 255, 0.05);
+            border-left: 3px solid #00d4ff;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .book-item:hover, .philosopher-item:hover, .quote-item:hover {
+            background: rgba(0, 212, 255, 0.15);
+            transform: translateX(5px);
+        }
+
+        .book-item h4, .philosopher-item h4, .quote-item h4 {
+            color: #00d4ff;
+            margin-bottom: 8px;
+        }
+
+        .book-item p, .philosopher-item p, .quote-item p {
+            color: #d0d0d0;
+            font-size: 0.9em;
+        }
+
+        .quote-item {
+            font-style: italic;
+            color: #b0b0b0;
+            border-left-color: #ffa500;
+        }
+
+        .quote-item h4 {
+            color: #ffa500;
+        }
+
+        @media (max-width: 768px) {
+            .library-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Seção de Chat (Samanta) */
+        .chat-container {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #00d4ff;
+            border-radius: 10px;
+            padding: 20px;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+        }
+
+        .chat-header {
+            color: #00d4ff;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #00d4ff;
+            padding-bottom: 10px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            padding-right: 10px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            padding: 12px;
+            border-radius: 5px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            background: rgba(0, 212, 255, 0.2);
+            border-left: 3px solid #00d4ff;
+            text-align: right;
+            color: #00d4ff;
+        }
+
+        .message.samanta {
+            background: rgba(100, 200, 255, 0.1);
+            border-left: 3px solid #64c8ff;
+            color: #d0d0d0;
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            padding: 12px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 2px solid #00d4ff;
+            color: #e0e0e0;
+            border-radius: 5px;
+            font-size: 0.95em;
+        }
+
+        .chat-input-area input::placeholder {
+            color: #707070;
+        }
+
+        .chat-input-area input:focus {
+            outline: none;
+            background: rgba(0, 212, 255, 0.2);
+        }
+
+        .chat-input-area button {
+            padding: 12px 20px;
+            background: #00d4ff;
+            border: none;
+            color: #0f0f1e;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input-area button:hover {
+            background: #00b8cc;
+            transform: translateY(-2px);
+        }
+
+        /* Seção de Progresso */
+        .progress-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #00d4ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .progress-section h3 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            background: rgba(0, 212, 255, 0.1);
+            border: 2px solid #00d4ff;
+            border-radius: 10px;
+            height: 30px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, #00d4ff, #00b8cc);
+            height: 100%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0f0f1e;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .level-info {
+            color: #d0d0d0;
+            margin-bottom: 15px;
+        }
+
+        .level-info strong {
+            color: #00d4ff;
+        }
+
+        .next-level-button {
+            padding: 12px 30px;
+            background: rgba(0, 212, 255, 0.2);
+            border: 2px solid #00d4ff;
+            color: #00d4ff;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .next-level-button:hover {
+            background: rgba(0, 212, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .next-level-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Scrollbar customizado */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #00d4ff;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00b8cc;
+        }
+
+        .level-detail {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #00d4ff;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .level-detail h3 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .level-detail h4 {
+            color: #64c8ff;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        .level-detail p, .level-detail li {
+            color: #d0d0d0;
+            margin-bottom: 10px;
+        }
+
+        .level-detail ul {
+            margin-left: 20px;
+        }
+
+        .challenge-box {
+            background: rgba(255, 100, 100, 0.1);
+            border-left: 4px solid #ff6464;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .challenge-box strong {
+            color: #ff6464;
+        }
     </style>
 </head>
 <body>
-    <header class="cabecalho">
-        <h1>WHITE ROOM PROJECT</h1>
-        <p class="subtitulo">Sala Branca — Sistema Completo de Formação de Elite</p>
-    </header>
-
-    <!-- SISTEMA DE ABAS -->
-    <div class="navegacao-abas">
-        <button id="btn-progressao" class="botao-aba ativa" onclick="mostrarAba('progressao')">📈 Progressão de Níveis</button>
-        <button id="btn-detalhes" class="botao-aba" onclick="mostrarAba('detalhes')">📋 Todos os Desafios e Treinamentos</button>
-    </div>
-
     <div class="container">
-        <!-- ABA 1: PROGRESSÃO -->
-        <div id="aba-progressao" class="conteudo-aba visivel">
-            <div class="aviso-oficial">
-                <strong>AVISO:</strong> Use a aba acima para ver TODOS os desafios e treinamentos completos de cada nível. Aqui você realiza as avaliações e avança.
+        <header>
+            <h1>⚪ SALA BRANCA</h1>
+            <p>Treinamento de Elite | Transforme-se no Sucessor de Ayanokoji</p>
+            <nav>
+                <button onclick="showSection('home')" class="nav-btn active">Início</button>
+                <button onclick="showSection('levels')" class="nav-btn">Níveis</button>
+                <button onclick="showSection('library')" class="nav-btn">Biblioteca</button>
+                <button onclick="showSection('samanta')" class="nav-btn">Samanta IA</button>
+            </nav>
+        </header>
+
+        <!-- SEÇÃO HOME -->
+        <div id="home" class="section active">
+            <div class="intro-section">
+                <h2>Bem-vindo à Sala Branca</h2>
+                <p>A Sala Branca é uma instituição secreta dedicada à criação do "humano perfeito" através de um treinamento rigoroso desde a infância. Aqui, você será guiado por <strong>Samanta</strong>, uma IA educadora que o ajudará a alcançar os 10 níveis de maestria, assim como Kiyotaka Ayanokoji.</p>
+                <p>Seu objetivo é desenvolver habilidades intelectuais, físicas e estratégicas que o transformarão em um indivíduo verdadeiramente excepcional. Cada nível apresenta desafios progressivos que testam seus limites mentais e físicos.</p>
+                <p><strong>Comece sua jornada agora.</strong> Escolha uma seção no menu acima para explorar os níveis, estudar os livros e filósofos que inspiraram Ayanokoji, ou conversar com Samanta para orientação personalizada.</p>
             </div>
 
-            <div class="painel-geral">
-                <div class="card-painel"><div id="xp-total" class="valor">0</div><div class="rotulo">XP Total</div></div>
-                <div class="card-painel"><div id="nivel-atual-painel" class="valor">1</div><div class="rotulo">Nível Atual</div></div>
-                <div class="card-painel"><div id="niveis-concluidos" class="valor">0/10</div><div class="rotulo">Níveis Concluídos</div></div>
-                <div class="card-painel"><div id="progresso-geral" class="valor">0%</div><div class="rotulo">Progresso Geral</div></div>
-            </div>
-
-            <section class="secao">
-                <h2>PROGRESSÃO — NÍVEIS 1 A 10</h2>
-                <div class="nivel-lista">
-                    <!-- NÍVEL 1 -->
-                    <div class="nivel-card" id="card-n1">
-                        <div class="nivel-titulo">
-                            <span class="nivel-numero">NÍVEL 1: CONHECIMENTO DAS REGRAS</span>
-                            <span id="status-n1" class="status-pendente">PENDENTE</span>
-                        </div>
-                        <button id="btn-n1" class="btn" onclick="avaliarNivel(1)">REALIZAR AVALIAÇÃO</button>
-                        <div id="res-n1" class="avaliacao-resultado"></div>
-                    </div>
-
-                    <!-- NÍVEL 2 -->
-                    <div class="nivel-card" id="card-n2">
-                        <div class="nivel-titulo">
-                            <span class="nivel-numero">NÍVEL 2: RACIOCÍNIO LÓGICO</span>
-                            <span id="status-n2" class="status-pendente">PENDENTE</span>
-                        </div>
-                        <button id="btn-n2" class="btn" onclick="avaliarNivel(2)" disabled>REALIZAR AVALIAÇÃO</button>
-                        <div id="res-n2" class="avaliacao-resultado"></div>
-                    </div>
-
-                    <!-- NÍVEL 3 -->
-                    <div class="nivel-card" id="card-n3">
-                        <div class="nivel-titulo">
-                            <span class="nivel-numero">NÍVEL 3: LEITURA DE PESSOAS</span>
-                            <span id="status-n3" class="status-pendente">PENDENTE</span>
-                        </div>
-                        <button id="btn-n3" class="btn" onclick="avaliarNivel(3)" disabled>REALIZAR AVALIAÇÃO</button>
-                        <div id="res-n3" class="avaliacao-resultado"></div>
-                    </div>
-
-                    <!-- NÍVEL 4 -->
-                    <div class="nivel-card" id="card-n4">
-                        <div class="nivel-titulo">
-                            <span class="nivel-numero">NÍVEL 4: TOMADA DE DECISÃO</span>
-                            <span id="status-n4" class="status-pendente">PENDENTE</span>
-                        </div>
-                        <button id="btn-n4" class="btn" onclick="avaliarNivel(4)" disabled>REALIZAR AVALIAÇÃO</button>
-                        <div id="res-n4" class="avaliacao-resultado"></div>
-                    </div>
-
-                    <!-- NÍVEL 5 -->
-                    <div class="nivel-card" id="card-n5">
-                        <div class="nivel-titulo">
-                            <span class="nivel-numero">NÍVEL 5: INFLUÊNCIA DISCRETA</span>
-                            <span id="status-n5" class="status-pendente">PENDENTE</span>
-                        </div>
-                        <button id="btn-n5" class="btn" onclick="avaliarNivel(5)" disabled>REALIZAR AVALIAÇÃO</button>
-                        <div id="res-n5" class="avaliacao-resultado"></div>
-                    </div>
-
-                    <!-- NÍVEL 6 -->
-                    <div class="nivel-card" id="card-n6">
-                        <div class="nivel-titulo">
-                            <span class="nivel-numero">NÍVEL 6: DOMÍNIO DE SI MESMO</span>
-                            <span id="status-n6" class="status-pendente">PENDENTE</span>
-                        </div>
-                        <button id="btn-n6" class="btn" onclick="avaliarNivel(6)" disabled>REALIZAR AVALIAÇÃO</button>
-                        <div id="res-n6" class="avaliacao-resultado"></div>
-                    </div>
-
-                    <!-- NÍVEL 7 -->
-                    <div class="nivel-card" id="card-n7">
-                        <div class="nivel-titulo">
-                            <span class="nivel-numero">NÍVEL 7: ANTEVISÃO DE CENÁRIOS</span>
-                            <span id="status-n7" class="status-pendente">PENDENTE</span>
-                        </div>
-                        <button id="btn-n7" class="btn" onclick="avaliarNivel(7)" disabled>REALIZAR AVALIAÇÃO</button>
-                        <div id="res-n7" class="avaliacao-resultado"></div>
-                    </div>
-
-                    <!-- NÍVEL 8 -->
-                    <div class="nivel-card" id="card-n8">
-                        <div class="nivel-titulo">
-                            <span class="nivel-numero">NÍVEL 8: RESILIÊNCIA E ADAPTAÇÃO</span>
-                            <span id="status-n8" class="status-pendente">PENDENTE</span>
-                        </div>
-                        <button id="btn-n8" class="btn" onclick="avaliarNivel(8)" disabled>REALIZAR AVALIAÇÃO</button>
-                        <div id="res-n8" class="avaliacao-resultado"></div>
-                    </div>
-
-                    <!-- NÍVEL 9 -->
-                    <div class="nivel-card" id="card-n9">
-                        <div class="nivel-titulo">
-                            <span class="nivel-numero">NÍVEL 9: LIDERANÇA ESTRATÉGICA</span>
-                            <span id="status-n9" class="status-pendente">PENDENTE</span>
-                        </div>
-                        <button id="btn-n9" class="btn" onclick="avaliarNivel(9)" disabled>REALIZAR AVALIAÇÃO</button>
-                        <div id="res-n9" class="avaliacao-resultado"></div>
-                    </div>
-
-                    <!-- NÍVEL 10 -->
-                    <div class="nivel-card nivel-final" id="card-n10">
-                        <div class="nivel-titulo">
-                            <span class="nivel-numero">🏆 NÍVEL 10: POTENCIAL ABSOLUTO</span>
-                            <span id="status-n10" class="status-pendente">PENDENTE</span>
-                        </div>
-                        <button id="btn-n10" class="btn" onclick="avaliarNivel(10)" disabled>REALIZAR AVALIAÇÃO FINAL</button>
-                        <div id="res-n10" class="avaliacao-resultado"></div>
-                    </div>
+            <div class="progress-section">
+                <h3>Seu Progresso Atual</h3>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%">0%</div>
                 </div>
-            </section>
-        </div>
-
-        <!-- ABA 2: TODOS OS DESAFIOS E TREINAMENTOS COMPLETOS -->
-        <div id="aba-detalhes" class="conteudo-aba">
-            <div class="aviso-oficial">
-                <strong>AQUI ESTÃO TODOS OS DETALHES:</strong> Cada nível tem seu desafio completo e o treinamento detalhado para se preparar bem antes da avaliação.
-            </div>
-
-            <section class="secao">
-                <h2>📋 DESAFIOS E TREINAMENTOS — NÍVEIS 1 A 10</h2>
-                <div class="nivel-lista">
-                    <!-- NÍVEL 1 -->
-                    <div class="nivel-card">
-                        <div class="nivel-titulo"><span class="nivel-numero">NÍVEL 1: CONHECIMENTO DAS REGRAS</span></div>
-                        <div class="blocos-completos">
-                            <div class="bloco-completo">
-                                <h4>🎯 DESAFIO COMPLETO</h4>
-                                <p>Compreender e explicar o objetivo principal do White Room Project, demonstrando entendimento dos princípios de excelência, evolução contínua e mérito exclusivo por resultados. Não basta decorar: é preciso explicar o porquê de cada regra existir.</p>
-                            </div>
-                            <div class="bloco-completo">
-                                <h4>📚 TREINAMENTO DETALHADO</h4>
-                                <p>Estudar todas as normas e filosofia do projeto. Separar interpretações pessoais dos fatos reais. Entender que o sistema não é justo nem injusto — ele é apenas objetivo. Praticar explicar cada ponto sem adicionar opiniões próprias.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- NÍVEL 2 -->
-                    <div class="nivel-card">
-                        <div class="nivel-titulo"><span class="nivel-numero">NÍVEL 2: RACIOCÍNIO LÓGICO</span></div>
-                        <div class="blocos-completos">
-                            <div class="bloco-completo">
-                                <h4>🎯 DESAFIO COMPLETO</h4>
-                                <p>Resolver 4 problemas de dedução, sequência e lógica formal sem ajuda externa, em tempo limite. Provar capacidade de estruturar o raciocínio, identificar premissas corretas e chegar à conclusão sem saltos ou suposições.</p>
-                            </div>
-                            <div class="bloco-completo">
-                                <h4>📚 TREINAMENTO DETALHADO</h4>
-                                <p>Praticar exercícios de lógica, identificar falácias comuns, separar evidência de opinião. Aprender a construir argumentos passo a passo e verificar se cada etapa faz sentido antes de chegar ao resultado final.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- NÍVEL 3 -->
-                    <div class="nivel-card">
-                        <div class="nivel-titulo"><span class="nivel-numero">NÍVEL 3: LEITURA DE PESSOAS</span></div>
-                        <div class="blocos-completos">
-                            <div class="bloco-completo">
-                                <h4>🎯 DESAFIO COMPLETO</h4>
-                                <p>Identificar intenções reais, contradições, sentimentos ocultos e o que a pessoa realmente quer, mesmo que ela diga o oposto. Observar gestos, tom de voz, pausas e o que ela evita falar.</p>
-                            </div>
-                            <div class="bloco-completo">
-                                <h4>📚 TREINAMENTO DETALHADO</h4>
-                                <p>Estudar psicologia básica, linguagem corporal e comunicação não verbal. Praticar ouvir mais do que falar, anotar contradições e entender que quase sempre as pessoas escondem o que realmente desejam.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- NÍVEL 4 -->
-                    <div class="nivel-card">
-                        <div class="nivel-titulo"><span class="nivel-numero">NÍVEL 4: TOMADA DE DECISÃO</span></div>
-                        <div class="blocos-completos">
-                            <div class="bloco-completo">
-                                <h4>🎯 DESAFIO COMPLETO</h4>
-                                <p>Escolher entre duas opções onde nenhuma é perfeita, justificar a escolha baseada em consequências a longo prazo, e não no que é mais fácil ou agradável no momento. Aceitar o ônus da decisão sem reclamar.</p>
-                            </div>
-                            <div class="bloco-completo">
-                                <h4>📚 TREINAMENTO DETALHADO</h4>
-                                <p>Analisar prós e contras de cada situação, listar consequências de curto, médio e longo prazo. Evitar decisões movidas por raiva, medo ou desejo imediato. Priorizar o que traz vantagem duradoura.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- NÍVEL 5 -->
-                    <div class="nivel-card">
-                        <div class="nivel-titulo"><span class="nivel-numero">NÍVEL 5: INFLUÊNCIA DISCRETA</span></div>
-                        <div class="blocos-completos">
-                            <div class="bloco-completo">
-                                <h4>🎯 DESAFIO COMPLETO</h4>
-                                <p>Fazer alguém agir da forma que você precisa, sem mandar, sem pressionar e sem que ela perceba que foi influenciada. Ela deve acreditar que a ideia e a decisão foram totalmente dela.</p>
-                            </div>
-                            <div class="bloco-completo">
-                                <h4>📚 TREINAMENTO DETALHADO</h4>
-                                <p>Aprender a entender os valores e desejos de cada pessoa. Apresentar argumentos que combinem com o que ela já acredita. Usar perguntas para guiar o raciocínio dela até a conclusão que você quer.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- NÍVEL 6 -->
-                    <div class="nivel-card">
-                        <div class="nivel-titulo"><span class="nivel-numero">NÍVEL 6: DOMÍNIO DE SI MESMO</span></div>
-                        <div class="blocos-completos">
-                            <div class="bloco-completo">
-                                <h4>🎯 DESAFIO COMPLETO</h4>
-                                <p>Manter compostura total, não demonstrar raiva, alegria excessiva ou medo, e não revelar informações importantes mesmo sob provocações, pressão ou críticas injustas.</p>
-                            </div>
-                            <div class="bloco-completo">
-                                <h4>📚 TREINAMENTO DETALHADO</h4>
-                                <p>Identificar o que te deixa irritado ou ansioso. Praticar controlar a respiração e a reação. Entender que suas emoções são suas ferramentas — nunca deixe elas controlarem você.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- NÍVEL 7 -->
-                    <div class="nivel-card">
-                        <div class="nivel-titulo"><span class="nivel-numero">NÍVEL 7: ANTEVISÃO DE CENÁRIOS</span></div>
-                        <div class="blocos-completos">
-                            <div class="bloco-completo">
-                                <h4>🎯 DESAFIO COMPLETO</h4>
-                                <p>Prever o desenrolar de uma situação complexa com múltiplos envolvidos, antecipando as reações de cada um e preparando contramedidas para cada possível desvio.</p>
-                            </div>
-                            <div class="bloco-completo">
-                                <h4>📚 TREINAMENTO DETALHADO</h4>
-                                <p>Estudar teoria dos jogos e análise de sistemas. Praticar o mapeamento de variáveis e a criação de planos de contingência. Aprender a pensar três passos à frente de qualquer oponente.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- NÍVEL 8 -->
-                    <div class="nivel-card">
-                        <div class="nivel-titulo"><span class="nivel-numero">NÍVEL 8: RESILIÊNCIA E ADAPTAÇÃO</span></div>
-                        <div class="blocos-completos">
-                            <div class="bloco-completo">
-                                <h4>🎯 DESAFIO COMPLETO</h4>
-                                <p>Atuar com máxima eficiência mesmo quando todos os seus planos iniciais falham e o ambiente se torna hostil. Transformar uma derrota iminente em uma vantagem estratégica.</p>
-                            </div>
-                            <div class="bloco-completo">
-                                <h4>📚 TREINAMENTO DETALHADO</h4>
-                                <p>Desenvolver antifragilidade. Praticar a aceitação rápida da realidade e o foco imediato na solução. Treinar a mente para não se abalar com o caos, mas sim usá-lo a seu favor.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- NÍVEL 9 -->
-                    <div class="nivel-card">
-                        <div class="nivel-titulo"><span class="nivel-numero">NÍVEL 9: LIDERANÇA ESTRATÉGICA</span></div>
-                        <div class="blocos-completos">
-                            <div class="bloco-completo">
-                                <h4>🎯 DESAFIO COMPLETO</h4>
-                                <p>Coordenar um grupo de indivíduos com interesses conflitantes para atingir um objetivo comum que serve aos seus propósitos, sem que eles questionem sua autoridade ou intenções.</p>
-                            </div>
-                            <div class="bloco-completo">
-                                <h4>📚 TREINAMENTO DETALHADO</h4>
-                                <p>Estudar dinâmicas de poder e gestão de talentos. Aprender a delegar de forma que cada um se sinta essencial, mantendo o controle centralizado e a visão macro protegida.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- NÍVEL 10 -->
-                    <div class="nivel-card nivel-final">
-                        <div class="nivel-titulo"><span class="nivel-numero">🏆 NÍVEL 10: POTENCIAL ABSOLUTO</span></div>
-                        <div class="blocos-completos">
-                            <div class="bloco-completo">
-                                <h4>🎯 DESAFIO COMPLETO</h4>
-                                <p>A prova final de integração de todas as habilidades. Demonstrar que você não apenas domina as técnicas, mas que elas se tornaram parte de quem você é. Atingir a excelência sem esforço aparente.</p>
-                            </div>
-                            <div class="bloco-completo">
-                                <h4>📚 TREINAMENTO DETALHADO</h4>
-                                <p>Refinamento constante. O treinamento nunca termina, ele apenas se torna mais sutil. Manter a vigilância sobre si mesmo e nunca permitir a estagnação ou a arrogância do saber.</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="level-info">
+                    <strong>Nível Atual:</strong> <span id="currentLevel">1</span> / 10
                 </div>
-            </section>
+                <button class="next-level-button" onclick="initiateNextLevel()">Tentar Próximo Nível</button>
+            </div>
         </div>
 
-        <div class="frase">
-            "A liberdade não é a ausência de restrições, mas o domínio absoluto sobre elas."
+        <!-- SEÇÃO NÍVEIS -->
+        <div id="levels" class="section">
+            <button class="back-button" onclick="showSection('home')">← Voltar</button>
+            <h2 style="color: #00d4ff; margin-bottom: 30px;">Os 10 Níveis da Sala Branca</h2>
+            <div class="levels-grid" id="levelsGrid"></div>
         </div>
 
-        <footer class="rodape">
-            &copy; 2026 WHITE ROOM PROJECT - Todos os direitos reservados.
-        </footer>
+        <!-- SEÇÃO BIBLIOTECA -->
+        <div id="library" class="section">
+            <button class="back-button" onclick="showSection('home')">← Voltar</button>
+            <h2 style="color: #00d4ff; margin-bottom: 30px;">Biblioteca de Ayanokoji</h2>
+            <div class="library-section">
+                <div class="library-subsection">
+                    <h3>📚 Livros Essenciais</h3>
+                    <div id="booksContainer"></div>
+                </div>
+                <div class="library-subsection">
+                    <h3>🧠 Filósofos & Conceitos</h3>
+                    <div id="philosophersContainer"></div>
+                </div>
+            </div>
+            <div class="library-subsection" style="margin-top: 30px;">
+                <h3>💬 Frases de Ayanokoji</h3>
+                <div id="quotesContainer"></div>
+            </div>
+        </div>
+
+        <!-- SEÇÃO SAMANTA IA -->
+        <div id="samanta" class="section">
+            <button class="back-button" onclick="showSection('home')">← Voltar</button>
+            <h2 style="color: #00d4ff; margin-bottom: 20px;">Samanta IA - Sua Educadora</h2>
+            <div class="chat-container">
+                <div class="chat-header">💬 Conversa com Samanta</div>
+                <div class="chat-messages" id="chatMessages"></div>
+                <div class="chat-input-area">
+                    <input type="text" id="userInput" placeholder="Digite sua pergunta ou comando..." onkeypress="handleEnter(event)">
+                    <button onclick="sendMessage()">Enviar</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        let nivelAtual = 1;
-        let xpTotal = 0;
-        let niveisConcluidos = 0;
+        // ========== DADOS ==========
+        const levels = [
+            {
+                number: 1,
+                name: "Fundação Mental",
+                difficulty: "Iniciante",
+                description: "Desenvolvimento de pensamento crítico, memória e concentração básica.",
+                challenges: [
+                    "Exercícios de memorização de padrões",
+                    "Análise lógica de problemas simples",
+                    "Desenvolvimento de concentração por 1 hora contínua"
+                ]
+            },
+            {
+                number: 2,
+                name: "Controle Emocional",
+                difficulty: "Fácil",
+                description: "Aprender a eliminar emoções desnecessárias e manter frieza em situações adversas.",
+                challenges: [
+                    "Meditação diária de 30 minutos",
+                    "Exposição controlada a estresse",
+                    "Análise racional de conflitos pessoais"
+                ]
+            },
+            {
+                number: 3,
+                name: "Domínio Físico",
+                difficulty: "Fácil",
+                description: "Treinamento físico intenso: artes marciais, resistência e flexibilidade.",
+                challenges: [
+                    "Aprender Judo e Boxe básico",
+                    "Correr 10km em menos de 50 minutos",
+                    "Realizar 100 flexões e 100 abdominais"
+                ]
+            },
+            {
+                number: 4,
+                name: "Manipulação Social",
+                difficulty: "Moderado",
+                description: "Compreender a psicologia humana e aprender a influenciar pessoas.",
+                challenges: [
+                    "Estudar 'O Príncipe' de Maquiavel",
+                    "Analisar comportamentos sociais em grupos",
+                    "Executar 3 planos de influência social"
+                ]
+            },
+            {
+                number: 5,
+                name: "Limite Humano",
+                difficulty: "Difícil",
+                description: "Alcançar o pico do desempenho humano em múltiplas áreas.",
+                challenges: [
+                    "Dominar 3 artes marciais avançadas",
+                    "Estudar Teoria de Sistemas e Relatividade",
+                    "Resolver problemas matemáticos de nível universitário"
+                ]
+            },
+            {
+                number: 6,
+                name: "Transcendência Cognitiva",
+                difficulty: "Difícil",
+                description: "Expandir a capacidade mental além dos limites convencionais.",
+                challenges: [
+                    "Aprender Integração de Lebesgue e Teoria da Medida",
+                    "Desenvolver intuição estratégica aguçada",
+                    "Criar um plano de 5 anos com múltiplas variáveis"
+                ]
+            },
+            {
+                number: 7,
+                name: "Maestria Estratégica",
+                difficulty: "Muito Difícil",
+                description: "Dominar a arte da estratégia em todos os contextos.",
+                challenges: [
+                    "Estudar 'A Arte da Guerra' de Sun Tzu",
+                    "Vencer em 10 jogos de estratégia consecutivos contra IA",
+                    "Planejar e executar uma operação social complexa"
+                ]
+            },
+            {
+                number: 8,
+                name: "Perfeição Integrada",
+                difficulty: "Muito Difícil",
+                description: "Integrar todas as habilidades adquiridas em uma unidade coesa.",
+                challenges: [
+                    "Demonstrar excelência em 5 áreas diferentes simultaneamente",
+                    "Resolver um dilema ético complexo com lógica pura",
+                    "Treinar e orientar outro indivíduo para o Nível 5"
+                ]
+            },
+            {
+                number: 9,
+                name: "Ascensão Além-Humana",
+                difficulty: "Extremo",
+                description: "Transcender as limitações humanas conhecidas e alcançar potencial máximo.",
+                challenges: [
+                    "Estudar Nietzsche e compreender o Übermensch",
+                    "Criar uma filosofia de vida pessoal coerente",
+                    "Demonstrar capacidade de prever comportamentos com 90% de precisão"
+                ]
+            },
+            {
+                number: 10,
+                name: "Perfeição Absoluta",
+                difficulty: "Lendário",
+                description: "Alcançar o status de 'Humano Perfeito' - o objetivo final da Sala Branca.",
+                challenges: [
+                    "Dominar todas as 9 áreas anteriores",
+                    "Demonstrar sabedoria e frieza em situações críticas",
+                    "Ser reconhecido como um gênio estratégico incomparável"
+                ]
+            }
+        ];
 
-        function mostrarAba(abaId) {
-            // Esconder todas as abas
-            document.getElementById('aba-progressao').classList.remove('visivel');
-            document.getElementById('aba-detalhes').classList.remove('visivel');
+        const books = [
+            {
+                title: "Prometheus Rising",
+                author: "Robert Anton Wilson",
+                description: "Explora a expansão da consciência e o potencial humano ilimitado."
+            },
+            {
+                title: "Reality Transurfing",
+                author: "Vadim Zeland",
+                description: "Técnicas para navegar a realidade e alcançar objetivos através da compreensão profunda."
+            },
+            {
+                title: "O Príncipe",
+                author: "Nicolau Maquiavel",
+                description: "Estratégia política e manipulação - essencial para compreender o poder."
+            },
+            {
+                title: "A Arte da Guerra",
+                author: "Sun Tzu",
+                description: "Estratégia militar aplicável a qualquer conflito ou competição."
+            },
+            {
+                title: "Assim Falou Zaratustra",
+                author: "Friedrich Nietzsche",
+                description: "Filosofia do Übermensch e da auto-superação contínua."
+            },
+            {
+                title: "Meditações",
+                author: "Marco Aurélio",
+                description: "Estoicismo prático para controle emocional e resiliência."
+            },
+            {
+                title: "Outwitting the Devil",
+                author: "Napoleon Hill",
+                description: "Técnicas para superar obstáculos e alcançar sucesso extraordinário."
+            },
+            {
+                title: "The Fire From Within",
+                author: "Carlos Castaneda",
+                description: "Exploração da percepção e transformação pessoal profunda."
+            }
+        ];
+
+        const philosophers = [
+            {
+                name: "Nicolau Maquiavel",
+                concept: "Pragmatismo e Poder",
+                description: "Os fins justificam os meios. O poder é o objetivo final, e a moralidade é uma ferramenta."
+            },
+            {
+                name: "Friedrich Nietzsche",
+                concept: "Vontade de Poder",
+                description: "A auto-superação contínua e o conceito do Übermensch - o humano que transcende limitações."
+            },
+            {
+                name: "Marco Aurélio",
+                concept: "Estoicismo",
+                description: "Controle emocional absoluto. Foco no que pode ser controlado, indiferença ao sofrimento externo."
+            },
+            {
+                name: "Sun Tzu",
+                concept: "Estratégia Militar",
+                description: "Vitória através do conhecimento, planejamento e exploração das fraquezas do inimigo."
+            },
+            {
+                name: "Thomas Hobbes",
+                concept: "Natureza Humana Egoísta",
+                description: "Os humanos são naturalmente egoístas. A busca pelo poder é o motor principal da ação."
+            },
+            {
+                name: "Platão",
+                concept: "Teoria das Formas",
+                description: "Compreensão da realidade além da aparência. Busca pela verdade absoluta."
+            }
+        ];
+
+        const quotes = [
+            {
+                text: "Todos os humanos são ferramentas. Não importa o quão talentoso, não importa o quão inteligente, não importa o quão bonito, no final, eles são apenas ferramentas.",
+                author: "Kiyotaka Ayanokoji"
+            },
+            {
+                text: "Vencer é tudo. O processo não importa.",
+                author: "Kiyotaka Ayanokoji"
+            },
+            {
+                text: "A solidão é o meu único amigo.",
+                author: "Kiyotaka Ayanokoji"
+            },
+            {
+                text: "Eu não sou perfeito. Eu sou apenas um pouco mais capaz que a maioria.",
+                author: "Kiyotaka Ayanokoji"
+            },
+            {
+                text: "Emoções são uma fraqueza que os humanos não conseguem eliminar.",
+                author: "Kiyotaka Ayanokoji"
+            },
+            {
+                text: "A verdadeira força está em compreender as fraquezas dos outros.",
+                author: "Kiyotaka Ayanokoji"
+            }
+        ];
+
+        // ========== FUNÇÕES PRINCIPAIS ==========
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function initializeApp() {
+            loadProgress();
+            renderLevels();
+            renderLibrary();
+            initializeChat();
+        }
+
+        // ========== SISTEMA DE PROGRESSO ==========
+        function loadProgress() {
+            const saved = localStorage.getItem('whiteRoomProgress');
+            if (saved) {
+                window.userProgress = JSON.parse(saved);
+            } else {
+                window.userProgress = {
+                    currentLevel: 1,
+                    completedLevels: [],
+                    chatHistory: []
+                };
+                saveProgress();
+            }
+            updateProgressDisplay();
+        }
+
+        function saveProgress() {
+            localStorage.setItem('whiteRoomProgress', JSON.stringify(window.userProgress));
+        }
+
+        function updateProgressDisplay() {
+            const progress = ((window.userProgress.currentLevel - 1) / 10) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressFill').textContent = Math.round(progress) + '%';
+            document.getElementById('currentLevel').textContent = window.userProgress.currentLevel;
+        }
+
+        // ========== RENDERIZAÇÃO DE NÍVEIS ==========
+        function renderLevels() {
+            const grid = document.getElementById('levelsGrid');
+            grid.innerHTML = '';
+            levels.forEach(level => {
+                const card = document.createElement('div');
+                card.className = 'level-card';
+                card.innerHTML = `
+                    <h3>Nível ${level.number}: ${level.name}</h3>
+                    <p>${level.description}</p>
+                    <span class="difficulty">${level.difficulty}</span>
+                    <div style="margin-top: 15px; color: #b0b0b0; font-size: 0.85em;">
+                        <strong>Desafios:</strong>
+                        <ul style="margin-left: 15px; margin-top: 8px;">
+                            ${level.challenges.map(c => `<li>${c}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // ========== RENDERIZAÇÃO DE BIBLIOTECA ==========
+        function renderLibrary() {
+            const booksContainer = document.getElementById('booksContainer');
+            booksContainer.innerHTML = books.map(book => `
+                <div class="book-item">
+                    <h4>${book.title}</h4>
+                    <p><strong>Autor:</strong> ${book.author}</p>
+                    <p>${book.description}</p>
+                </div>
+            `).join('');
+
+            const philosophersContainer = document.getElementById('philosophersContainer');
+            philosophersContainer.innerHTML = philosophers.map(phil => `
+                <div class="philosopher-item">
+                    <h4>${phil.name}</h4>
+                    <p><strong>Conceito:</strong> ${phil.concept}</p>
+                    <p>${phil.description}</p>
+                </div>
+            `).join('');
+
+            const quotesContainer = document.getElementById('quotesContainer');
+            quotesContainer.innerHTML = quotes.map(quote => `
+                <div class="quote-item">
+                    <h4>"${quote.text}"</h4>
+                    <p>— ${quote.author}</p>
+                </div>
+            `).join('');
+        }
+
+        // ========== SISTEMA DE CHAT (SAMANTA) ==========
+        function initializeChat() {
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML = '';
             
-            // Remover classe ativa dos botões
-            document.getElementById('btn-progressao').classList.remove('ativa');
-            document.getElementById('btn-detalhes').classList.remove('ativa');
+            const welcomeMessage = document.createElement('div');
+            welcomeMessage.className = 'message samanta';
+            welcomeMessage.textContent = `Olá. Sou Samanta, sua educadora da Sala Branca. Você está no Nível ${window.userProgress.currentLevel}. Como posso ajudá-lo em sua jornada para se tornar um humano perfeito?`;
+            chatMessages.appendChild(welcomeMessage);
 
-            // Mostrar a aba selecionada
-            document.getElementById('aba-' + abaId).classList.add('visivel');
-            document.getElementById('btn-' + abaId).classList.add('ativa');
+            window.userProgress.chatHistory.forEach(msg => {
+                const msgEl = document.createElement('div');
+                msgEl.className = `message ${msg.sender}`;
+                msgEl.textContent = msg.text;
+                chatMessages.appendChild(msgEl);
+            });
+
+            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        function avaliarNivel(nivel) {
-            const resDiv = document.getElementById('res-n' + nivel);
-            const btn = document.getElementById('btn-n' + nivel);
-            const statusSpan = document.getElementById('status-n' + nivel);
+        function sendMessage() {
+            const input = document.getElementById('userInput');
+            const message = input.value.trim();
+            if (!message) return;
 
-            resDiv.style.display = 'block';
-            resDiv.innerHTML = "Processando avaliação do Nível " + nivel + "...";
-            btn.disabled = true;
+            const chatMessages = document.getElementById('chatMessages');
+            
+            // Adicionar mensagem do usuário
+            const userMsg = document.createElement('div');
+            userMsg.className = 'message user';
+            userMsg.textContent = message;
+            chatMessages.appendChild(userMsg);
 
-            setTimeout(() => {
-                // Simulação de sucesso
-                resDiv.className = 'avaliacao-resultado resultado-aprovado';
-                resDiv.innerHTML = "APROVADO! Você demonstrou domínio das competências do Nível " + nivel + ".";
+            // Salvar no histórico
+            window.userProgress.chatHistory.push({ sender: 'user', text: message });
+
+            // Gerar resposta de Samanta
+            const response = generateSamantaResponse(message);
+            const samantaMsg = document.createElement('div');
+            samantaMsg.className = 'message samanta';
+            samantaMsg.textContent = response;
+            chatMessages.appendChild(samantaMsg);
+
+            window.userProgress.chatHistory.push({ sender: 'samanta', text: response });
+            saveProgress();
+
+            input.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function handleEnter(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function generateSamantaResponse(userMessage) {
+            const msg = userMessage.toLowerCase();
+
+            // Respostas sobre níveis
+            if (msg.includes('nível') || msg.includes('proximo')) {
+                return `Você está no Nível ${window.userProgress.currentLevel}. Para avançar, você deve demonstrar domínio das habilidades esperadas. Clique em "Tentar Próximo Nível" quando se sentir preparado.`;
+            }
+
+            // Respostas sobre livros
+            if (msg.includes('livro') || msg.includes('ler')) {
+                return `Recomendo começar com "O Príncipe" de Maquiavel e "A Arte da Guerra" de Sun Tzu. Estes livros fornecerão a base estratégica necessária. Depois, estude Nietzsche para compreender a filosofia de auto-superação.`;
+            }
+
+            // Respostas sobre Ayanokoji
+            if (msg.includes('ayanokoji') || msg.includes('perfeito')) {
+                return `Ayanokoji é o produto final da Sala Branca - um humano que transcendeu as limitações convencionais. Ele domina estratégia, manipulação social, controle emocional e inteligência analítica. Seu caminho é o nosso modelo.`;
+            }
+
+            // Respostas sobre treinamento
+            if (msg.includes('treino') || msg.includes('exercício') || msg.includes('físico')) {
+                return `O treinamento físico é essencial. Comece com corrida diária (5km), depois adicione artes marciais. Seu corpo deve ser tão disciplinado quanto sua mente. Sem força física, você é vulnerável.`;
+            }
+
+            // Respostas sobre emoções
+            if (msg.includes('emoção') || msg.includes('sentimento')) {
+                return `As emoções são fraquezas que devem ser controladas. Pratique meditação diária, estude estoicismo e aprenda a separar lógica de sentimento. A frieza é uma vantagem estratégica.`;
+            }
+
+            // Respostas sobre filosofia
+            if (msg.includes('filosofia') || msg.includes('filósofo')) {
+                return `Estude Maquiavel para entender poder, Nietzsche para auto-superação, e Marco Aurélio para controle emocional. Estes três pilares formarão sua base filosófica.`;
+            }
+
+            // Respostas sobre sucesso
+            if (msg.includes('sucesso') || msg.includes('vencer')) {
+                return `Sucesso é resultado de planejamento meticuloso, execução perfeita e adaptação contínua. Não há atalhos. Cada nível o aproxima da perfeição. Continue.`;
+            }
+
+            // Resposta padrão
+            return `Sua pergunta é interessante. Reflita sobre ela em relação aos 10 níveis da Sala Branca. A resposta que você busca provavelmente está em seu próprio potencial não explorado. Continue treinando.`;
+        }
+
+        // ========== SISTEMA DE AVANÇO DE NÍVEL ==========
+        function initiateNextLevel() {
+            const currentLevel = window.userProgress.currentLevel;
+            if (currentLevel >= 10) {
+                alert('Você já alcançou a Perfeição Absoluta!');
+                return;
+            }
+
+            const nextLevel = levels[currentLevel];
+            const challenge = nextLevel.challenges[Math.floor(Math.random() * nextLevel.challenges.length)];
+            
+            const response = prompt(`DESAFIO DO NÍVEL ${currentLevel + 1}: ${challenge}\n\nVocê completou este desafio? (sim/não)`);
+            
+            if (response && response.toLowerCase() === 'sim') {
+                window.userProgress.currentLevel++;
+                saveProgress();
+                updateProgressDisplay();
+                alert(`🎉 Parabéns! Você avançou para o Nível ${window.userProgress.currentLevel}!\n\nSamanta: "Excelente progresso. Você está se aproximando da perfeição."`);
                 
-                statusSpan.className = 'status-aprovado';
-                statusSpan.innerHTML = 'CONCLUÍDO';
-                
-                xpTotal += (nivel * 100);
-                niveisConcluidos++;
-                
-                if (nivel < 10) {
-                    nivelAtual = nivel + 1;
-                    document.getElementById('btn-n' + nivelAtual).disabled = false;
+                // Adicionar mensagem ao chat
+                if (document.getElementById('samanta').classList.contains('active')) {
+                    const chatMessages = document.getElementById('chatMessages');
+                    const msg = document.createElement('div');
+                    msg.className = 'message samanta';
+                    msg.textContent = `Parabéns por alcançar o Nível ${window.userProgress.currentLevel}. Você está progredindo bem. Continue assim.`;
+                    chatMessages.appendChild(msg);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
                 }
-
-                atualizarPainel();
-            }, 1500);
+            } else {
+                alert('Samanta: "Você não está pronto ainda. Continue treinando e retorne quando tiver completado o desafio."');
+            }
         }
 
-        function atualizarPainel() {
-            document.getElementById('xp-total').innerHTML = xpTotal;
-            document.getElementById('nivel-atual-painel').innerHTML = nivelAtual;
-            document.getElementById('niveis-concluidos').innerHTML = niveisConcluidos + "/10";
-            document.getElementById('progresso-geral').innerHTML = (niveisConcluidos * 10) + "%";
-        }
+        // ========== INICIALIZAR ==========
+        window.addEventListener('load', initializeApp);
     </script>
 </body>
 </html>
