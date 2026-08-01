@@ -3,546 +3,665 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Katherine Johnson — A Matemática que Chegou ao Espaço</title>
+    <title>FF Master — Sensibilidade e HUD</title>
     <style>
-        :root {
-            --primary-color: #0b3d91;
-            --secondary-color: #fc3d21;
-            --text-color: #ffffff;
-            --bg-color: #050505;
-            --accent-color: #ffd700;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            scroll-behavior: smooth;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --primaria: #ff6a00;
+            --escuro: #1a1a2e;
+            --escuro2: #16213e;
+            --claro: #e6e6e6;
+            --verde: #00c853;
+            --vermelho: #ff1744;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            overflow-x: hidden;
+            background: linear-gradient(135deg, var(--escuro), var(--escuro2));
+            color: var(--claro);
+            min-height: 100vh;
         }
 
-        /* Estrelas de fundo */
-        .stars, .stars2, .stars3 {
+        /* ========== TELA DE LOGIN ========== */
+        .tela-login {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .tela-login h1 {
+            color: var(--primaria);
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        .tela-login p {
+            color: #aaa;
+            margin-bottom: 30px;
+        }
+
+        .btn-google {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 28px;
+            background: #fff;
+            color: #333;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .btn-google:hover {
+            transform: scale(1.03);
+        }
+
+        .btn-google img {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* ========== CONTEÚDO PRINCIPAL ========== */
+        .conteudo-principal {
+            display: none;
+        }
+
+        .camada-pagamento {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
-            background: transparent;
-        }
-
-        .stars {
-            box-shadow: 120px 150px #FFF, 800px 200px #FFF, 500px 600px #FFF, 200px 900px #FFF, 1000px 400px #FFF;
-            width: 1px;
-            height: 1px;
-            animation: animStar 50s linear infinite;
-        }
-
-        .stars2 {
-            box-shadow: 200px 300px #FFF, 900px 500px #FFF, 400px 800px #FFF, 100px 100px #FFF, 1100px 700px #FFF;
-            width: 2px;
-            height: 2px;
-            animation: animStar 100s linear infinite;
-        }
-
-        .stars3 {
-            box-shadow: 300px 100px #FFF, 1000px 900px #FFF, 600px 200px #FFF, 50px 500px #FFF, 1200px 300px #FFF;
-            width: 3px;
-            height: 3px;
-            animation: animStar 150s linear infinite;
-        }
-
-        @keyframes animStar {
-            from { transform: translateY(0px); }
-            to { transform: translateY(-2000px); }
-        }
-
-        /* Menu de Navegação */
-        .navbar {
-            background: rgba(11, 61, 145, 0.9);
-            padding: 1rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-        }
-
-        .navbar ul {
+            background: rgba(0,0,0,0.92);
             display: flex;
+            align-items: center;
             justify-content: center;
-            list-style: none;
-            gap: 20px;
+            z-index: 999;
+            padding: 20px;
+            overflow-y: auto;
         }
 
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            transition: color 0.3s;
-        }
-
-        .navbar a:hover {
-            color: var(--accent-color);
-        }
-
-        /* Cabeçalho */
-        .cabecalho {
+        .caixa-pagamento {
+            background: linear-gradient(145deg, #1e1e30, #252540);
+            padding: 30px;
+            border-radius: 16px;
+            border: 2px solid var(--verde);
             text-align: center;
-            padding: 100px 20px;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80');
-            background-size: cover;
-            background-position: center;
+            max-width: 420px;
+            width: 100%;
         }
 
-        .cabecalho h1 {
-            font-size: 3.5rem;
+        .caixa-pagamento h2 {
+            color: var(--verde);
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
         }
 
-        .subtitulo {
-            font-size: 1.5rem;
-            color: var(--accent-color);
+        .preco {
+            font-size: 2.8em;
+            color: var(--verde);
+            font-weight: bold;
+            margin: 10px 0;
         }
 
-        /* Seções */
-        .secao {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 40px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .qr-code-container {
+            background: #fff;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 20px auto;
+            display: inline-block;
         }
 
-        .secao h2 {
-            margin-bottom: 20px;
-            color: var(--accent-color);
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 10px;
+        .qr-code-img {
+            width: 220px;
+            height: 220px;
+            background: url('https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=00020126330014br.gov.bcb.pix01112139685776152040000530398654044.995802BR5924MIQUEIAS BATISTA RODRIG60009Sao...') no-repeat center;
+            background-size: contain;
         }
 
-        .conteudo p {
-            margin-bottom: 15px;
-            font-size: 1.1rem;
+        .codigo-pix {
+            background: #000;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: monospace;
+            margin: 15px 0;
+            color: #0f0;
+            font-size: 0.75em;
+            word-break: break-all;
+            text-align: left;
+            line-height: 1.4;
         }
 
-        .lista-curiosidades {
-            list-style: none;
+        .btn-copiar {
+            background: var(--verde);
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
         }
 
-        .lista-curiosidades li {
-            margin-bottom: 10px;
-            padding: 10px;
-            background: rgba(11, 61, 145, 0.2);
-            border-radius: 5px;
-            transition: transform 0.2s;
+        .btn-ja-paguei {
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: transparent;
+            border: 1px solid #555;
+            color: #aaa;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            width: 100%;
         }
 
-        .lista-curiosidades li:hover {
-            transform: translateX(10px);
-            background: rgba(11, 61, 145, 0.4);
+        .btn-ja-paguei:hover {
+            border-color: var(--verde);
+            color: #fff;
         }
 
-        /* Jogo */
-        .area-foguete {
-            height: 300px;
-            position: relative;
-            background: linear-gradient(to top, #0b3d91, #000);
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 20px 0;
-            border: 2px solid #333;
-        }
-
-        .foguete {
-            font-size: 3rem;
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            transition: bottom 0.5s ease-in-out;
-        }
-
-        .info-jogo {
+        header {
+            background: rgba(0,0,0,0.4);
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            background: rgba(0,0,0,0.3);
-            padding: 15px;
-            border-radius: 8px;
+            border-bottom: 3px solid var(--primaria);
         }
 
-        .barra-container {
-            flex-grow: 1;
-            margin: 0 20px;
+        header h1 {
+            color: var(--primaria);
+            font-size: 1.5em;
+        }
+
+        .usuario-info {
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .barra {
-            height: 20px;
-            background: #333;
-            border-radius: 10px;
-            flex-grow: 1;
-            overflow: hidden;
-        }
-
-        .barra-preenchida {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            transition: width 0.3s;
-        }
-
-        .caixa-pergunta {
-            text-align: center;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
-
-        .pergunta {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
-
-        .campo-resposta {
-            padding: 10px;
-            font-size: 1.2rem;
-            border-radius: 5px;
+        .btn-sair {
+            padding: 6px 14px;
+            background: var(--vermelho);
+            color: #fff;
             border: none;
-            width: 150px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .btn {
-            padding: 10px 25px;
-            font-size: 1rem;
-            border: none;
-            border-radius: 5px;
+            border-radius: 6px;
             cursor: pointer;
-            transition: all 0.3s;
-            font-weight: bold;
-            text-transform: uppercase;
+            font-size: 0.9em;
         }
 
-        .btn:hover {
-            opacity: 0.9;
-            transform: scale(1.05);
+        nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
         }
 
-        #btnResposta {
-            background-color: var(--secondary-color);
-            color: white;
+        nav button {
+            padding: 10px 18px;
+            background: transparent;
+            border: 2px solid var(--primaria);
+            color: var(--claro);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        nav button:hover, nav button.ativo {
+            background: var(--primaria);
+            color: #000;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .aba {
             display: none;
+            animation: aparecer 0.4s ease;
         }
 
-        .comecar {
-            background-color: var(--primary-color);
-            color: white;
+        .aba.ativa {
+            display: block;
         }
 
-        .feedback {
-            margin-top: 15px;
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,106,0,0.3);
+        }
+
+        .card h2 {
+            color: var(--primaria);
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            font-size: 1em;
+        }
+
+        button.gerar {
+            background: linear-gradient(90deg, #ff6a00, #ff9500);
+            color: #000;
             font-weight: bold;
-            min-height: 24px;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+            width: 100%;
+            transition: 0.3s;
+        }
+
+        button.gerar:hover {
+            transform: scale(1.02);
         }
 
         .resultado {
-            margin-top: 20px;
-            font-size: 1.5rem;
-            text-align: center;
-            color: var(--accent-color);
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(0,200,83,0.1);
+            border-radius: 8px;
+            border-left: 4px solid var(--verde);
+            display: none;
         }
 
-        /* Créditos */
-        .creditos p {
-            font-size: 1.2rem;
+        .resultado p {
             margin: 5px 0;
-            padding-left: 20px;
-            border-left: 3px solid var(--secondary-color);
+            font-size: 0.95em;
         }
 
-        /* Rodapé */
+        .aviso {
+            background: rgba(255,106,0,0.15);
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primaria);
+            margin-bottom: 15px;
+        }
+
+        .grade-hud {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .hud-card {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #444;
+        }
+
+        .hud-card h3 {
+            color: var(--primaria);
+            margin-bottom: 10px;
+        }
+
+        .hud-preview {
+            background: #000;
+            height: 180px;
+            border-radius: 8px;
+            position: relative;
+            margin-bottom: 10px;
+            border: 2px solid #333;
+        }
+
+        .botao-hud {
+            position: absolute;
+            background: rgba(255,106,0,0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #fff;
+            font-weight: bold;
+        }
+
         footer {
             text-align: center;
-            padding: 40px;
-            background: #000;
+            padding: 20px;
             margin-top: 40px;
-            font-style: italic;
+            border-top: 1px solid #333;
             color: #888;
-        }
-
-        /* Botão Topo */
-        .btn-topo {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: none;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-            z-index: 1000;
-        }
-
-        @media (max-width: 600px) {
-            .navbar ul {
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
-            }
-            .cabecalho h1 { font-size: 2rem; }
-            .info-jogo { flex-direction: column; gap: 15px; }
-            .barra-container { width: 100%; margin: 0; }
+            font-size: 0.9em;
         }
     </style>
 </head>
 <body>
-    <!-- Estrelas de fundo -->
-    <div class="stars"></div>
-    <div class="stars2"></div>
-    <div class="stars3"></div>
 
-    <!-- Menu de Navegação -->
-    <nav class="navbar">
-        <ul>
-            <li><a href="#quem">Quem Foi</a></li>
-            <li><a href="#curiosidades">Curiosidades</a></li>
-            <li><a href="#jogo">Missão Espacial</a></li>
-            <li><a href="#creditos">Créditos</a></li>
-        </ul>
-    </nav>
+<!-- ============= TELA DE LOGIN ============= -->
+<div class="tela-login" id="telaLogin">
+    <h1>🔥 FF MASTER</h1>
+    <p>Sensibilidade, Subida de Capa e HUD por Inteligência Artificial</p>
+    <button class="btn-google" onclick="fazerLogin()">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+        Entrar com Google
+    </button>
+</div>
 
-    <!-- Cabeçalho -->
-    <header class="cabecalho">
-        <h1>🚀 Katherine Johnson</h1>
-        <p class="subtitulo">A Matemática que Levou a Humanidade ao Espaço</p>
+<!-- ============= CONTEÚDO DO SITE ============= -->
+<div class="conteudo-principal" id="conteudoPrincipal">
+
+    <!-- CAMADA DE BLOQUEIO / PAGAMENTO COM QR CODE -->
+    <div class="camada-pagamento" id="camadaPagamento">
+        <div class="caixa-pagamento">
+            <h2>🔒 Acesso Bloqueado</h2>
+            <p>Desbloqueie agora todas as funcionalidades do site!</p>
+            <div class="preco">R$ 4,99 / mês</div>
+
+            <!-- QR CODE DO PIX -->
+            <div class="qr-code-container">
+                <div class="qr-code-img"></div>
+            </div>
+            <p style="font-size:0.9em; color:#aaa; margin-bottom:10px;">Escaneie o QR Code ou copie o código abaixo:</p>
+
+            <!-- CÓDIGO PIX COPIA E COLA -->
+            <div class="codigo-pix" id="codigoPix">
+00020126330014br.gov.bcb.pix01112139685776152040000530398654044.995802BR5924MIQUEIAS BATISTA RODRIG60009Sao...
+            </div>
+            <button class="btn-copiar" onclick="copiarPix()">📋 Copiar Código PIX</button>
+
+            <p style="font-size:0.85em; color:#888; margin-top:15px;">Após pagar, envie o comprovante para liberar seu acesso</p>
+            <button class="btn-ja-paguei" onclick="verificarPagamento()">Já paguei — Liberar Acesso</button>
+        </div>
+    </div>
+
+    <header>
+        <h1>🔥 FF MASTER — Sensibilidade e HUD</h1>
+        <div class="usuario-info">
+            <span id="emailUsuario"></span>
+            <button class="btn-sair" onclick="sair()">Sair</button>
+        </div>
     </header>
 
-    <!-- Seção 1 — Quem Foi -->
-    <section id="quem" class="secao">
-        <h2>👩🏿‍🔬 Quem foi Katherine Johnson</h2>
-        <div class="conteudo">
-            <p>Katherine Johnson foi uma brilhante matemática norte-americana que dedicou grande parte de sua vida trabalhando na NASA, a Agência Espacial dos Estados Unidos.</p>
-            <p>Seus cálculos extremamente precisos foram fundamentais para o sucesso das maiores missões espaciais da história. Ela calculou a trajetória que levou o primeiro americano ao espaço e também os caminhos exatos da missão <strong>Apolo 11</strong>, que levou o homem à Lua em 1969.</p>
-            <p>Além de sua genialidade, Katherine quebrou barreiras impressionantes: em uma época de forte discriminação, ela se tornou uma das primeiras mulheres negras a ocupar um espaço de destaque na ciência e na tecnologia, provando que talento não tem cor nem gênero.</p>
-            <p>Seu trabalho foi reconhecido mundialmente e hoje ela é um símbolo de inteligência, coragem e determinação.</p>
-        </div>
-    </section>
+    <nav>
+        <button class="btn-aba ativo" onclick="mostrarAba('sensibilidade')">Sensibilidade IA</button>
+        <button class="btn-aba" onclick="mostrarAba('subida')">Subir Capa</button>
+        <button class="btn-aba" onclick="mostrarAba('hud')">Gerador de HUD</button>
+    </nav>
 
-    <!-- Seção 2 — Curiosidades -->
-    <section id="curiosidades" class="secao">
-        <h2>🌟 Curiosidades</h2>
-        <ul class="lista-curiosidades">
-            <li>🧮 Era considerada um gênio da matemática desde criança.</li>
-            <li>🎓 Entrou na universidade com apenas 15 anos!</li>
-            <li>⏳ Trabalhou por mais de 30 anos na NASA.</li>
-            <li>🏅 Recebeu a Medalha Presidencial da Liberdade em 2015.</li>
-            <li>🎬 Sua história inspirou o famoso filme "Estrelas Além do Tempo".</li>
-            <li>✅ Os astronautas confiavam mais nos cálculos dela do que nos computadores!</li>
-        </ul>
-    </section>
+    <div class="container" id="areaConteudo">
 
-    <!-- Seção 3 — Jogo -->
-    <section id="jogo" class="secao">
-        <h2>🚀 Missão Espacial — Ajude o Foguete!</h2>
-        <p class="instrucao">Resolva as contas de matemática corretamente para ajudar o foguete a chegar ao espaço!</p>
-
-        <!-- Área do Foguete -->
-        <div class="area-foguete">
-            <div class="espaco"></div>
-            <div class="foguete" id="foguete">🚀</div>
-        </div>
-
-        <!-- Barra de Progresso e Pontos -->
-        <div class="info-jogo">
-            <div class="barra-container">
-                <span>Progresso:</span>
-                <div class="barra">
-                    <div class="barra-preenchida" id="barra"></div>
+        <!-- ABA 1: SENSIBILIDADE IA -->
+        <div id="sensibilidade" class="aba ativa">
+            <div class="aviso">
+                💡 A IA gera a melhor sensibilidade com base no modelo e tamanho da tela. Sempre teste e ajuste ±2 conforme seu toque.
+            </div>
+            <div class="card">
+                <h2>📱 Selecione seu Celular</h2>
+                <label>Marca:</label>
+                <select id="marca">
+                    <option value="samsung">Samsung</option>
+                    <option value="xiaomi">Xiaomi</option>
+                    <option value="motorola">Motorola</option>
+                    <option value="iphone">iPhone</option>
+                    <option value="realme">Realme</option>
+                    <option value="outro">Outro</option>
+                </select>
+                <label>Tamanho da Tela:</label>
+                <select id="tela">
+                    <option value="pequena">Pequena (até 6.2")</option>
+                    <option value="media">Média (6.3" a 6.6")</option>
+                    <option value="grande">Grande (acima de 6.7")</option>
+                </select>
+                <label>DPI do Sistema:</label>
+                <select id="dpi">
+                    <option value="baixo">Baixo (320-400)</option>
+                    <option value="medio" selected>Médio (411-500)</option>
+                    <option value="alto">Alto (500+)</option>
+                </select>
+                <button class="gerar" onclick="gerarSensibilidade()">🤖 GERAR SENSIBILIDADE IA</button>
+                <div class="resultado" id="resSensibilidade">
+                    <h3>✅ Sensibilidade Recomendada:</h3>
+                    <p>Geral: <span id="rGeral"></span></p>
+                    <p>Ponto Vermelho: <span id="rPonto"></span></p>
+                    <p>Mira 2x: <span id="r2x"></span></p>
+                    <p>Mira 4x: <span id="r4x"></span></p>
+                    <p>Mira Sniper: <span id="rSniper"></span></p>
+                    <p>Visão Livre: <span id="rVisao"></span></p>
+                    <p>DPI Recomendado: <span id="rDPI"></span></p>
                 </div>
-                <span id="contador">0 / 10</span>
-            </div>
-            <div class="pontos">
-                Pontos: <span id="pontos">0</span>
             </div>
         </div>
 
-        <!-- Área da Pergunta -->
-        <div class="caixa-pergunta" id="caixaPergunta">
-            <p class="pergunta" id="pergunta">Clique em "Começar Missão" para iniciar!</p>
-            <input type="number" id="resposta" placeholder="Digite sua resposta" class="campo-resposta" style="display:none">
-            <button class="btn" id="btnResposta" onclick="verificarResposta()">Enviar Resposta</button>
-            <button class="btn comecar" id="btnComecar" onclick="iniciarJogo()">🌑 Começar Missão</button>
-            <p class="feedback" id="feedback"></p>
+        <!-- ABA 2: SUBIR CAPA -->
+        <div id="subida" class="aba">
+            <div class="card">
+                <h2>🎯 Método para Subir Capa — Todas as Armas</h2>
+                <label>Escolha a arma:</label>
+                <select id="arma">
+                    <option value="todas">Todas as Armas</option>
+                    <option value="smg">SMG (MP40, UMP, etc)</option>
+                    <option value="rifle">Rifle (AK, M4, SCAR, etc)</option>
+                    <option value="espingarda">Espingarda (M1014, M1887)</option>
+                    <option value="sniper">Sniper</option>
+                </select>
+                <button class="gerar" onclick="gerarMetodo()">📖 VER MÉTODO DE SUBIDA</button>
+                <div class="resultado" id="resMetodo">
+                    <h3>🎯 Método de Subida:</h3>
+                    <p id="textoMetodo"></p>
+                </div>
+            </div>
         </div>
 
-        <!-- Resultado Final -->
-        <div class="resultado" id="resultado"></div>
-    </section>
-
-    <!-- Seção Créditos -->
-    <section id="creditos" class="secao">
-        <h2>👥 Créditos</h2>
-        <div class="conteudo creditos">
-            <h3>Projeto desenvolvido pelos alunos:</h3>
-            <p>Miquéias</p>
-            <p>Eloha</p>
-            <p>Rhayla</p>
-            <p>Carlos</p>
+        <!-- ABA 3: GERADOR DE HUD -->
+        <div id="hud" class="aba">
+            <div class="card">
+                <h2>📱 Gerador de HUD — 2 a 6 Dedos</h2>
+                <label>Quantidade de Dedos:</label>
+                <select id="qtdDedos">
+                    <option value="2">2 Dedos</option>
+                    <option value="3">3 Dedos</option>
+                    <option value="4">4 Dedos</option>
+                    <option value="5">5 Dedos</option>
+                    <option value="6">6 Dedos</option>
+                </select>
+                <button class="gerar" onclick="gerarHUD()">🎨 GERAR HUD</button>
+                <div class="resultado" id="resHud">
+                    <div class="grade-hud" id="gradeHUD"></div>
+                </div>
+            </div>
         </div>
-    </section>
 
-    <!-- Rodapé -->
+    </div>
+
     <footer>
-        <p>"A matemática pode levar a humanidade cada vez mais longe."</p>
+        FF Master — Sensibilidade IA © 2026 | Chave PIX: miqueiasbr027@gmail.com | R$ 4,99/mês
     </footer>
 
-    <!-- Botão Voltar ao Topo -->
-    <button id="btnTopo" class="btn-topo" onclick="voltarAoTopo()">⬆</button>
+</div>
 
-    <script>
-        let totalPerguntas = 10;
-        let perguntaAtual = 0;
-        let pontos = 0;
-        let respostaCorreta;
+<script>
+// 📧 EMAIL DO DONO — ACESSO ILIMITADO AUTOMÁTICO
+const EMAIL_DONO = 'luinorbatista15@gmail.com';
+let usuarioLogado = null;
 
-        const elPergunta = document.getElementById('pergunta');
-        const elResposta = document.getElementById('resposta');
-        const elFeedback = document.getElementById('feedback');
-        const elBarra = document.getElementById('barra');
-        const elContador = document.getElementById('contador');
-        const elPontos = document.getElementById('pontos');
-        const elFoguete = document.getElementById('foguete');
-        const elBtnComecar = document.getElementById('btnComecar');
-        const elBtnResposta = document.getElementById('btnResposta');
-        const elResultado = document.getElementById('resultado');
-        const elBtnTopo = document.getElementById('btnTopo');
+// ============= LOGIN =============
+function fazerLogin() {
+    const email = prompt('Digite seu Gmail para entrar:');
+    if(!email || !email.includes('@')) {
+        alert('Digite um e-mail válido!');
+        return;
+    }
 
-        function iniciarJogo() {
-            perguntaAtual = 0;
-            pontos = 0;
-            elResultado.innerHTML = '';
-            elBtnComecar.style.display = 'none';
-            elBtnResposta.style.display = 'inline-block';
-            elResposta.style.display = 'inline-block';
-            elResposta.value = '';
-            elResposta.focus();
-            atualizarInterface();
-            proximaPergunta();
-        }
+    usuarioLogado = email.toLowerCase().trim();
+    document.getElementById('emailUsuario').textContent = usuarioLogado;
 
-        function proximaPergunta() {
-            if (perguntaAtual < totalPerguntas) {
-                let a = Math.floor(Math.random() * 12) + 1;
-                let b = Math.floor(Math.random() * 12) + 1;
-                let op = Math.random() > 0.5 ? '+' : '-';
-                
-                if (op === '-' && a < b) [a, b] = [b, a]; // Evitar negativos
-                
-                respostaCorreta = op === '+' ? a + b : a - b;
-                elPergunta.innerText = `Quanto é ${a} ${op} ${b}?`;
-                elFeedback.innerText = '';
-                elResposta.value = '';
-                elResposta.focus();
-            } else {
-                finalizarJogo();
-            }
-        }
+    document.getElementById('telaLogin').style.display = 'none';
+    document.getElementById('conteudoPrincipal').style.display = 'block';
 
-        function verificarResposta() {
-            const respUsuario = parseInt(elResposta.value);
-            
-            if (isNaN(respUsuario)) {
-                elFeedback.innerText = '⚠️ Digite um número!';
-                elFeedback.style.color = 'orange';
-                return;
-            }
+    // ✅ DONO → LIBERA TUDO AUTOMÁTICO
+    if(usuarioLogado === EMAIL_DONO) {
+        document.getElementById('camadaPagamento').style.display = 'none';
+        alert('👑 BEM-VINDO DONO! Acesso ILIMITADO liberado!');
+    }
+}
 
-            if (respUsuario === respostaCorreta) {
-                pontos += 10;
-                perguntaAtual++;
-                elFeedback.innerText = '✅ Correto! Trajetória calculada.';
-                elFeedback.style.color = '#2ecc71';
-            } else {
-                perguntaAtual++;
-                elFeedback.innerText = `❌ Erro de cálculo! A resposta era ${respostaCorreta}.`;
-                elFeedback.style.color = '#e74c3c';
-            }
+// ============= COPIAR CÓDIGO PIX =============
+function copiarPix() {
+    const codigo = document.getElementById('codigoPix').innerText.trim();
+    navigator.clipboard.writeText(codigo).then(() => {
+        alert('✅ Código PIX copiado!');
+    }).catch(() => {
+        alert('Não foi possível copiar. Selecione e copie manualmente.');
+    });
+}
 
-            atualizarInterface();
-            
-            setTimeout(() => {
-                if (perguntaAtual < totalPerguntas) {
-                    proximaPergunta();
-                } else {
-                    finalizarJogo();
-                }
-            }, 1500);
-        }
+// ============= VERIFICAR PAGAMENTO =============
+function verificarPagamento() {
+    alert('✅ Envie o comprovante de pagamento para:\n📧 miqueiasbr027@gmail.com\nValor: R$ 4,99/mês\n\nAssim que confirmar, eu libero seu acesso!');
+}
 
-        function atualizarInterface() {
-            const progresso = (perguntaAtual / totalPerguntas) * 100;
-            elBarra.style.width = progresso + '%';
-            elContador.innerText = `${perguntaAtual} / ${totalPerguntas}`;
-            elPontos.innerText = pontos;
-            
-            // Mover foguete (de 10px a 250px)
-            const bottomPos = 10 + (progresso * 2.4);
-            elFoguete.style.bottom = bottomPos + 'px';
-        }
+// ============= SAIR =============
+function sair() {
+    usuarioLogado = null;
+    document.getElementById('telaLogin').style.display = 'flex';
+    document.getElementById('conteudoPrincipal').style.display = 'none';
+}
 
-        function finalizarJogo() {
-            elPergunta.innerText = 'Missão Concluída!';
-            elResposta.style.display = 'none';
-            elBtnResposta.style.display = 'none';
-            elBtnComecar.style.display = 'inline-block';
-            elBtnComecar.innerText = 'Reiniciar Missão';
-            
-            let mensagem = pontos >= 70 ? 
-                `🚀 Parabéns! Você é um gênio como Katherine! Pontuação: ${pontos}` : 
-                `👨‍🚀 Missão terminada. Continue estudando matemática! Pontuação: ${pontos}`;
-            
-            elResultado.innerHTML = mensagem;
-        }
+// ============= SISTEMA DE ABAS =============
+function mostrarAba(nome) {
+    document.querySelectorAll('.aba').forEach(a => a.classList.remove('ativa'));
+    document.querySelectorAll('.btn-aba').forEach(b => b.classList.remove('ativo'));
+    document.getElementById(nome).classList.add('ativa');
+    event.target.classList.add('ativo');
+}
 
-        function voltarAoTopo() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+// ============= GERAR SENSIBILIDADE IA =============
+function gerarSensibilidade() {
+    const marca = document.getElementById('marca').value;
+    const tela = document.getElementById('tela').value;
+    const dpi = document.getElementById('dpi').value;
 
-        window.onscroll = function() {
-            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-                elBtnTopo.style.display = "block";
-            } else {
-                elBtnTopo.style.display = "none";
-            }
-        };
+    let base = { geral: 95, ponto: 88, x2: 92, x4: 90, sniper: 55, visao: 60, dpi: 449 };
 
-        // Permitir Enter para enviar resposta
-        elResposta.addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                verificarResposta();
-            }
-        });
-    </script>
+    if(marca==='samsung') base = { geral:96, ponto:90, x2:94, x4:91, sniper:58, visao:62, dpi:411 };
+    if(marca==='xiaomi') base = { geral:98, ponto:92, x2:95, x4:93, sniper:52, visao:65, dpi:392 };
+    if(marca==='motorola') base = { geral:94, ponto:87, x2:91, x4:89, sniper:56, visao:60, dpi:411 };
+    if(marca==='iphone') base = { geral:85, ponto:82, x2:86, x4:84, sniper:50, visao:55, dpi:326 };
+    if(marca==='realme') base = { geral:97, ponto:91, x2:94, x4:92, sniper:54, visao:63, dpi:480 };
+
+    if(tela==='pequena') { base.geral+=2; base.ponto+=3; base.x2+=2; base.x4+=2; }
+    if(tela==='grande')  { base.geral-=2; base.ponto-=2; base.x2-=2; base.x4-=2; }
+
+    if(dpi==='alto') { base.geral-=3; base.sniper-=2; }
+    if(dpi==='baixo') { base.geral+=3; base.sniper+=2; }
+
+    document.getElementById('rGeral').textContent = base.geral;
+    document.getElementById('rPonto').textContent = base.ponto;
+    document.getElementById('r2x').textContent = base.x2;
+    document.getElementById('r4x').textContent = base.x4;
+    document.getElementById('rSniper').textContent = base.sniper;
+    document.getElementById('rVisao').textContent = base.visao;
+    document.getElementById('rDPI').textContent = base.dpi;
+    document.getElementById('resSensibilidade').style.display = 'block';
+}
+
+// ============= MÉTODOS DE SUBIDA DE CAPA =============
+function gerarMetodo() {
+    const arma = document.getElementById('arma').value;
+    let texto = '';
+
+    if(arma==='todas') {
+        texto = `<b>✅ Método Universal:</b><br>• Puxe o botão de tiro em forma de "J" ou reto para cima<br>• Faça o movimento suave<br>• Mire no peito e suba para a cabeça<br>• Sensibilidade: 90-100 | Botão: 45%-55%`;
+    } else if(arma==='smg') {
+        texto = `<b>✅ SMG (MP40, UMP...):</b><br>• Movimento RÁPIDO em forma de "J"<br>• Puxe forte e curto<br>• Mire sempre abaixo do peito<br>• Geral: 95 a 100 | Botão: 48%`;
+    } else if(arma==='rifle') {
+        texto = `<b>✅ RIFLE (AK, M4...):</b><br>• Movimento RETO e suave para cima<br>• Suba devagar, acompanhando o alvo<br>• Mire no meio do peito e suba<br>• Geral: 92 a 98 | Botão: 52%`;
+    } else if(arma==='espingarda') {
+        texto = `<b>✅ ESPINGARDA (M1014, M1887...):</b><br>• Movimento RÁPIDO em "U" invertido ou meia lua<br>• Dê o tiro e puxe para cima rapidamente<br>• Mire perto dos pés ou no peito<br>• Geral: 98 a 100 | Botão: 55%`;
+    } else if(arma==='sniper') {
+        texto = `<b>✅ SNIPER:</b><br>• Foco no controle da Mira Sniper<br>• Use a técnica de troca rápida de arma<br>• Ajuste a sensibilidade Sniper conforme sua precisão<br>• Sniper: 45 a 60 | Botão: 50%`;
+    }
+
+    document.getElementById('textoMetodo').innerHTML = texto;
+    document.getElementById('resMetodo').style.display = 'block';
+}
+
+// ============= GERADOR DE HUD =============
+function gerarHUD() {
+    const dedos = document.getElementById('qtdDedos').value;
+    const grade = document.getElementById('gradeHUD');
+    grade.innerHTML = '';
+
+    const huds = {
+        '2': [
+            { nome: 'Botão de Tiro', pos: 'bottom: 20%; right: 20%;', tam: '50px' },
+            { nome: 'Analógico', pos: 'bottom: 20%; left: 10%;', tam: '60px' },
+            { nome: 'Pular', pos: 'bottom: 40%; right: 10%;', tam: '45px' }
+        ],
+        '3': [
+            { nome: 'Botão de Tiro', pos: 'bottom: 20%; right: 20%;', tam: '52px' },
+            { nome: 'Pular', pos: 'top: 20%; left: 10%;', tam: '50px' },
+            { nome: 'Agachar', pos: 'bottom: 35%; right: 10%;', tam: '45px' }
+        ],
+        '4': [
+            { nome: 'Tiro Esquerdo', pos: 'top: 15%; left: 15%;', tam: '55px' },
+            { nome: 'Pular', pos: 'top: 15%; right: 15%;', tam: '55px' },
+            { nome: 'Agachar', pos: 'bottom: 30%; right: 10%;', tam: '50px' },
+            { nome: 'Troca de Arma', pos: 'top: 5%; left: 45%;', tam: '60px' }
+        ],
+        '5': [
+            { nome: 'Tiro Esq.', pos: 'top: 10%; left: 20%;', tam: '55px' },
+            { nome: 'Mira', pos: 'top: 10%; right: 20%;', tam: '55px' },
+            { nome: 'Pular', pos: 'top: 25%; right: 10%;', tam: '50px' },
+            { nome: 'Gelo', pos: 'top: 5%; left: 40%;', tam: '60px' }
+        ],
+        '6': [
+            { nome: 'Tiro Esq.', pos: 'top: 10%; left: 15%;', tam: '60px' },
+            { nome: 'Mira', pos: 'top: 10%; right: 15%;', tam: '60px' },
+            { nome: 'Pular', pos: 'top: 25%; right: 5%;', tam: '55px' },
+            { nome: 'Agachar', pos: 'top: 25%; left: 5%;', tam: '55px' },
+            { nome: 'Gelo', pos: 'top: 5%; left: 45%;', tam: '65px' }
+        ]
+    };
+
+    const config = huds[dedos];
+    let htmlHUD = `<div class="hud-card"><h3>HUD ${dedos} Dedos</h3><div class="hud-preview">`;
+    
+    config.forEach(item => {
+        htmlHUD += `<div class="botao-hud" style="${item.pos} width:${item.tam}; height:${item.tam};">${item.nome}</div>`;
+    });
+    
+    htmlHUD += `</div><p>Recomendado para jogadores de ${dedos} dedos.</p></div>`;
+    grade.innerHTML = htmlHUD;
+    document.getElementById('resHud').style.display = 'block';
+}
+</script>
 </body>
 </html>
