@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Katherine Johnson — Jogo da Memória</title>
+  <style>
+    :root {
+      --azul-escuro: #071a35;
+      --azul: #123c69;
+      --azul-claro: #eaf4ff;
+      --amarelo: #ffd166;
+      --verde: #50c878;
+      --vermelho: #ef476f;
+      --branco: #ffffff;
+      --texto: #172b4d;
+      --sombra: 0 12px 30px rgba(7, 26, 53, .15);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(135deg, #eef7ff, #d7eaff);
+      color: var(--texto);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    header {
+      padding: 2rem 1rem;
+      color: var(--branco);
+      text-align: center;
+      background: linear-gradient(135deg, var(--azul-escuro), var(--azul));
+      box-shadow: var(--sombra);
+    }
+
+    header h1 { margin: 0 0 .4rem; font-size: clamp(1.8rem, 5vw, 3rem); }
+    header p { margin: 0; opacity: .9; font-size: 1.1rem; }
+
+    main { width: min(100% - 2rem, 960px); margin: 2rem auto; flex: 1; }
+    .tela { display: none; animation: aparecer .35s ease; }
+    .tela.ativa { display: block; }
+
+    @keyframes aparecer { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    section {
+      padding: clamp(1.25rem, 4vw, 2.5rem);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, .92);
+      box-shadow: var(--sombra);
+    }
+
+    h2 { color: var(--azul-escuro); text-align: center; margin-top: 0; }
+    p { line-height: 1.6; }
+    #inicio > p { text-align: center; }
+
+    .info, .sobre {
+      margin-top: 1.75rem;
+      padding: 1.25rem;
+      border-radius: 16px;
+      background: var(--azul-claro);
+    }
+
+    .info h3 { margin-top: 0; text-align: center; }
+
+    button {
+      border: 0;
+      border-radius: 12px;
+      padding: .85rem 1rem;
+      color: var(--branco);
+      background: var(--azul);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .2s, filter .2s, box-shadow .2s;
+    }
+
+    button:hover { filter: brightness(1.12); transform: translateY(-2px); box-shadow: 0 5px 12px rgba(7, 26, 53, .18); }
+    button:focus-visible { outline: 3px solid var(--amarelo); outline-offset: 3px; }
+
+    .info button { display: block; width: 100%; margin: .75rem 0; text-align: left; }
+    .info button:nth-of-type(1) { background: #238b45; }
+    .info button:nth-of-type(2) { color: var(--texto); background: var(--amarelo); }
+    .info button:nth-of-type(3) { background: var(--vermelho); }
+    button small { display: block; margin-top: .25rem; font-weight: 400; opacity: .9; }
+
+    .topo-jogo { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+    .topo-jogo > div { padding: .6rem .9rem; border-radius: 10px; background: var(--azul-claro); }
+    #mensagem { text-align: center; font-weight: 700; }
+
+    #tabuleiro {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(60px, 1fr));
+      gap: .8rem;
+      max-width: 700px;
+      margin: 1.5rem auto;
+    }
+
+    .carta {
+      aspect-ratio: 1 / 1;
+      display: grid;
+      place-items: center;
+      padding: .5rem;
+      color: var(--branco);
+      background: var(--azul-escuro);
+      font-size: clamp(1rem, 3vw, 1.45rem);
+      text-align: center;
+      overflow-wrap: anywhere;
+      user-select: none;
+    }
+
+    .carta.revelada, .carta.encontrada { color: var(--texto); background: var(--amarelo); }
+    .carta.encontrada { background: var(--verde); }
+    .reiniciar { display: block; margin: 1rem auto 0; }
+
+    footer { padding: 1.25rem; color: var(--branco); text-align: center; background: var(--azul-escuro); }
+    footer p { margin: 0; }
+
+    @media (max-width: 520px) {
+      #tabuleiro { grid-template-columns: repeat(3, minmax(65px, 1fr)); gap: .55rem; }
+      .topo-jogo { justify-content: center; }
+      .topo-jogo button { order: 3; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🚀 Katherine Johnson</h1>
+    <p>A matemática por trás das estrelas</p>
+  </header>
+
+  <main>
+    <section id="inicio" class="tela ativa">
+      <h2>🧠 Jogo da Memória Matemático</h2>
+      <p>Encontre os pares: uma carta contém uma conta e outra contém o resultado correto.</p>
+
+      <div class="info">
+        <h3>Escolha a dificuldade</h3>
+        <button onclick="iniciarJogo('facil')">🟢 Fácil <small>Adição, subtração, multiplicação e divisão</small></button>
+        <button onclick="iniciarJogo('medio')">🟡 Médio <small>Expressões matemáticas</small></button>
+        <button onclick="iniciarJogo('dificil')">🔴 Difícil <small>1º grau, 2º grau e função afim</small></button>
+      </div>
+
+      <div class="sobre">
+        <h2>👩🏾‍💻 Quem foi Katherine Johnson?</h2>
+        <p>Katherine Johnson foi uma matemática norte-americana que trabalhou na NASA. Seus cálculos foram importantes para trajetórias de missões espaciais.</p>
+        <p>Ela ficou conhecida por sua enorme precisão nos cálculos que ajudaram os Estados Unidos durante a corrida espacial.</p>
+      </div>
+    </section>
+
+    <section id="jogo" class="tela">
+      <div class="topo-jogo">
+        <button onclick="voltarInicio()">⬅ Voltar</button>
+        <div><strong>Pontos:</strong> <span id="pontos">0</span></div>
+        <div><strong>Tentativas:</strong> <span id="tentativas">0</span></div>
+      </div>
+
+      <h2 id="tituloModo">Jogo</h2>
+      <p id="mensagem">Encontre os pares!</p>
+      <div id="tabuleiro" aria-label="Tabuleiro do jogo da memória"></div>
+      <button class="reiniciar" onclick="reiniciarJogo()">🔄 Novo jogo</button>
+    </section>
+  </main>
+
+  <footer><p>Projeto escolar sobre Katherine Johnson 🚀</p></footer>
+
+  <script>
+    const desafios = {
+      facil: [
+        ['2 + 3', '5'], ['8 - 3', '5'], ['4 × 2', '8'], ['12 ÷ 3', '4'],
+        ['7 + 3', '10'], ['15 - 5', '10']
+      ],
+      medio: [
+        ['2 + 3 × 2', '8'], ['(10 - 4) ÷ 2', '3'], ['5² - 4', '21'],
+        ['3 × (4 + 2)', '18'], ['20 ÷ 4 + 6', '11'], ['2³ + 1', '9']
+      ],
+      dificil: [
+        ['x + 4 = 9', 'x = 5'], ['2x = 12', 'x = 6'], ['x² = 25', 'x = ±5'],
+        ['f(x) = 2x + 1; f(3)', '7'], ['3x - 6 = 0', 'x = 2'], ['x² - 9 = 0', 'x = ±3']
+      ]
+    };
+
+    let dificuldadeAtual = 'facil';
+    let cartas = [];
+    let primeiraCarta = null;
+    let segundaCarta = null;
+    let bloqueado = false;
+    let pontos = 0;
+    let tentativas = 0;
+    let paresEncontrados = 0;
+
+    const embaralhar = lista => [...lista].sort(() => Math.random() - 0.5);
+
+    function iniciarJogo(dificuldade) {
+      dificuldadeAtual = dificuldade;
+      pontos = 0;
+      tentativas = 0;
+      paresEncontrados = 0;
+      primeiraCarta = null;
+      segundaCarta = null;
+      bloqueado = false;
+      cartas = [];
+
+      desafios[dificuldade].forEach(([pergunta, resposta], indice) => {
+        cartas.push({ texto: pergunta, par: indice, tipo: 'pergunta' });
+        cartas.push({ texto: resposta, par: indice, tipo: 'resposta' });
+      });
+
+      document.getElementById('inicio').classList.remove('ativa');
+      document.getElementById('jogo').classList.add('ativa');
+      document.getElementById('tituloModo').textContent = `Jogo — ${dificuldade[0].toUpperCase() + dificuldade.slice(1)}`;
+      atualizarPlacar();
+      renderizarTabuleiro();
+    }
+
+    function renderizarTabuleiro() {
+      const tabuleiro = document.getElementById('tabuleiro');
+      tabuleiro.innerHTML = '';
+      embaralhar(cartas).forEach((carta, indice) => {
+        const elemento = document.createElement('button');
+        elemento.className = 'carta';
+        elemento.dataset.indice = indice;
+        elemento.dataset.par = carta.par;
+        elemento.dataset.tipo = carta.tipo;
+        elemento.textContent = '★';
+        elemento.setAttribute('aria-label', 'Carta fechada');
+        elemento.addEventListener('click', () => revelarCarta(elemento, carta));
+        tabuleiro.appendChild(elemento);
+      });
+    }
+
+    function revelarCarta(elemento, carta) {
+      if (bloqueado || elemento.classList.contains('revelada') || elemento.classList.contains('encontrada')) return;
+      elemento.classList.add('revelada');
+      elemento.textContent = carta.texto;
+      elemento.setAttribute('aria-label', carta.texto);
+
+      if (!primeiraCarta) {
+        primeiraCarta = { elemento, carta };
+        return;
+      }
+
+      segundaCarta = { elemento, carta };
+      tentativas++;
+      bloqueado = true;
+      atualizarPlacar();
+
+      const acertou = primeiraCarta.carta.par === segundaCarta.carta.par && primeiraCarta.carta.tipo !== segundaCarta.carta.tipo;
+      if (acertou) {
+        primeiraCarta.elemento.classList.add('encontrada');
+        segundaCarta.elemento.classList.add('encontrada');
+        pontos += 10;
+        paresEncontrados++;
+        document.getElementById('mensagem').textContent = paresEncontrados === desafios[dificuldadeAtual].length ? 'Parabéns! Você encontrou todos os pares!' : 'Muito bem! Encontre o próximo par.';
+        limparSelecao();
+      } else {
+        document.getElementById('mensagem').textContent = 'Não foi dessa vez. Tente novamente!';
+        setTimeout(() => {
+          primeiraCarta.elemento.classList.remove('revelada');
+          segundaCarta.elemento.classList.remove('revelada');
+          primeiraCarta.elemento.textContent = segundaCarta.elemento.textContent = '★';
+          limparSelecao();
+        }, 850);
+      }
+      atualizarPlacar();
+    }
+
+    function limparSelecao() {
+      primeiraCarta = null;
+      segundaCarta = null;
+      bloqueado = false;
+    }
+
+    function atualizarPlacar() {
+      document.getElementById('pontos').textContent = pontos;
+      document.getElementById('tentativas').textContent = tentativas;
+    }
+
+    function reiniciarJogo() { iniciarJogo(dificuldadeAtual); }
+
+    function voltarInicio() {
+      document.getElementById('jogo').classList.remove('ativa');
+      document.getElementById('inicio').classList.add('ativa');
+      document.getElementById('mensagem').textContent = 'Encontre os pares!';
+    }
+  </script>
+</body>
+</html>
