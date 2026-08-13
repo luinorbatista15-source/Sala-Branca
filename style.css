@@ -1,0 +1,14 @@
+.carta-frente {
+  background: linear-gradient(135deg, #0f4c81, #1e3a8a, #f59e0b);
+  border: 3px solid #f9d71c;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-shadow: 0 0 8px #000000;
+}
